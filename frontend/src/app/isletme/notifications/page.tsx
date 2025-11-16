@@ -236,14 +236,14 @@ export default function NotificationsPage() {
               className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-              Yenile
+              {getTranslation('notifications.refresh')}
             </button>
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 className="px-4 py-2 text-sm font-medium text-white bg-hotel-gold rounded-lg hover:bg-hotel-navy"
               >
-                Tümünü Okundu İşaretle
+                {getTranslation('notifications.mark_all_read')}
               </button>
             )}
           </div>
@@ -258,7 +258,7 @@ export default function NotificationsPage() {
               <Bell className="w-8 h-8 text-hotel-gold" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Toplam Bildirim</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('notifications.total')}</p>
               <p className="text-2xl font-semibold text-gray-900">{notifications.length}</p>
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function NotificationsPage() {
               <AlertCircle className="w-8 h-8 text-red-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Okunmamış</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('notifications.unread')}</p>
               <p className="text-2xl font-semibold text-gray-900">{unreadCount}</p>
             </div>
           </div>
@@ -280,7 +280,7 @@ export default function NotificationsPage() {
               <CheckCircle className="w-8 h-8 text-green-500" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Okunmuş</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('notifications.read')}</p>
               <p className="text-2xl font-semibold text-gray-900">{notifications.length - unreadCount}</p>
             </div>
           </div>
@@ -295,7 +295,7 @@ export default function NotificationsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Bildirimlerde ara..."
+                placeholder={getTranslation('notifications.search_placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
@@ -311,7 +311,7 @@ export default function NotificationsPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Tümü
+              {getTranslation('common.all')}
             </button>
             <button
               onClick={() => setFilter('unread')}
@@ -321,7 +321,7 @@ export default function NotificationsPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Okunmamış ({unreadCount})
+              {getTranslation('notifications.unread')} ({unreadCount})
             </button>
             <button
               onClick={() => setFilter('read')}
@@ -331,7 +331,7 @@ export default function NotificationsPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Okunmuş
+              {getTranslation('notifications.read')}
             </button>
           </div>
         </div>
@@ -341,14 +341,14 @@ export default function NotificationsPage() {
       <div className="hotel-card">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900">
-            Bildirimler ({filteredNotifications.length})
+            {getTranslation('page.notifications.title')} ({filteredNotifications.length})
           </h3>
         </div>
         <div className="divide-y divide-gray-200">
           {filteredNotifications.length === 0 ? (
             <div className="text-center py-12">
               <Bell className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500">Bildirim bulunamadı</p>
+              <p className="text-gray-500">{getTranslation('notifications.not_found')}</p>
             </div>
           ) : (
             filteredNotifications.map((notification) => (
@@ -375,7 +375,7 @@ export default function NotificationsPage() {
                         </span>
                         {!notification.read && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            Yeni
+                            {getTranslation('notifications.new')}
                           </span>
                         )}
                       </div>
@@ -406,14 +406,14 @@ export default function NotificationsPage() {
                           onClick={() => markAsUnread(notification.id)}
                           className="text-xs text-gray-500 hover:text-gray-700 underline"
                         >
-                          Okunmamış olarak işaretle
+                          {getTranslation('notifications.mark_unread')}
                         </button>
                       ) : (
                         <button
                           onClick={() => markAsRead(notification.id)}
                           className="text-xs text-hotel-gold hover:text-hotel-navy underline"
                         >
-                          Okundu olarak işaretle
+                          {getTranslation('notifications.mark_read')}
                         </button>
                       )}
                     </div>

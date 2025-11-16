@@ -286,6 +286,18 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Kullanıcı Düzenle',
     'users.no_login': 'Hiç giriş yapmamış',
     'users.pages': 'sayfa',
+    
+    // Notifications Page
+    'notifications.refresh': 'Yenile',
+    'notifications.mark_all_read': 'Tümünü Okundu İşaretle',
+    'notifications.total': 'Toplam Bildirim',
+    'notifications.unread': 'Okunmamış',
+    'notifications.read': 'Okunmuş',
+    'notifications.search_placeholder': 'Bildirimlerde ara...',
+    'notifications.not_found': 'Bildirim bulunamadı',
+    'notifications.mark_read': 'Okundu olarak işaretle',
+    'notifications.mark_unread': 'Okunmamış olarak işaretle',
+    'notifications.new': 'Yeni',
   },
   
   en: {
@@ -523,6 +535,18 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Edit User',
     'users.no_login': 'Never logged in',
     'users.pages': 'pages',
+    
+    // Notifications Page
+    'notifications.refresh': 'Refresh',
+    'notifications.mark_all_read': 'Mark All as Read',
+    'notifications.total': 'Total Notifications',
+    'notifications.unread': 'Unread',
+    'notifications.read': 'Read',
+    'notifications.search_placeholder': 'Search notifications...',
+    'notifications.not_found': 'No notifications found',
+    'notifications.mark_read': 'Mark as Read',
+    'notifications.mark_unread': 'Mark as Unread',
+    'notifications.new': 'New',
     
     // Survey/Evaluation
     'survey.title': 'Rate Us',
@@ -1000,6 +1024,18 @@ export const translations: Record<string, Translations> = {
     'users.no_login': 'Nie eingeloggt',
     'users.pages': 'Seiten',
     
+    // Notifications Page
+    'notifications.refresh': 'Aktualisieren',
+    'notifications.mark_all_read': 'Alle als gelesen markieren',
+    'notifications.total': 'Gesamt Benachrichtigungen',
+    'notifications.unread': 'Ungelesen',
+    'notifications.read': 'Gelesen',
+    'notifications.search_placeholder': 'Benachrichtigungen suchen...',
+    'notifications.not_found': 'Keine Benachrichtigungen gefunden',
+    'notifications.mark_read': 'Als gelesen markieren',
+    'notifications.mark_unread': 'Als ungelesen markieren',
+    'notifications.new': 'Neu',
+    
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -1260,6 +1296,18 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Modifier l\'Utilisateur',
     'users.no_login': 'Jamais connecté',
     'users.pages': 'pages',
+    
+    // Notifications Page
+    'notifications.refresh': 'Actualiser',
+    'notifications.mark_all_read': 'Tout Marquer comme Lu',
+    'notifications.total': 'Total des Notifications',
+    'notifications.unread': 'Non Lu',
+    'notifications.read': 'Lu',
+    'notifications.search_placeholder': 'Rechercher des notifications...',
+    'notifications.not_found': 'Aucune notification trouvée',
+    'notifications.mark_read': 'Marquer comme Lu',
+    'notifications.mark_unread': 'Marquer comme Non Lu',
+    'notifications.new': 'Nouveau',
     
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',
