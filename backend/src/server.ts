@@ -507,6 +507,30 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
   }
 })
 
+// Debug endpoint - Translations kolonunu kontrol et ve ekle
+app.post('/debug/ensure-translations-column', async (req: Request, res: Response) => {
+  try {
+    const result = await ensureTranslationsColumn();
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'Translations kolonu kontrol edildi ve gerekirse eklendi'
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Translations kolonu eklenirken hata oluştu'
+      });
+    }
+  } catch (error: any) {
+    console.error('❌ Translations kolonu endpoint hatası:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
 // Debug endpoint - Migration çalıştır (basit versiyon)
 app.post('/debug/migrate', async (req: Request, res: Response) => {
   try {
@@ -3486,6 +3510,44 @@ async function createDemoTenant() {
   }
 }
 
+// Translations kolonunu kontrol et ve yoksa ekle
+async function ensureTranslationsColumn() {
+  try {
+    console.log('🔍 Translations kolonu kontrol ediliyor...')
+    
+    // Önce kolonun var olup olmadığını kontrol et
+    try {
+      await prisma.$queryRaw`
+        SELECT "translations" FROM "menu_items" LIMIT 1
+      `
+      console.log('✅ Translations kolonu mevcut')
+      return true
+    } catch (error: any) {
+      // Kolon yoksa ekle
+      if (error.message && error.message.includes('translations')) {
+        console.log('⚠️ Translations kolonu bulunamadı, ekleniyor...')
+        try {
+          await prisma.$executeRaw`
+            ALTER TABLE "menu_items" ADD COLUMN IF NOT EXISTS "translations" JSONB
+          `
+          console.log('✅ Translations kolonu başarıyla eklendi')
+          return true
+        } catch (addError: any) {
+          console.error('❌ Translations kolonu eklenirken hata:', addError.message)
+          return false
+        }
+      } else {
+        // Başka bir hata
+        console.error('❌ Translations kolonu kontrolü hatası:', error.message)
+        return false
+      }
+    }
+  } catch (error) {
+    console.error('❌ Translations kolonu kontrol fonksiyonu hatası:', error)
+    return false
+  }
+}
+
 // Migration kontrolü ve çalıştırma
 async function runMigrations() {
   try {
@@ -3502,9 +3564,14 @@ async function runMigrations() {
       console.error('⚠️ Migration calistirma hatasi (devam ediliyor):', migrateError)
       // Migration hatası olsa bile devam et - belki zaten çalıştırılmış
     }
+    
+    // Translations kolonunu kontrol et ve yoksa ekle
+    await ensureTranslationsColumn()
   } catch (error) {
     console.error('❌ Migration fonksiyonu hatasi:', error)
     // Migration hatası olsa bile devam et
+    // Yine de translations kolonunu kontrol et
+    await ensureTranslationsColumn()
   }
 }
 
