@@ -94,6 +94,7 @@ const path = require('path');
 module.exports = withPWA({
   reactStrictMode: false,
   swcMinify: true,
+  trailingSlash: false,
   typescript: {
     ignoreBuildErrors: true,
   },
