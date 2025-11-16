@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   Plus, 
   Edit, 
@@ -231,72 +231,80 @@ export default function MenuManagement() {
     return demoProducts.some(demo => normalizedName === demo || normalizedName.includes(demo));
   };
 
-  // Menü verilerini API'den yükle
-  useEffect(() => {
-    const loadData = async () => {
-      try {
+  // Menü verilerini yükle (yeniden kullanılabilir fonksiyon)
+  const loadMenuData = useCallback(async (showLoading: boolean = true) => {
+    try {
+      if (showLoading) {
         setLoading(true);
-        await loadCategories();
-        
-        const tenantSlug = getTenantSlug();
-        const response = await fetch('/api/menu', {
-          headers: {
-            'x-tenant': tenantSlug
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Menü yüklendi, toplam item sayısı:', data.menu?.length || 0);
-          const formattedItems = data.menu
-            .filter((item: any) => !isDemoProduct(item.name)) // Demo ürünleri filtrele
-            .map((item: any, index: number) => {
-              // Translations'ı parse et
-              let translations = {};
-              try {
-                if (item.translations) {
-                  if (typeof item.translations === 'string') {
-                    translations = JSON.parse(item.translations);
-                  } else if (typeof item.translations === 'object') {
-                    translations = item.translations;
-                  }
-                }
-              } catch (parseError) {
-                console.warn(`Translation parse error for item ${item.id}:`, parseError);
-                translations = {};
-              }
-              
-              return {
-                id: item.id || `api-${index}`,
-                name: item.name,
-                description: item.description || '',
-                price: item.price,
-                category: item.category || 'Diğer',
-                isAvailable: item.available !== false,
-                allergens: item.allergens || [],
-                calories: item.calories,
-                image: item.image,
-                preparationTime: item.preparationTime,
-                rating: item.rating,
-                translations: translations,
-              };
-            });
-          
-          console.log('Filtrelenmiş menü item sayısı:', formattedItems.length);
-          setMenuItems(formattedItems);
-        } else {
-          console.error('Menü yükleme hatası, response status:', response.status);
-          setMenuItems([]);
+      }
+      await loadCategories();
+      
+      const tenantSlug = getTenantSlug();
+      const response = await fetch('/api/menu', {
+        headers: {
+          'x-tenant': tenantSlug
         }
-      } catch (error) {
-        console.error('Menü yükleme hatası:', error);
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Menü yüklendi, toplam item sayısı:', data.menu?.length || 0);
+        const formattedItems = data.menu
+          .filter((item: any) => !isDemoProduct(item.name)) // Demo ürünleri filtrele
+          .map((item: any, index: number) => {
+            // Translations'ı parse et
+            let translations = {};
+            try {
+              if (item.translations) {
+                if (typeof item.translations === 'string') {
+                  translations = JSON.parse(item.translations);
+                } else if (typeof item.translations === 'object') {
+                  translations = item.translations;
+                }
+              }
+            } catch (parseError) {
+              console.warn(`Translation parse error for item ${item.id}:`, parseError);
+              translations = {};
+            }
+            
+            return {
+              id: item.id || `api-${index}`,
+              name: item.name,
+              description: item.description || '',
+              price: item.price,
+              category: item.category || 'Diğer',
+              isAvailable: item.available !== false,
+              allergens: item.allergens || [],
+              calories: item.calories,
+              image: item.image,
+              preparationTime: item.preparationTime,
+              rating: item.rating,
+              translations: translations,
+            };
+          });
+        
+        console.log('Filtrelenmiş menü item sayısı:', formattedItems.length);
+        setMenuItems(formattedItems);
+        return formattedItems;
+      } else {
+        console.error('Menü yükleme hatası, response status:', response.status);
         setMenuItems([]);
-      } finally {
+        return [];
+      }
+    } catch (error) {
+      console.error('Menü yükleme hatası:', error);
+      setMenuItems([]);
+      return [];
+    } finally {
+      if (showLoading) {
         setLoading(false);
       }
-    };
-
-    loadData();
+    }
   }, []);
+
+  // Menü verilerini API'den yükle (sayfa ilk yüklendiğinde)
+  useEffect(() => {
+    loadMenuData();
+  }, [loadMenuData]);
 
   // Kategori listesini güncelle (tenant-specific)
   useEffect(() => {
@@ -714,11 +722,30 @@ export default function MenuManagement() {
         console.log('Menu save response:', responseData);
         
         // Backend'den dönen ID'yi kullan
-        // Backend'den items array'i dönebilir veya direkt item objesi dönebilir
+        // Backend formatı: { success: true, items: [{ id, name, ... }] }
         const savedItem = responseData.items?.[0] || responseData.item || null;
-        const itemId = savedItem?.id || responseData.items?.[0]?.id || Date.now().toString();
+        const itemId = savedItem?.id || responseData.items?.[0]?.id;
         
-        const newItem: MenuItem = {
+        if (!itemId) {
+          console.error('Backend\'den ID dönmedi, response:', responseData);
+          throw new Error('Backend\'den ürün ID\'si alınamadı');
+        }
+        
+        // Backend'den dönen item'ı kullan veya yeni oluştur
+        const newItem: MenuItem = savedItem ? {
+          id: savedItem.id,
+          name: savedItem.name || itemData.name || '',
+          description: savedItem.description || itemData.description || '',
+          price: savedItem.price || itemData.price || 0,
+          category: savedItem.category || itemData.category || 'Diğer',
+          isAvailable: savedItem.isAvailable !== undefined ? savedItem.isAvailable : (itemData.isAvailable ?? true),
+          allergens: savedItem.allergens || itemData.allergens || [],
+          calories: savedItem.calories || itemData.calories,
+          image: savedItem.image || imageUrl,
+          preparationTime: savedItem.preparationTime || itemData.preparationTime,
+          rating: savedItem.rating || itemData.rating || 4,
+          translations: savedItem.translations || translations,
+        } : {
           id: itemId,
           name: itemData.name || '',
           description: itemData.description || '',
@@ -729,13 +756,30 @@ export default function MenuManagement() {
           calories: itemData.calories,
           image: imageUrl,
           preparationTime: itemData.preparationTime,
-          rating: itemData.rating,
+          rating: itemData.rating || 4,
           translations: translations,
         };
         
-        console.log('Yeni ürün eklendi:', newItem);
-        setMenuItems(items => [...items, newItem]);
+        console.log('Yeni ürün eklendi (ID:', newItem.id, '):', newItem);
+        
+        // State'e ekle
+        setMenuItems(items => {
+          // Aynı ID'ye sahip item varsa güncelle, yoksa ekle
+          const existingIndex = items.findIndex(item => item.id === newItem.id);
+          if (existingIndex >= 0) {
+            const updated = [...items];
+            updated[existingIndex] = newItem;
+            return updated;
+          }
+          return [...items, newItem];
+        });
+        
         setShowAddModal(false);
+        
+        // Menüyü backend'den yeniden yükle (güncel veriyi al)
+        setTimeout(() => {
+          loadMenuData(false); // Loading gösterme, sadece veriyi güncelle
+        }, 500);
       }
       setSelectedItem(null);
       setImagePreview(null);
