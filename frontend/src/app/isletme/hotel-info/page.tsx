@@ -164,7 +164,7 @@ export default function HotelInfoPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Yükleniyor...</p>
+          <p className="text-gray-600">{getTranslation('hotel_info.loading')}</p>
         </div>
       </div>
     );
@@ -173,7 +173,7 @@ export default function HotelInfoPage() {
   if (!hotelInfo) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-600">Otel bilgileri yüklenemedi</p>
+        <p className="text-gray-600">{getTranslation('hotel_info.error')}</p>
       </div>
     );
   }
@@ -191,7 +191,7 @@ export default function HotelInfoPage() {
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           <Save className="w-4 h-4" />
-          {isSaving ? 'Kaydediliyor...' : 'Kaydet'}
+          {isSaving ? getTranslation('common.loading') : getTranslation('hotel_info.save')}
         </button>
       </div>
 
@@ -207,11 +207,11 @@ export default function HotelInfoPage() {
           <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
             <Wifi className="w-5 h-5 text-blue-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">WiFi & İnternet</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{getTranslation('hotel_info.wifi_internet')}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ağ Adı</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.network_name')}</label>
             <input
               type="text"
               value={hotelInfo.wifi.networkName}
@@ -220,7 +220,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.password')}</label>
             <input
               type="text"
               value={hotelInfo.wifi.password}
@@ -229,7 +229,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Hız</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.speed')}</label>
             <input
               type="text"
               value={hotelInfo.wifi.speed}
@@ -238,7 +238,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Teknik Destek Telefonu</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.tech_support_phone')}</label>
             <input
               type="text"
               value={hotelInfo.wifi.supportPhone}
@@ -255,11 +255,11 @@ export default function HotelInfoPage() {
           <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
             <Clock className="w-5 h-5 text-green-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">Çalışma Saatleri</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{getTranslation('hotel_info.working_hours')}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Resepsiyon</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.reception')}</label>
             <input
               type="text"
               value={hotelInfo.hours.reception}
@@ -268,7 +268,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Restoran</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.restaurant')}</label>
             <input
               type="text"
               value={hotelInfo.hours.restaurant}
@@ -277,7 +277,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Bar</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.bar')}</label>
             <input
               type="text"
               value={hotelInfo.hours.bar}
@@ -286,7 +286,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Spa & Wellness</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.spa')}</label>
             <input
               type="text"
               value={hotelInfo.hours.spa}
@@ -316,7 +316,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Öğle Yemeği</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.lunch')}</label>
             <input
               type="text"
               value={hotelInfo.dining.lunch}
@@ -325,7 +325,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Akşam Yemeği</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.dinner')}</label>
             <input
               type="text"
               value={hotelInfo.dining.dinner}
@@ -334,7 +334,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Room Service</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.room_service')}</label>
             <input
               type="text"
               value={hotelInfo.dining.roomService}
@@ -343,7 +343,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Havlu Değişimi</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.towel_change')}</label>
             <input
               type="text"
               value={hotelInfo.dining.towelChange}
@@ -352,7 +352,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Teknik Destek</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.tech_support')}</label>
             <input
               type="text"
               value={hotelInfo.dining.techSupport}
@@ -369,7 +369,7 @@ export default function HotelInfoPage() {
           <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
             <Building2 className="w-5 h-5 text-purple-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">Otel Olanakları</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{getTranslation('hotel_info.amenities')}</h2>
         </div>
         <div className="space-y-2 mb-4">
           {hotelInfo.amenities.map((amenity, index) => (
@@ -399,7 +399,7 @@ export default function HotelInfoPage() {
             value={newAmenity}
             onChange={(e) => setNewAmenity(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addAmenity()}
-            placeholder="Yeni olanak ekle..."
+            placeholder={getTranslation('common.add') + '..."'}
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button
@@ -407,7 +407,7 @@ export default function HotelInfoPage() {
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            Ekle
+            {getTranslation('common.add')}
           </button>
         </div>
       </div>
@@ -418,11 +418,11 @@ export default function HotelInfoPage() {
           <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
             <Phone className="w-5 h-5 text-red-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">Hızlı İletişim</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{getTranslation('hotel_info.contacts')}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Resepsiyon</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.reception')}</label>
             <input
               type="text"
               value={hotelInfo.contacts.reception}
@@ -431,7 +431,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Güvenlik</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.security')}</label>
             <input
               type="text"
               value={hotelInfo.contacts.security}
@@ -440,7 +440,7 @@ export default function HotelInfoPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Concierge</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{getTranslation('hotel_info.concierge')}</label>
             <input
               type="text"
               value={hotelInfo.contacts.concierge}

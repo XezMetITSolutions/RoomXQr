@@ -419,10 +419,10 @@ export default function AnalyticsPage() {
                   {getTranslation('analytics.amount')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tarih
+                  {getTranslation('analytics.date')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Durum
+                  {getTranslation('analytics.status')}
                 </th>
               </tr>
             </thead>
