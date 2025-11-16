@@ -57,6 +57,11 @@ export default function KitchenPanel() {
   };
 
   // Menüyü backend'den yükle
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    document.title = 'Mutfak Paneli - RoomXQR';
+  }, []);
+
   useEffect(() => {
     const loadMenu = async () => {
       try {

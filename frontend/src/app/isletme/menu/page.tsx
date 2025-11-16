@@ -308,6 +308,11 @@ export default function MenuManagement() {
     loadMenuData();
   }, [loadMenuData]);
 
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    document.title = 'Menü Yönetimi - RoomXQR';
+  }, []);
+
   // Kategori listesini güncelle (tenant-specific)
   useEffect(() => {
     const tenantSlug = getTenantSlug();

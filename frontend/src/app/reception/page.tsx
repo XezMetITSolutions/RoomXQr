@@ -227,6 +227,11 @@ export default function ReceptionPanel() {
   }, [addNotification, lastRequestCount, playNotificationSound]);
 
   // Veri yükleme
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    document.title = 'Resepsiyon Paneli - RoomXQR';
+  }, []);
+
   useEffect(() => {
     loadData();
     const interval = setInterval(loadData, 5000); // 5 saniyede bir güncelle (yeni istekler için)

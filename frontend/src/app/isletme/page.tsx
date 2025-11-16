@@ -11,43 +11,112 @@ import {
   TrendingUp, 
   DollarSign,
   Globe,
-  QrCode
+  QrCode,
+  ChevronDown
 } from 'lucide-react';
+import { useLanguageStore, languages } from '@/store/languageStore';
 
 export default function AdminDashboard() {
   const router = useRouter();
   const { token, user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState([
-    {
-      name: 'Toplam Misafir',
-      value: '0',
-      change: '0%',
-      changeType: 'positive',
-      icon: Users,
-    },
-    {
-      name: 'Aktif Siparişler',
-      value: '0',
-      change: '0%',
-      changeType: 'positive',
-      icon: ShoppingCart,
-    },
-    {
-      name: 'Bekleyen Talepler',
-      value: '0',
-      change: '0%',
-      changeType: 'negative',
-      icon: Bell,
-    },
-    {
-      name: 'Günlük Gelir',
-      value: '₺0',
-      change: '0%',
-      changeType: 'positive',
-      icon: DollarSign,
-    },
-  ]);
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  
+  const { currentLanguage, setLanguage, getTranslation, getCurrentLanguage } = useLanguageStore();
+  
+  // Sadece TR, EN, DE, FR dillerini göster
+  const supportedLanguages = languages.filter(lang => ['tr', 'en', 'de', 'fr'].includes(lang.code));
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('dashboard.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
+
+  // Dil değiştiğinde stats'ı güncelle
+  useEffect(() => {
+    setStats([
+      {
+        name: getTranslation('dashboard.total_guests'),
+        value: stats[0]?.value || '0',
+        change: stats[0]?.change || '0%',
+        changeType: 'positive' as const,
+        icon: Users,
+      },
+      {
+        name: getTranslation('dashboard.active_orders'),
+        value: stats[1]?.value || '0',
+        change: stats[1]?.change || '0%',
+        changeType: 'positive' as const,
+        icon: ShoppingCart,
+      },
+      {
+        name: getTranslation('dashboard.pending_requests'),
+        value: stats[2]?.value || '0',
+        change: stats[2]?.change || '0%',
+        changeType: 'negative' as const,
+        icon: Bell,
+      },
+      {
+        name: getTranslation('dashboard.daily_revenue'),
+        value: stats[3]?.value || '₺0',
+        change: stats[3]?.change || '0%',
+        changeType: 'positive' as const,
+        icon: DollarSign,
+      },
+    ]);
+  }, [currentLanguage]);
+
+  // Dropdown dışına tıklandığında kapat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.language-selector')) {
+        setShowLanguageSelector(false);
+      }
+    };
+
+    if (showLanguageSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showLanguageSelector]);
+  const [stats, setStats] = useState(() => {
+    const getTranslation = useLanguageStore.getState().getTranslation;
+    return [
+      {
+        name: getTranslation('dashboard.total_guests'),
+        value: '0',
+        change: '0%',
+        changeType: 'positive' as const,
+        icon: Users,
+      },
+      {
+        name: getTranslation('dashboard.active_orders'),
+        value: '0',
+        change: '0%',
+        changeType: 'positive' as const,
+        icon: ShoppingCart,
+      },
+      {
+        name: getTranslation('dashboard.pending_requests'),
+        value: '0',
+        change: '0%',
+        changeType: 'negative' as const,
+        icon: Bell,
+      },
+      {
+        name: getTranslation('dashboard.daily_revenue'),
+        value: '₺0',
+        change: '0%',
+        changeType: 'positive' as const,
+        icon: DollarSign,
+      },
+    ];
+  });
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [recentRequests, setRecentRequests] = useState<any[]>([]);
 
@@ -95,30 +164,31 @@ export default function AdminDashboard() {
         // Statistics
         if (statsRes && statsRes.ok) {
           const statsData = await statsRes.json();
+          const getTranslation = useLanguageStore.getState().getTranslation;
           setStats([
             {
-              name: 'Toplam Misafir',
+              name: getTranslation('dashboard.total_guests'),
               value: String(statsData.totalGuests || 0),
               change: '0%',
               changeType: 'positive',
               icon: Users,
             },
             {
-              name: 'Aktif Siparişler',
+              name: getTranslation('dashboard.active_orders'),
               value: String(statsData.activeOrders || 0),
               change: '0%',
               changeType: 'positive',
               icon: ShoppingCart,
             },
             {
-              name: 'Bekleyen Talepler',
+              name: getTranslation('dashboard.pending_requests'),
               value: String(statsData.pendingRequests || 0),
               change: '0%',
               changeType: 'negative',
               icon: Bell,
             },
             {
-              name: 'Günlük Gelir',
+              name: getTranslation('dashboard.daily_revenue'),
               value: `₺${(statsData.dailyRevenue || 0).toLocaleString('tr-TR')}`,
               change: '0%',
               changeType: 'positive',
@@ -144,14 +214,15 @@ export default function AdminDashboard() {
               }
               
               // Önce menuItem relation'dan name al, yoksa item.name, yoksa menuItemId'den türet, yoksa varsayılan
-              let itemName = 'Bilinmeyen Ürün';
+              const getTranslation = useLanguageStore.getState().getTranslation;
+              let itemName = getTranslation('dashboard.unknown_product');
               if (item.menuItem?.name) {
                 itemName = item.menuItem.name;
               } else if (item.name) {
                 itemName = item.name;
               } else if (item.menuItemId) {
                 // menuItemId varsa ama relation yüklenmemişse, ID'yi göster
-                itemName = `Ürün #${item.menuItemId.substring(0, 8)}`;
+                itemName = `${getTranslation('dashboard.product_id')}${item.menuItemId.substring(0, 8)}`;
               }
               
               return `${item.quantity}x ${itemName}`;
@@ -232,9 +303,51 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       {/* Page Header */}
       <div className="border-b border-gray-200 pb-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">Otel yönetim paneline hoş geldiniz</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">{getTranslation('dashboard.title')}</h1>
+            <p className="text-gray-600">{getTranslation('dashboard.subtitle')}</p>
+          </div>
+          
+          {/* Dil Seçici */}
+          <div className="relative language-selector">
+            <button
+              onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+              className="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-300 hover:bg-gray-50 transition-colors"
+            >
+              <Globe className="w-4 h-4 text-gray-600" />
+              <span className="text-sm font-medium text-gray-700">
+                {getCurrentLanguage().flag}
+              </span>
+              <ChevronDown className="w-4 h-4 text-gray-600" />
+            </button>
+            
+            {/* Dil Seçenekleri Dropdown */}
+            {showLanguageSelector && (
+              <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                {supportedLanguages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      setShowLanguageSelector(false);
+                    }}
+                    className={`w-full px-4 py-3 text-left transition-colors flex items-center space-x-3 ${
+                      currentLanguage === lang.code 
+                        ? 'bg-hotel-gold bg-opacity-10' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="text-lg">{lang.flag}</span>
+                    <div>
+                      <div className="font-medium text-gray-900">{lang.name}</div>
+                      <div className="text-xs text-gray-500">{lang.nativeName}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -271,7 +384,7 @@ export default function AdminDashboard() {
         {/* Recent Orders */}
         <div className="hotel-card">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Son Siparişler</h3>
+            <h3 className="text-lg font-medium text-gray-900">{getTranslation('dashboard.recent_orders')}</h3>
           </div>
           <div className="divide-y divide-gray-200">
             {isLoading ? (
@@ -287,7 +400,7 @@ export default function AdminDashboard() {
                   <div className="flex-1">
                     <div className="flex items-center space-x-2">
                       <span className="text-sm font-medium text-gray-900">#{order.id}</span>
-                      <span className="text-sm text-gray-500">Oda {order.room}</span>
+                      <span className="text-sm text-gray-500">{getTranslation('dashboard.room')} {order.room}</span>
                     </div>
                     <p className="text-sm text-gray-600 mt-1">{order.items}</p>
                   </div>
@@ -301,13 +414,13 @@ export default function AdminDashboard() {
               ))
             ) : (
               <div className="px-6 py-8 text-center text-gray-500">
-                <p>Henüz sipariş bulunmuyor</p>
+                <p>{getTranslation('dashboard.no_orders')}</p>
               </div>
             )}
           </div>
           <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
             <a href="/isletme/orders" className="text-sm font-medium text-hotel-gold hover:text-hotel-navy">
-              Tüm siparişleri görüntüle →
+              {getTranslation('dashboard.view_all_orders')} →
             </a>
           </div>
         </div>
@@ -315,7 +428,7 @@ export default function AdminDashboard() {
         {/* Recent Requests */}
         <div className="hotel-card">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Son Talepler</h3>
+            <h3 className="text-lg font-medium text-gray-900">{getTranslation('dashboard.recent_requests')}</h3>
           </div>
           <div className="divide-y divide-gray-200">
             {isLoading ? (
@@ -332,7 +445,7 @@ export default function AdminDashboard() {
                   <div className="flex-1">
                     <div className="flex items-center space-x-2">
                       <span className="text-sm font-medium text-gray-900">#{request.id}</span>
-                      <span className="text-sm text-gray-500">Oda {request.room}</span>
+                      <span className="text-sm text-gray-500">{getTranslation('dashboard.room')} {request.room}</span>
                     </div>
                     <p className="text-sm text-gray-600 mt-1">{request.type}</p>
                     <p className="text-xs text-gray-500 mt-1">{request.time}</p>
@@ -345,13 +458,13 @@ export default function AdminDashboard() {
             ))
             ) : (
               <div className="px-6 py-8 text-center text-gray-500">
-                <p>Henüz talep bulunmuyor</p>
+                <p>{getTranslation('dashboard.no_requests')}</p>
               </div>
             )}
           </div>
           <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
             <a href="/isletme/requests" className="text-sm font-medium text-hotel-gold hover:text-hotel-navy">
-              Tüm talepleri görüntüle →
+              {getTranslation('dashboard.view_all_requests')} →
             </a>
           </div>
         </div>
@@ -359,49 +472,49 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <div className="hotel-card p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Hızlı İşlemler</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">{getTranslation('dashboard.quick_actions')}</h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <button 
             onClick={() => router.push('/isletme/qr-kod')}
             className="flex items-center p-4 border-2 border-hotel-gold rounded-lg hover:bg-hotel-gold hover:text-white transition-colors"
           >
             <QrCode className="w-5 h-5 mr-3" />
-            <span className="text-sm font-medium">QR Kod Oluştur</span>
+            <span className="text-sm font-medium">{getTranslation('dashboard.create_qr')}</span>
           </button>
           <button 
             onClick={() => router.push('/isletme/menu')}
             className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Menu className="w-5 h-5 text-hotel-gold mr-3" />
-            <span className="text-sm font-medium text-gray-700">Menü Düzenle</span>
+            <span className="text-sm font-medium text-gray-700">{getTranslation('dashboard.edit_menu')}</span>
           </button>
           <button 
             onClick={() => router.push('/isletme/announcements')}
             className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Bell className="w-5 h-5 text-hotel-gold mr-3" />
-            <span className="text-sm font-medium text-gray-700">Duyuru Ekle</span>
+            <span className="text-sm font-medium text-gray-700">{getTranslation('dashboard.add_announcement')}</span>
           </button>
           <button 
             onClick={() => router.push('/isletme/users')}
             className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Users className="w-5 h-5 text-hotel-gold mr-3" />
-            <span className="text-sm font-medium text-gray-700">Personel Ekle</span>
+            <span className="text-sm font-medium text-gray-700">{getTranslation('dashboard.add_staff')}</span>
           </button>
           <button 
             onClick={() => router.push('/isletme/analytics')}
             className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <TrendingUp className="w-5 h-5 text-hotel-gold mr-3" />
-            <span className="text-sm font-medium text-gray-700">Rapor Görüntüle</span>
+            <span className="text-sm font-medium text-gray-700">{getTranslation('dashboard.view_reports')}</span>
           </button>
           <button 
             onClick={() => router.push('/isletme/settings?tab=social')}
             className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Globe className="w-5 h-5 text-hotel-gold mr-3" />
-            <span className="text-sm font-medium text-gray-700">Sosyal Medya</span>
+            <span className="text-sm font-medium text-gray-700">{getTranslation('dashboard.social_media')}</span>
           </button>
         </div>
       </div>

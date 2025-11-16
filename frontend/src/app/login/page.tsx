@@ -31,6 +31,12 @@ export default function LoginPage() {
     }
   }, []);
 
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('login.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');

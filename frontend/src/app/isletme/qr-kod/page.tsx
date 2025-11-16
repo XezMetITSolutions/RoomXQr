@@ -59,6 +59,11 @@ export default function QRKodPage() {
     }
   };
 
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    document.title = 'QR Kod Oluşturucu - RoomXQR';
+  }, []);
+
   useEffect(() => {
     // Client-side'da baseURL'i ayarla
     setBaseURL(window.location.origin);
