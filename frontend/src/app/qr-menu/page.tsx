@@ -8,7 +8,8 @@ import { useLanguageStore } from '@/store/languageStore';
 import { useThemeStore } from '@/store/themeStore';
 
 
-const categories = [
+// Sabit kategoriler (fallback için)
+const defaultCategories = [
   { id: 'all', nameKey: 'category.all' },
   { id: 'breakfast', nameKey: 'category.breakfast' },
   { id: 'main', nameKey: 'category.main' },
@@ -36,21 +37,21 @@ const subCategories = {
 
 import Image from 'next/image';
 
-// Kategori mapping fonksiyonu
-const mapCategoryToQRFormat = (category: string): string => {
-  const categoryMap: { [key: string]: string } = {
-    'Pizza': 'main',
-    'Burger': 'main', 
-    'Ana Yemek': 'main',
-    'Salata': 'appetizer',
-    'Mezeler': 'appetizer',
-    'İçecek': 'beverage',
-    'Tatlı': 'dessert',
-    'Çorba': 'appetizer',
-    'Kahvaltı': 'breakfast',
-  };
-  return categoryMap[category] || 'main';
-};
+// Kategori mapping fonksiyonu (artık kullanılmıyor, backend'den gelen kategori adı direkt kullanılıyor)
+// const mapCategoryToQRFormat = (category: string): string => {
+//   const categoryMap: { [key: string]: string } = {
+//     'Pizza': 'main',
+//     'Burger': 'main', 
+//     'Ana Yemek': 'main',
+//     'Salata': 'appetizer',
+//     'Mezeler': 'appetizer',
+//     'İçecek': 'beverage',
+//     'Tatlı': 'dessert',
+//     'Çorba': 'appetizer',
+//     'Kahvaltı': 'breakfast',
+//   };
+//   return categoryMap[category] || 'main';
+// };
 
 // Varsayılan menü verileri (API çalışmazsa kullanılacak)
 const defaultMenuData = [
@@ -141,6 +142,8 @@ export default function QRMenuPage() {
   // Menü verileri için state
   const [menuData, setMenuData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  // Backend'den gelen kategoriler için state
+  const [dynamicCategories, setDynamicCategories] = useState<{ id: string; name: string; translations?: { [lang: string]: string } }[]>([]);
   
   // Dil store'u
   const { getTranslation, currentLanguage } = useLanguageStore();
@@ -232,7 +235,8 @@ export default function QRMenuPage() {
               price: item.price,
               preparationTime: item.preparationTime || 15, // API'den gelen veya varsayılan hazırlık süresi
               rating: item.rating || 4, // API'den gelen rating veya varsayılan 4
-              category: mapCategoryToQRFormat(item.category),
+              category: item.category || 'Diğer', // Backend'den gelen kategori adını direkt kullan
+              originalCategory: item.category || 'Diğer', // Orijinal kategori adını sakla
               subCategory: 'general',
               image: item.image || defaultImage, // API görseli yoksa varsayılan görseli kullan
               allergens: item.allergens || [],
@@ -243,6 +247,72 @@ export default function QRMenuPage() {
           });
           // Sadece API'den gelen gerçek ürünleri kullan, demo ürünleri ekleme
           setMenuData(formattedMenu);
+          
+          // Backend'den gelen kategorileri çıkar ve dinamik kategoriler oluştur
+          const uniqueCategories = new Set<string>();
+          formattedMenu.forEach((item: any) => {
+            if (item.category && item.available) {
+              uniqueCategories.add(item.category);
+            }
+          });
+          
+          // Kategorileri localStorage'dan yükle (isletme/menu sayfasından kaydedilen kategoriler)
+          let categoriesFromStorage: { id: string; name: string; description?: string }[] = [];
+          try {
+            if (typeof window !== 'undefined') {
+              // Tenant slug'ını al
+              let tenantSlug = 'demo';
+              const hostname = window.location.hostname;
+              const subdomain = hostname.split('.')[0];
+              if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
+                tenantSlug = subdomain;
+              }
+              
+              const storageKey = `menuCategories_${tenantSlug}`;
+              const storedCategories = localStorage.getItem(storageKey);
+              if (storedCategories) {
+                categoriesFromStorage = JSON.parse(storedCategories);
+              }
+            }
+          } catch (error) {
+            console.warn('Kategoriler localStorage\'dan yüklenemedi:', error);
+          }
+          
+          // Kategorileri birleştir: Önce localStorage'dan, sonra menüden çıkarılanlar
+          const categoryMap = new Map<string, { id: string; name: string; translations?: { [lang: string]: string } }>();
+          
+          // localStorage'dan gelen kategorileri ekle
+          categoriesFromStorage.forEach(cat => {
+            let translations: { [lang: string]: string } = {};
+            try {
+              if (cat.description) {
+                if (typeof cat.description === 'string') {
+                  translations = JSON.parse(cat.description);
+                } else if (typeof cat.description === 'object') {
+                  translations = cat.description;
+                }
+              }
+            } catch (e) {
+              // Parse hatası, devam et
+            }
+            categoryMap.set(cat.name, {
+              id: cat.name,
+              name: cat.name,
+              translations: translations
+            });
+          });
+          
+          // Menüden çıkarılan kategorileri ekle (eğer yoksa)
+          Array.from(uniqueCategories).forEach(catName => {
+            if (!categoryMap.has(catName)) {
+              categoryMap.set(catName, {
+                id: catName,
+                name: catName
+              });
+            }
+          });
+          
+          setDynamicCategories(Array.from(categoryMap.values()));
         } else {
           // API hatası durumunda boş menü göster
           setMenuData([]);
@@ -505,18 +575,38 @@ export default function QRMenuPage() {
     };
   }, []);
 
-  // Kategori ve alt kategoriye göre filtrele
-  let filteredMenu = menuData.filter(item => {
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSubCategory = !selectedSubCategory || item.subCategory === selectedSubCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSubCategory && matchesSearch && item.available;
-  });
-
   // Aktif kategorileri bul (ürün bulunan kategoriler)
   const activeCategories = useMemo(() => {
-    if (menuData.length === 0) return [categories[0]]; // Sadece "Tümü" göster
+    // Backend'den gelen kategorileri kullan
+    if (dynamicCategories.length > 0) {
+      // Kategorileri çevirilerle birlikte göster
+      const translatedCategories = dynamicCategories.map(cat => {
+        const currentLang = currentLanguage || 'tr';
+        let displayName = cat.name;
+        
+        // Eğer çeviri varsa kullan
+        if (cat.translations && cat.translations[currentLang]) {
+          displayName = cat.translations[currentLang];
+        }
+        
+        return {
+          id: cat.name, // ID orijinal kategori adı olmalı (filtreleme için)
+          name: displayName, // Gösterim adı çevrilmiş olabilir
+          originalName: cat.name, // Orijinal kategori adını sakla (filtreleme için)
+          nameKey: undefined // nameKey yok, direkt name kullanılacak
+        };
+      });
+      
+      return [
+        { id: 'all', name: getTranslation('category.all') || 'Tümü', nameKey: 'category.all' },
+        ...translatedCategories
+      ];
+    }
+    
+    // Fallback: Eğer dinamik kategoriler yoksa, menüden çıkar
+    if (menuData.length === 0) {
+      return [{ id: 'all', name: getTranslation('category.all') || 'Tümü', nameKey: 'category.all' }];
+    }
     
     const categoriesWithProducts = new Set<string>();
     categoriesWithProducts.add('all'); // "Tümü" her zaman göster
@@ -527,8 +617,44 @@ export default function QRMenuPage() {
       }
     });
     
-    return categories.filter(cat => categoriesWithProducts.has(cat.id));
-  }, [menuData]);
+    const menuCategories = Array.from(categoriesWithProducts)
+      .filter(cat => cat !== 'all')
+      .map(catName => ({ 
+        id: catName, 
+        name: catName,
+        originalName: catName,
+        nameKey: undefined
+      }));
+    
+    return [
+      { id: 'all', name: getTranslation('category.all') || 'Tümü', nameKey: 'category.all' },
+      ...menuCategories
+    ];
+  }, [menuData, dynamicCategories, getTranslation, currentLanguage]);
+
+  // Kategori ve alt kategoriye göre filtrele
+  let filteredMenu = menuData.filter(item => {
+    // Kategori eşleşmesi: selectedCategory 'all' ise veya kategori adı eşleşiyorsa
+    let matchesCategory = false;
+    if (selectedCategory === 'all') {
+      matchesCategory = true;
+    } else {
+      // selectedCategory çevrilmiş kategori adı olabilir, orijinal kategori adıyla karşılaştır
+      const activeCat = activeCategories.find(cat => cat.id === selectedCategory);
+      if (activeCat) {
+        // Orijinal kategori adını kullan
+        const originalCategoryName = (activeCat as any).originalName || activeCat.name;
+        matchesCategory = item.category === originalCategoryName || item.category === activeCat.name;
+      } else {
+        matchesCategory = item.category === selectedCategory;
+      }
+    }
+    
+    const matchesSubCategory = !selectedSubCategory || item.subCategory === selectedSubCategory;
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSubCategory && matchesSearch && item.available;
+  });
 
   // Alt kategori gösterimi
   const showSubCategories = selectedCategory !== 'all' && (subCategories as any)[selectedCategory]?.length > 0;
@@ -850,7 +976,7 @@ export default function QRMenuPage() {
                   ? { background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[0]} 0%, ${theme.gradientColors[1]} 100%)` : theme.primaryColor }
                   : { background: theme.cardBackground, color: theme.textColor, border: `1px solid ${theme.borderColor}` }}
               >
-                {getTranslation(category.nameKey)}
+                {category.nameKey ? getTranslation(category.nameKey) : category.name}
               </button>
             ))}
           </div>
