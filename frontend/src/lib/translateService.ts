@@ -221,6 +221,10 @@ function saveToCache(text: string, targetLang: string, translated: string) {
 async function onlineTranslate(text: string, targetLang: string): Promise<string | null> {
   // Next.js API route'unu kullan (DeepL API key zaten orada tanımlı)
   try {
+    // Timeout ile fetch (5 saniye)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    
     const res = await fetch('/api/translate', {
       method: 'POST',
       headers: { 
@@ -231,11 +235,17 @@ async function onlineTranslate(text: string, targetLang: string): Promise<string
         targetLang: targetLang,
         sourceLang: 'tr' // Türkçe'den çevir
       }),
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
     
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({ error: res.statusText }));
-      console.error('DeepL translation failed:', res.status, errorData);
+      // Sadece development modunda log
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('DeepL translation failed:', res.status, errorData);
+      }
       return null;
     }
     
@@ -276,8 +286,16 @@ async function onlineTranslate(text: string, targetLang: string): Promise<string
     }
     
     return translated;
-  } catch (error) {
-    console.error('Translation error:', error);
+  } catch (error: any) {
+    // Network hatası veya timeout durumunda sessizce null döndür
+    if (error?.name === 'AbortError') {
+      // Timeout - sessizce devam et
+      return null;
+    }
+    // Sadece development modunda log
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Translation error:', error);
+    }
     return null;
   }
 }
@@ -311,13 +329,15 @@ export async function translateText(text: string, targetLang: string): Promise<s
     return online;
   }
 
-  // Eğer çeviri başarısız olduysa, orijinal metni döndür ama bu durumda MenuTranslator'da kontrol edilecek
-  // Bu durumda MenuTranslator'da hata mesajı gösterilecek
-  console.warn('Çeviri başarısız oldu, orijinal metin döndürülüyor:', { 
-    text: typeof text === 'string' ? text : String(text), 
-    targetLang, 
-    online: typeof online === 'string' ? online : String(online) 
-  });
+  // Eğer çeviri başarısız olduysa, orijinal metni döndür
+  // Sadece development modunda log
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('Çeviri başarısız oldu, orijinal metin döndürülüyor:', { 
+      text: typeof text === 'string' ? text : String(text), 
+      targetLang, 
+      online: typeof online === 'string' ? online : String(online) 
+    });
+  }
   return text;
 }
 

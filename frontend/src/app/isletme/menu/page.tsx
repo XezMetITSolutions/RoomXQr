@@ -155,23 +155,42 @@ export default function MenuManagement() {
       description: description
     };
     
-    // Her dil için çeviri yap
+    // Eğer desteklenen dil yoksa, sadece Türkçe'yi döndür
+    if (supportedLanguages.length === 0) {
+      return translations;
+    }
+    
+    // Her dil için çeviri yap (timeout ile)
     for (const lang of supportedLanguages) {
       if (lang === 'tr') continue;
       
       try {
-        const translatedName = await translateText(name, lang);
-        const translatedDesc = await translateText(description, lang);
+        // Timeout ile çeviri yap (5 saniye)
+        const translateWithTimeout = (text: string, targetLang: string, timeout: number = 5000): Promise<string> => {
+          return Promise.race([
+            translateText(text, targetLang),
+            new Promise<string>((_, reject) => 
+              setTimeout(() => reject(new Error('Translation timeout')), timeout)
+            )
+          ]);
+        };
         
-        // Çeviri başarılı olduysa kaydet
-        if (translatedName && translatedName !== name) {
+        const translatedName = await translateWithTimeout(name, lang).catch(() => name);
+        const translatedDesc = await translateWithTimeout(description, lang).catch(() => description);
+        
+        // Çeviri başarılı olduysa kaydet (orijinal metinle aynı değilse)
+        if (translatedName && translatedName !== name && translatedName.trim() !== '') {
           translations[lang] = {
             name: translatedName,
-            description: translatedDesc || description
+            description: (translatedDesc && translatedDesc !== description) ? translatedDesc : description
           };
         }
       } catch (err) {
-        console.error(`Çeviri hatası (${lang}):`, err);
+        // Çeviri hatası durumunda sessizce devam et (sadece debug modunda log)
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`Çeviri hatası (${lang}):`, err);
+        }
+        // Hata durumunda o dil için çeviri yapmadan devam et
       }
     }
     
@@ -497,23 +516,40 @@ export default function MenuManagement() {
       return;
     }
 
-    // Otomatik çeviri yap
+    // Otomatik çeviri yap (timeout ile, hata olsa bile devam et)
     let categoryTranslations: { [lang: string]: string } = {};
     try {
       const supportedLanguages = getSupportedLanguagesForTranslation();
+      
+      // Timeout ile çeviri yap (3 saniye - kategori için daha kısa)
+      const translateWithTimeout = (text: string, targetLang: string, timeout: number = 3000): Promise<string> => {
+        return Promise.race([
+          translateText(text, targetLang),
+          new Promise<string>((_, reject) => 
+            setTimeout(() => reject(new Error('Translation timeout')), timeout)
+          )
+        ]);
+      };
+      
       for (const lang of supportedLanguages) {
         if (lang === 'tr') continue;
         try {
-          const translatedName = await translateText(newCategoryName.trim(), lang);
-          if (translatedName && translatedName !== newCategoryName.trim()) {
+          const translatedName = await translateWithTimeout(newCategoryName.trim(), lang).catch(() => null);
+          if (translatedName && translatedName !== newCategoryName.trim() && translatedName.trim() !== '') {
             categoryTranslations[lang] = translatedName;
           }
         } catch (err) {
-          console.error(`Kategori çeviri hatası (${lang}):`, err);
+          // Çeviri hatası durumunda sessizce devam et
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`Kategori çeviri hatası (${lang}):`, err);
+          }
         }
       }
     } catch (err) {
-      console.error('Kategori çeviri hatası:', err);
+      // Kritik hata durumunda sessizce devam et
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Kategori çeviri hatası:', err);
+      }
     }
 
     if (selectedCategoryForEdit) {
@@ -574,10 +610,30 @@ export default function MenuManagement() {
       if (!selectedItem || (name && name !== selectedItem.name) || (description && description !== selectedItem.description)) {
         if (name && description) {
           try {
-            translations = await autoTranslate(name, description);
+            // Çeviriyi arka planda yap, hata olsa bile devam et
+            translations = await autoTranslate(name, description).catch((err) => {
+              // Çeviri başarısız olsa bile Türkçe'yi ekle
+              if (process.env.NODE_ENV === 'development') {
+                console.warn('Otomatik çeviri başarısız, sadece Türkçe kaydediliyor:', err);
+              }
+              return {
+                'tr': {
+                  name: name,
+                  description: description
+                }
+              };
+            });
           } catch (err) {
-            console.error('Otomatik çeviri hatası:', err);
-            // Çeviri başarısız olsa bile devam et
+            // Kritik hata durumunda sadece Türkçe'yi kullan
+            if (process.env.NODE_ENV === 'development') {
+              console.error('Otomatik çeviri kritik hatası:', err);
+            }
+            translations = {
+              'tr': {
+                name: name,
+                description: description
+              }
+            };
           }
         }
       }
