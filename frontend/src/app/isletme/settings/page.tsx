@@ -477,6 +477,9 @@ export default function SettingsPage() {
             };
             localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
             
+            // MenuTranslator'ı güncellemek için custom event gönder
+            window.dispatchEvent(new Event('settings-updated'));
+            
             alert('Ayarlar başarıyla kaydedildi!');
           } else {
             throw new Error('Güncelleme başarısız');

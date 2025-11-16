@@ -22,24 +22,28 @@ interface MenuTranslatorProps {
 
 // Settings'ten desteklenen dilleri al (Türkçe hariç - çeviri için)
 const getSupportedLanguagesForTranslation = (): SupportedLanguage[] => {
-  if (typeof window === 'undefined') return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
+  if (typeof window === 'undefined') return [];
   
   try {
     const savedSettings = localStorage.getItem('hotel-settings');
     if (savedSettings) {
       const settingsData = JSON.parse(savedSettings);
-      if (settingsData.language?.supportedLanguages) {
+      if (settingsData.language?.supportedLanguages && Array.isArray(settingsData.language.supportedLanguages)) {
         // Türkçe'yi çıkar çünkü orijinal dil
-        return settingsData.language.supportedLanguages
+        const supported = settingsData.language.supportedLanguages
           .filter((lang: string) => lang !== 'tr') as SupportedLanguage[];
+        
+        console.log('MenuTranslator - Settings\'ten alınan diller:', supported);
+        return supported;
       }
     }
   } catch (error) {
     console.warn('Settings yüklenirken hata:', error);
   }
   
-  // Varsayılan diller (Türkçe hariç)
-  return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
+  // Eğer settings yoksa veya dil seçilmemişse, boş array döndür
+  console.log('MenuTranslator - Settings bulunamadı, boş dil listesi döndürülüyor');
+  return [];
 };
 
 export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuTranslatorProps) {
@@ -55,10 +59,15 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
   // Settings değiştiğinde desteklenen dilleri güncelle
   useEffect(() => {
     const updateSupportedLanguages = () => {
-      setSupportedLanguages(getSupportedLanguagesForTranslation());
+      const newSupported = getSupportedLanguagesForTranslation();
+      console.log('MenuTranslator - Desteklenen diller güncelleniyor:', newSupported);
+      setSupportedLanguages(newSupported);
     };
     
-    // localStorage değişikliklerini dinle
+    // İlk yüklemede güncelle
+    updateSupportedLanguages();
+    
+    // localStorage değişikliklerini dinle (farklı tab/window'dan)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'hotel-settings') {
         updateSupportedLanguages();
@@ -66,11 +75,20 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
     };
     
     window.addEventListener('storage', handleStorageChange);
-    // Sayfa içi değişiklikler için interval kontrolü
-    const interval = setInterval(updateSupportedLanguages, 1000);
+    
+    // Sayfa içi değişiklikler için interval kontrolü (aynı tab'da settings kaydedildiğinde)
+    const interval = setInterval(updateSupportedLanguages, 500);
+    
+    // Custom event dinle (settings sayfasından gönderilecek)
+    const handleSettingsUpdate = () => {
+      updateSupportedLanguages();
+    };
+    
+    window.addEventListener('settings-updated', handleSettingsUpdate);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('settings-updated', handleSettingsUpdate);
       clearInterval(interval);
     };
   }, []);
@@ -216,7 +234,14 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
         </div>
         
         {/* Diğer Diller */}
-        {supportedLanguages.map((lang) => {
+        {supportedLanguages.length === 0 ? (
+          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-800 text-sm">
+              ⚠️ Settings'te desteklenen dil seçilmedi. Lütfen <strong>/isletme/settings</strong> sayfasından "Dil Ayarları" bölümünde desteklenen dilleri seçin.
+            </p>
+          </div>
+        ) : (
+          supportedLanguages.map((lang) => {
           const translation = translations[lang];
           const isEditing = editingLang === lang;
           
@@ -299,7 +324,8 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
               )}
             </div>
           );
-        })}
+        })
+        )}
       </div>
     </div>
   );
