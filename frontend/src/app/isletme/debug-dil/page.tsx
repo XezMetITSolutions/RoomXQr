@@ -39,19 +39,35 @@ function DebugDilContent() {
       setLocalStorageData({ exists: false, error: String(error) });
     }
 
-    // 2. Language Store'dan bilgileri al (dynamic import ile)
+    // 2. Language Store'dan bilgileri al (güvenli şekilde)
     try {
-      import('@/store/languageStore').then(({ useLanguageStore }) => {
-        const store = useLanguageStore.getState();
-        setLanguageStoreData({
-          currentLanguage: store.currentLanguage,
-          getCurrentLanguage: store.getCurrentLanguage(),
-          getSupportedLanguages: store.getSupportedLanguages(),
-          supportedCount: store.getSupportedLanguages().length
+      // Store'u güvenli şekilde yükle
+      setTimeout(() => {
+        import('@/store/languageStore').then((module) => {
+          try {
+            const { useLanguageStore } = module;
+            if (useLanguageStore && useLanguageStore.getState) {
+              const store = useLanguageStore.getState();
+              if (store) {
+                setLanguageStoreData({
+                  currentLanguage: store.currentLanguage || 'tr',
+                  getCurrentLanguage: store.getCurrentLanguage ? store.getCurrentLanguage() : null,
+                  getSupportedLanguages: store.getSupportedLanguages ? store.getSupportedLanguages() : [],
+                  supportedCount: store.getSupportedLanguages ? store.getSupportedLanguages().length : 0
+                });
+              } else {
+                setLanguageStoreData({ error: 'Store state null' });
+              }
+            } else {
+              setLanguageStoreData({ error: 'Store getState bulunamadı' });
+            }
+          } catch (storeError) {
+            setLanguageStoreData({ error: `Store okuma hatası: ${storeError}` });
+          }
+        }).catch((importError) => {
+          setLanguageStoreData({ error: `Import hatası: ${importError}` });
         });
-      }).catch((error) => {
-        setLanguageStoreData({ error: String(error) });
-      });
+      }, 100);
     } catch (error) {
       setLanguageStoreData({ error: String(error) });
     }
