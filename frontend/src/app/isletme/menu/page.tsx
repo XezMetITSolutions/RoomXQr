@@ -1448,7 +1448,7 @@ export default function MenuManagement() {
                               }
                             }
                             
-                            await fetch(`${API_BASE_URL}/api/menu/${item.id}`, {
+                            const response = await fetch(`${API_BASE_URL}/api/menu/${item.id}`, {
                               method: 'PUT',
                               headers: {
                                 'Content-Type': 'application/json',
@@ -1459,8 +1459,18 @@ export default function MenuManagement() {
                                 translations: translations
                               })
                             });
+                            
+                            if (response.ok) {
+                              console.log('✅ Çeviriler başarıyla kaydedildi');
+                              // Başarı mesajı göster (isteğe bağlı - toast notification eklenebilir)
+                            } else {
+                              const errorData = await response.json();
+                              console.error('❌ Çeviriler kaydedilirken hata:', errorData);
+                              alert('Çeviriler kaydedilirken bir hata oluştu: ' + (errorData.message || 'Bilinmeyen hata'));
+                            }
                           } catch (error) {
-                            console.error('Çeviriler kaydedilirken hata:', error);
+                            console.error('❌ Çeviriler kaydedilirken hata:', error);
+                            alert('Çeviriler kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
                           }
                         }}
                         className="text-sm"
