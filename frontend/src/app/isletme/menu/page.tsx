@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { 
   Plus, 
   Edit, 
@@ -995,6 +996,13 @@ export default function MenuManagement() {
                 <Languages className="w-5 h-5" />
                 <span>Çeviri</span>
               </button>
+              <Link
+                href="/isletme/menu/debug-add"
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
+                target="_blank"
+              >
+                <span>🧪 Debug</span>
+              </Link>
             </div>
           )}
           {activeTab === 'categories' && (
