@@ -213,6 +213,18 @@ export default function QRMenuPage() {
             const currentLang = currentLanguage || 'tr';
             const translation = translations[currentLang];
             
+            // Debug log
+            if (index === 0) {
+              console.log('Menu translation debug:', {
+                itemId: item.id,
+                itemName: item.name,
+                currentLang,
+                translations,
+                translation,
+                finalName: translation?.name || item.name
+              });
+            }
+            
             return {
               id: item.id || `api-${index}`,
               name: translation?.name || item.name,
@@ -349,6 +361,22 @@ export default function QRMenuPage() {
               
               console.log('Duyuru eklendi:', a.title);
               
+              // Translations'ı parse et
+              let translations = {};
+              try {
+                const translationsData = metadata.translations || a.translations;
+                if (translationsData) {
+                  if (typeof translationsData === 'string') {
+                    translations = JSON.parse(translationsData);
+                  } else if (typeof translationsData === 'object') {
+                    translations = translationsData;
+                  }
+                }
+              } catch (parseError) {
+                console.warn(`Announcement translation parse error for ${a.id}:`, parseError);
+                translations = {};
+              }
+              
               return {
                 id: a.id,
                 title: a.title || 'Duyuru',
@@ -361,7 +389,7 @@ export default function QRMenuPage() {
                 linkUrl: metadata.linkUrl || undefined,
                 linkText: metadata.linkText || undefined,
                 icon: metadata.icon || undefined,
-                translations: metadata.translations || undefined
+                translations: translations
               };
             })
             .filter((a: any) => a !== null);
@@ -383,13 +411,7 @@ export default function QRMenuPage() {
     // Her 30 saniyede bir güncelle
     const interval = setInterval(loadAnnouncements, 30000);
     return () => clearInterval(interval);
-  }, []);
-
-  // Dil değiştiğinde duyuruları yeniden yükle (re-render için)
-  useEffect(() => {
-    // Duyurular zaten API'den yükleniyor, sadece state'i güncelle
-    // Bu effect sadece dil değiştiğinde re-render için
-  }, [currentLanguage]);
+  }, [currentLanguage]); // currentLanguage değiştiğinde duyuruları yeniden yükle
 
   // Otomatik duyuru rotasyonu
   useEffect(() => {
