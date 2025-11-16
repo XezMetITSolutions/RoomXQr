@@ -317,58 +317,25 @@ export default function SettingsPage() {
   });
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
 
-  // Ayarları API'den yükle
+  // Ayarları localStorage'dan yükle (admin endpoint yerine)
   useEffect(() => {
     const loadSettings = async () => {
       if (!token || !user) return;
       
       try {
         setIsLoadingSettings(true);
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
         
-        // URL'den tenant slug'ını al
-        let tenantSlug = 'demo';
-        if (typeof window !== 'undefined') {
-          const hostname = window.location.hostname;
-          const subdomain = hostname.split('.')[0];
-          if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
-            tenantSlug = subdomain;
-          }
-        }
-
-        // Tenant bilgilerini al (settings tenant içinde)
-        const response = await fetch(`${API_BASE_URL}/api/admin/tenants`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'x-tenant': 'system-admin'
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const tenants = Array.isArray(data) ? data : (data.tenants || []);
-          const currentTenant = tenants.find((t: any) => t.slug === tenantSlug);
-          
-          if (currentTenant) {
-            const settings = currentTenant.settings || {};
-            const owner = settings.owner || {};
-            const address = settings.address || {};
-            
-            setHotelSettings({
-              name: currentTenant.name || '',
-              address: address.street || address.full || '',
-              phone: owner.phone || '',
-              email: owner.email || '',
-              website: currentTenant.domain || '',
-              logo: '',
-              description: settings.description || '',
-              socialMedia: {
-                instagram: settings.socialMedia?.instagram || '',
-                facebook: settings.socialMedia?.facebook || '',
-                twitter: settings.socialMedia?.twitter || '',
-                googleMaps: settings.socialMedia?.googleMaps || ''
-              }
-            });
+        // localStorage'dan ayarları yükle (zaten yukarıda yükleniyor)
+        // Burada sadece hotel settings'i güncellemek için kontrol ediyoruz
+        const savedSettings = localStorage.getItem('hotel-settings');
+        if (savedSettings) {
+          try {
+            const settingsData = JSON.parse(savedSettings);
+            if (settingsData.hotel) {
+              setHotelSettings(settingsData.hotel);
+            }
+          } catch (e) {
+            console.error('Settings parse hatası:', e);
           }
         }
       } catch (error) {
@@ -454,82 +421,13 @@ export default function SettingsPage() {
     // MenuTranslator'ı güncellemek için custom event gönder
     window.dispatchEvent(new Event('settings-updated'));
     
-    try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-      
-      // URL'den tenant slug'ını al
-      let tenantSlug = 'demo';
-      if (typeof window !== 'undefined') {
-        const hostname = window.location.hostname;
-        const subdomain = hostname.split('.')[0];
-        if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
-          tenantSlug = subdomain;
-        }
-      }
-
-      // Tenant bilgilerini güncelle
-      const response = await fetch(`${API_BASE_URL}/api/admin/tenants`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-tenant': 'system-admin'
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const tenants = Array.isArray(data) ? data : (data.tenants || []);
-        const currentTenant = tenants.find((t: any) => t.slug === tenantSlug);
-        
-        if (currentTenant) {
-          // Tenant'ı güncelle
-          const updateResponse = await fetch(`${API_BASE_URL}/api/admin/tenants/${currentTenant.id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-              'x-tenant': 'system-admin'
-            },
-            body: JSON.stringify({
-              name: hotelSettings.name,
-              domain: hotelSettings.website,
-              owner: {
-                name: hotelSettings.name,
-                email: hotelSettings.email,
-                phone: hotelSettings.phone
-              },
-              address: {
-                street: hotelSettings.address,
-                full: hotelSettings.address
-              },
-              settings: {
-                description: hotelSettings.description,
-                socialMedia: hotelSettings.socialMedia,
-                theme: themeSettings,
-                language: languageSettings
-              }
-            })
-          });
-
-          if (updateResponse.ok) {
-            alert('Ayarlar başarıyla kaydedildi!');
-          } else {
-            console.warn('Backend güncelleme başarısız, ancak localStorage\'a kaydedildi');
-            alert('Ayarlar localStorage\'a kaydedildi, ancak backend güncellemesi başarısız oldu.');
-          }
-        } else {
-          console.warn('Tenant bulunamadı, ancak localStorage\'a kaydedildi');
-          alert('Ayarlar localStorage\'a kaydedildi.');
-        }
-      } else {
-        console.warn('Backend bağlantı hatası, ancak localStorage\'a kaydedildi');
-        alert('Ayarlar localStorage\'a kaydedildi, ancak backend bağlantısı başarısız oldu.');
-      }
-    } catch (error) {
-      console.error('Backend kaydetme hatası (localStorage zaten kaydedildi):', error);
-      alert('Ayarlar localStorage\'a kaydedildi, ancak backend güncellemesi sırasında bir hata oluştu.');
-    } finally {
-      setIsSaving(false);
-    }
+    // Ayarlar başarıyla localStorage'a kaydedildi
+    alert('Ayarlar başarıyla kaydedildi!');
+    
+    // Not: Backend'e kaydetme işlemi admin endpoint gerektirdiği için kaldırıldı
+    // Normal kullanıcılar için localStorage yeterli
+    
+    setIsSaving(false);
   };
 
   const handleHotelSettingsChange = (field: keyof HotelSettings, value: string) => {
