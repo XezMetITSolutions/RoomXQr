@@ -444,10 +444,10 @@ export default function UsersManagement() {
           <button
             onClick={addNewUser}
             className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Yeni kullanıcı ekle"
+            title={getTranslation('users.add')}
           >
             <Plus className="w-5 h-5" />
-            <span>Kullanıcı Ekle</span>
+            <span>{getTranslation('users.add')}</span>
           </button>
         </div>
       </div>
@@ -460,7 +460,7 @@ export default function UsersManagement() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Kullanıcı ara..."
+                placeholder={getTranslation('users.search_placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
@@ -481,7 +481,7 @@ export default function UsersManagement() {
             </select>
             <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center space-x-2">
               <Filter className="w-4 h-4" />
-              <span>Filtrele</span>
+              <span>{getTranslation('common.filter')}</span>
             </button>
           </div>
         </div>
@@ -492,7 +492,7 @@ export default function UsersManagement() {
         {isLoading ? (
           <div className="px-6 py-12 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-hotel-gold mx-auto"></div>
-            <p className="mt-4 text-gray-600">Kullanıcılar yükleniyor...</p>
+            <p className="mt-4 text-gray-600">{getTranslation('users.loading')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -500,25 +500,25 @@ export default function UsersManagement() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kullanıcı
+                    {getTranslation('users.table.user')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Rol
+                    {getTranslation('users.table.role')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    İletişim
+                    {getTranslation('users.table.contact')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Son Giriş
+                    {getTranslation('users.table.last_login')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Yetkiler
+                    {getTranslation('users.table.permissions')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Durum
+                    {getTranslation('users.table.status')}
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    İşlemler
+                    {getTranslation('users.table.actions')}
                   </th>
                 </tr>
               </thead>
@@ -570,12 +570,12 @@ export default function UsersManagement() {
                         {new Date(user.lastLogin).toLocaleDateString('tr-TR')}
                       </div>
                     ) : (
-                      <span className="text-sm text-gray-500">Hiç giriş yapmamış</span>
+                      <span className="text-sm text-gray-500">{getTranslation('users.no_login')}</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
-                      <span className="font-medium">{user.permissions?.length || 0}</span> sayfa
+                      <span className="font-medium">{user.permissions?.length || 0}</span> {getTranslation('users.pages')}
                     </div>
                     <div className="text-xs text-gray-500">
                       {user.permissions?.slice(0, 2).map(p => {
@@ -591,7 +591,7 @@ export default function UsersManagement() {
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {user.isActive ? 'Aktif' : 'Pasif'}
+                      {user.isActive ? getTranslation('common.active') : getTranslation('common.inactive')}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -599,7 +599,7 @@ export default function UsersManagement() {
                       <button
                         onClick={() => managePermissions(user)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
-                        title="Yetkileri Yönet"
+                        title={getTranslation('users.manage_permissions')}
                       >
                         <Shield className="w-4 h-4" />
                       </button>
@@ -610,21 +610,21 @@ export default function UsersManagement() {
                             ? 'text-green-600 hover:bg-green-50' 
                             : 'text-red-600 hover:bg-red-50'
                         }`}
-                        title={user.isActive ? 'Pasif yap' : 'Aktif yap'}
+                        title={user.isActive ? getTranslation('users.make_inactive') : getTranslation('users.make_active')}
                       >
                         {user.isActive ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </button>
                       <button
                         onClick={() => editUser(user)}
                         className="p-2 text-hotel-gold hover:bg-yellow-50 rounded-lg"
-                        title="Düzenle"
+                        title={getTranslation('users.edit')}
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => deleteUser(user.id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                        title="Sil"
+                        title={getTranslation('users.delete')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -641,9 +641,9 @@ export default function UsersManagement() {
       {filteredUsers.length === 0 && (
         <div className="text-center py-12">
           <User className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">Kullanıcı bulunamadı</h3>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">{getTranslation('users.not_found')}</h3>
           <p className="mt-1 text-sm text-gray-500">
-            Arama kriterlerinizi değiştirerek tekrar deneyin.
+            {getTranslation('users.not_found_desc')}
           </p>
         </div>
       )}
@@ -663,7 +663,7 @@ export default function UsersManagement() {
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-gray-900">
-                {showAddModal ? 'Yeni Kullanıcı Ekle' : 'Kullanıcı Düzenle'}
+                {showAddModal ? getTranslation('users.new_user') : getTranslation('users.edit_user')}
               </h3>
               <button
                 onClick={() => {
