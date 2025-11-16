@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguageStore } from '@/store/languageStore';
 import { QrCode, Download, Printer, Copy, Check } from 'lucide-react';
 import QRCode from 'qrcode.react';
 import QRCodeGenerator from 'qrcode';
 
 export default function QRKodPage() {
   const { token, user } = useAuth();
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [selectedRoom, setSelectedRoom] = useState('');
   const [qrCodeURL, setQRCodeURL] = useState('');
   const [copied, setCopied] = useState(false);
@@ -61,8 +63,9 @@ export default function QRKodPage() {
 
   // Browser tab title'ını ayarla
   useEffect(() => {
-    document.title = 'QR Kod Oluşturucu - RoomXQR';
-  }, []);
+    const title = getTranslation('sidebar.qr_generator');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   useEffect(() => {
     // Client-side'da baseURL'i ayarla

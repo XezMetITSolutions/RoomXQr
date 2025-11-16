@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { MenuTranslator } from '@/components/MenuTranslator';
 import { translateText } from '@/lib/translateService';
+import { useLanguageStore } from '@/store/languageStore';
 
 interface MenuItem {
   id: string;
@@ -53,6 +54,7 @@ interface Category {
 }
 
 export default function MenuManagement() {
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [activeTab, setActiveTab] = useState<'menu' | 'categories'>('menu');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -310,8 +312,9 @@ export default function MenuManagement() {
 
   // Browser tab title'ını ayarla
   useEffect(() => {
-    document.title = 'Menü Yönetimi - RoomXQR';
-  }, []);
+    const title = getTranslation('sidebar.menu_management');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   // Kategori listesini güncelle (tenant-specific)
   useEffect(() => {

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguageStore, languages } from '@/store/languageStore';
 import { 
   LayoutDashboard, 
   Menu, 
@@ -18,31 +19,39 @@ import {
   ChevronRight,
   QrCode,
   X,
-  Info
+  Info,
+  Globe,
+  ChevronDown
 } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
-const navigation = [
-  { name: 'Dashboard', href: '/isletme', icon: LayoutDashboard, key: 'dashboard', color: 'text-blue-600' },
-  { name: 'QR Kod Oluşturucu', href: '/isletme/qr-kod', icon: QrCode, key: 'qr-kod', color: 'text-emerald-600' },
-  { name: 'Menü Yönetimi', href: '/isletme/menu', icon: Menu, key: 'menu', color: 'text-purple-600' },
-  { name: 'Duyurular', href: '/isletme/announcements', icon: Megaphone, key: 'announcements', color: 'text-orange-600' },
-  { name: 'Otel Bilgileri', href: '/isletme/hotel-info', icon: Info, key: 'hotel-info', color: 'text-cyan-600' },
-  { name: 'Kullanıcılar', href: '/isletme/users', icon: Users, key: 'users', color: 'text-green-600' },
-  { name: 'Bildirimler', href: '/isletme/notifications', icon: Bell, key: 'notifications', color: 'text-pink-600' },
-  { name: 'Analitik', href: '/isletme/analytics', icon: BarChart3, key: 'analytics', color: 'text-indigo-600' },
-  { name: 'Ayarlar', href: '/isletme/settings', icon: Settings, key: 'settings', color: 'text-gray-600' },
-];
-
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout, isLoading, hasPermission } = useAuth();
+  const { currentLanguage, setLanguage, getTranslation, getCurrentLanguage } = useLanguageStore();
+  
+  // Sadece TR, EN, DE, FR dillerini göster
+  const supportedLanguages = languages.filter(lang => ['tr', 'en', 'de', 'fr'].includes(lang.code));
+
+  // Navigation items with translations
+  const navigation = useMemo(() => [
+    { name: getTranslation('sidebar.dashboard'), href: '/isletme', icon: LayoutDashboard, key: 'dashboard', color: 'text-blue-600' },
+    { name: getTranslation('sidebar.qr_generator'), href: '/isletme/qr-kod', icon: QrCode, key: 'qr-kod', color: 'text-emerald-600' },
+    { name: getTranslation('sidebar.menu_management'), href: '/isletme/menu', icon: Menu, key: 'menu', color: 'text-purple-600' },
+    { name: getTranslation('sidebar.announcements'), href: '/isletme/announcements', icon: Megaphone, key: 'announcements', color: 'text-orange-600' },
+    { name: getTranslation('sidebar.hotel_info'), href: '/isletme/hotel-info', icon: Info, key: 'hotel-info', color: 'text-cyan-600' },
+    { name: getTranslation('sidebar.users'), href: '/isletme/users', icon: Users, key: 'users', color: 'text-green-600' },
+    { name: getTranslation('sidebar.notifications'), href: '/isletme/notifications', icon: Bell, key: 'notifications', color: 'text-pink-600' },
+    { name: getTranslation('sidebar.analytics'), href: '/isletme/analytics', icon: BarChart3, key: 'analytics', color: 'text-indigo-600' },
+    { name: getTranslation('sidebar.settings'), href: '/isletme/settings', icon: Settings, key: 'settings', color: 'text-gray-600' },
+  ], [getTranslation]);
 
   // Auth kontrolü
   useEffect(() => {
@@ -51,13 +60,31 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     }
   }, [user, isLoading, router]);
 
+  // Dropdown dışına tıklandığında kapat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.language-selector')) {
+        setShowLanguageSelector(false);
+      }
+    };
+
+    if (showLanguageSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showLanguageSelector]);
+
   // Loading durumu
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-hotel-gold mx-auto"></div>
-          <p className="mt-4 text-gray-600">Yükleniyor...</p>
+          <p className="mt-4 text-gray-600">{getTranslation('sidebar.loading')}</p>
         </div>
       </div>
     );
@@ -101,8 +128,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <Hotel className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900">İşletme Paneli</h1>
-                  <p className="text-sm text-gray-500">Yönetim Sistemi</p>
+                  <h1 className="text-xl font-bold text-gray-900">{getTranslation('sidebar.business_panel')}</h1>
+                  <p className="text-sm text-gray-500">{getTranslation('sidebar.management_system')}</p>
                 </div>
               </div>
             </div>
@@ -154,7 +181,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <div className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 group-hover:bg-red-100 transition-all duration-200">
                 <LogOut className="h-5 w-5 text-gray-500 group-hover:text-red-500" />
               </div>
-              <span className="ml-4 truncate">Çıkış Yap</span>
+              <span className="ml-4 truncate">{getTranslation('sidebar.logout')}</span>
             </button>
           </div>
         </div>
@@ -172,8 +199,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     <Hotel className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h1 className="text-lg font-bold text-gray-900">İşletme Paneli</h1>
-                    <p className="text-xs text-gray-500">Yönetim Sistemi</p>
+                    <h1 className="text-lg font-bold text-gray-900">{getTranslation('sidebar.business_panel')}</h1>
+                    <p className="text-xs text-gray-500">{getTranslation('sidebar.management_system')}</p>
                   </div>
                 </div>
               )}
@@ -255,14 +282,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     <LogOut className="h-4 w-4 text-gray-500 group-hover:text-red-500" />
                   </div>
                   {!sidebarCollapsed && (
-                    <span className="ml-3 truncate">Çıkış Yap</span>
+                    <span className="ml-3 truncate">{getTranslation('sidebar.logout')}</span>
                   )}
                 </button>
                 
                 {/* Tooltip for collapsed state */}
                 {sidebarCollapsed && (
                   <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
-              Çıkış Yap
+              {getTranslation('sidebar.logout')}
                     <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></div>
                   </div>
                 )}
@@ -288,7 +315,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center shadow-sm">
                 <Hotel className="h-5 w-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-gray-900">İşletme Paneli</span>
+              <span className="text-lg font-bold text-gray-900">{getTranslation('sidebar.business_panel')}</span>
             </div>
           </div>
         </div>
@@ -298,6 +325,46 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex flex-1"></div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
+              {/* Dil Seçici */}
+              <div className="relative language-selector">
+                <button
+                  onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+                  className="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-300 hover:bg-gray-50 transition-colors"
+                >
+                  <Globe className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm font-medium text-gray-700">
+                    {getCurrentLanguage().flag}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-gray-600" />
+                </button>
+                
+                {/* Dil Seçenekleri Dropdown */}
+                {showLanguageSelector && (
+                  <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                    {supportedLanguages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code);
+                          setShowLanguageSelector(false);
+                        }}
+                        className={`w-full px-4 py-3 text-left transition-colors flex items-center space-x-3 ${
+                          currentLanguage === lang.code 
+                            ? 'bg-hotel-gold bg-opacity-10' 
+                            : 'hover:bg-gray-50'
+                        }`}
+                      >
+                        <span className="text-lg">{lang.flag}</span>
+                        <div>
+                          <div className="font-medium text-gray-900">{lang.name}</div>
+                          <div className="text-xs text-gray-500">{lang.nativeName}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Notifications */}
               <button
                 type="button"

@@ -173,6 +173,21 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Oda',
     'dashboard.unknown_product': 'Bilinmeyen Ürün',
     'dashboard.product_id': 'Ürün #',
+    
+    // Sidebar
+    'sidebar.business_panel': 'İşletme Paneli',
+    'sidebar.management_system': 'Yönetim Sistemi',
+    'sidebar.loading': 'Yükleniyor...',
+    'sidebar.logout': 'Çıkış Yap',
+    'sidebar.dashboard': 'Dashboard',
+    'sidebar.qr_generator': 'QR Kod Oluşturucu',
+    'sidebar.menu_management': 'Menü Yönetimi',
+    'sidebar.announcements': 'Duyurular',
+    'sidebar.hotel_info': 'Otel Bilgileri',
+    'sidebar.users': 'Kullanıcılar',
+    'sidebar.notifications': 'Bildirimler',
+    'sidebar.analytics': 'Analitik',
+    'sidebar.settings': 'Ayarlar',
   },
   
   en: {
@@ -297,6 +312,21 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Room',
     'dashboard.unknown_product': 'Unknown Product',
     'dashboard.product_id': 'Product #',
+    
+    // Sidebar
+    'sidebar.business_panel': 'Business Panel',
+    'sidebar.management_system': 'Management System',
+    'sidebar.loading': 'Loading...',
+    'sidebar.logout': 'Logout',
+    'sidebar.dashboard': 'Dashboard',
+    'sidebar.qr_generator': 'QR Code Generator',
+    'sidebar.menu_management': 'Menu Management',
+    'sidebar.announcements': 'Announcements',
+    'sidebar.hotel_info': 'Hotel Information',
+    'sidebar.users': 'Users',
+    'sidebar.notifications': 'Notifications',
+    'sidebar.analytics': 'Analytics',
+    'sidebar.settings': 'Settings',
     
     // Survey/Evaluation
     'survey.title': 'Rate Us',
@@ -661,6 +691,21 @@ export const translations: Record<string, Translations> = {
     'dashboard.unknown_product': 'Unbekanntes Produkt',
     'dashboard.product_id': 'Produkt #',
     
+    // Sidebar
+    'sidebar.business_panel': 'Geschäftspanel',
+    'sidebar.management_system': 'Verwaltungssystem',
+    'sidebar.loading': 'Wird geladen...',
+    'sidebar.logout': 'Abmelden',
+    'sidebar.dashboard': 'Dashboard',
+    'sidebar.qr_generator': 'QR-Code-Generator',
+    'sidebar.menu_management': 'Menüverwaltung',
+    'sidebar.announcements': 'Ankündigungen',
+    'sidebar.hotel_info': 'Hotelinformationen',
+    'sidebar.users': 'Benutzer',
+    'sidebar.notifications': 'Benachrichtigungen',
+    'sidebar.analytics': 'Analytik',
+    'sidebar.settings': 'Einstellungen',
+    
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -808,6 +853,21 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Chambre',
     'dashboard.unknown_product': 'Produit inconnu',
     'dashboard.product_id': 'Produit #',
+    
+    // Sidebar
+    'sidebar.business_panel': 'Panneau d\'Administration',
+    'sidebar.management_system': 'Système de Gestion',
+    'sidebar.loading': 'Chargement...',
+    'sidebar.logout': 'Déconnexion',
+    'sidebar.dashboard': 'Tableau de bord',
+    'sidebar.qr_generator': 'Générateur de QR Code',
+    'sidebar.menu_management': 'Gestion du Menu',
+    'sidebar.announcements': 'Annonces',
+    'sidebar.hotel_info': 'Informations sur l\'Hôtel',
+    'sidebar.users': 'Utilisateurs',
+    'sidebar.notifications': 'Notifications',
+    'sidebar.analytics': 'Analytique',
+    'sidebar.settings': 'Paramètres',
     
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',
