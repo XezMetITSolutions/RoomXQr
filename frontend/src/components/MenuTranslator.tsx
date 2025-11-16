@@ -45,15 +45,15 @@ const getSupportedLanguagesForTranslation = (): SupportedLanguage[] => {
         console.warn('MenuTranslator - supportedLanguages bulunamadı veya array değil:', settingsData.language);
       }
     } else {
-      console.warn('MenuTranslator - hotel-settings localStorage\'da yok');
+      console.warn('MenuTranslator - hotel-settings localStorage\'da yok, varsayılan diller kullanılıyor');
     }
   } catch (error) {
     console.error('MenuTranslator - Settings yüklenirken hata:', error);
   }
   
-  // Eğer settings yoksa veya dil seçilmemişse, boş array döndür
-  console.log('MenuTranslator - Settings bulunamadı veya geçersiz, boş dil listesi döndürülüyor');
-  return [];
+  // Eğer settings yoksa, varsayılan dilleri kullan (Türkçe hariç)
+  console.log('MenuTranslator - Settings bulunamadı, varsayılan diller kullanılıyor:', ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh']);
+  return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
 };
 
 export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuTranslatorProps) {

@@ -1284,16 +1284,29 @@ export default function SettingsPage() {
                             type="checkbox"
                             checked={languageSettings.supportedLanguages.includes(lang.code)}
                             onChange={(e) => {
-                              if (e.target.checked) {
-                                setLanguageSettings({
-                                  ...languageSettings,
-                                  supportedLanguages: [...languageSettings.supportedLanguages, lang.code]
-                                });
-                              } else {
-                                setLanguageSettings({
-                                  ...languageSettings,
-                                  supportedLanguages: languageSettings.supportedLanguages.filter(l => l !== lang.code)
-                                });
+                              const newLanguageSettings = e.target.checked
+                                ? {
+                                    ...languageSettings,
+                                    supportedLanguages: [...languageSettings.supportedLanguages, lang.code]
+                                  }
+                                : {
+                                    ...languageSettings,
+                                    supportedLanguages: languageSettings.supportedLanguages.filter(l => l !== lang.code)
+                                  };
+                              
+                              setLanguageSettings(newLanguageSettings);
+                              
+                              // Otomatik olarak localStorage'a kaydet (geçici olarak)
+                              try {
+                                const currentSettings = localStorage.getItem('hotel-settings');
+                                const settingsData = currentSettings ? JSON.parse(currentSettings) : {};
+                                settingsData.language = newLanguageSettings;
+                                localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
+                                
+                                // MenuTranslator'ı güncelle
+                                window.dispatchEvent(new Event('settings-updated'));
+                              } catch (error) {
+                                console.warn('Dil değişikliği localStorage\'a kaydedilemedi:', error);
                               }
                             }}
                             className="rounded border-gray-300 text-hotel-gold focus:ring-hotel-gold"
