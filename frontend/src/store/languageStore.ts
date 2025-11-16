@@ -344,6 +344,14 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Kaydet',
     'hotel_info.loading': 'Otel bilgileri yükleniyor...',
     'hotel_info.error': 'Otel bilgileri yüklenemedi',
+    
+    // Settings Page
+    'settings.tab.hotel': 'Otel Bilgileri',
+    'settings.tab.social': 'Sosyal Medya',
+    'settings.tab.theme': 'Tema & Görünüm',
+    'settings.tab.language': 'Dil Ayarları',
+    'settings.save': 'Kaydet',
+    'settings.saving': 'Kaydediliyor...',
   },
   
   en: {
@@ -639,6 +647,14 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Save',
     'hotel_info.loading': 'Loading hotel information...',
     'hotel_info.error': 'Failed to load hotel information',
+    
+    // Settings Page
+    'settings.tab.hotel': 'Hotel Information',
+    'settings.tab.social': 'Social Media',
+    'settings.tab.theme': 'Theme & Appearance',
+    'settings.tab.language': 'Language Settings',
+    'settings.save': 'Save',
+    'settings.saving': 'Saving...',
     
     // Survey/Evaluation
     'survey.title': 'Rate Us',
@@ -1174,6 +1190,14 @@ export const translations: Record<string, Translations> = {
     'hotel_info.loading': 'Hotelinformationen werden geladen...',
     'hotel_info.error': 'Hotelinformationen konnten nicht geladen werden',
     
+    // Settings Page
+    'settings.tab.hotel': 'Hotelinformationen',
+    'settings.tab.social': 'Soziale Medien',
+    'settings.tab.theme': 'Thema & Erscheinungsbild',
+    'settings.tab.language': 'Spracheinstellungen',
+    'settings.save': 'Speichern',
+    'settings.saving': 'Wird gespeichert...',
+    
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -1492,6 +1516,14 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Enregistrer',
     'hotel_info.loading': 'Chargement des informations de l\'hôtel...',
     'hotel_info.error': 'Échec du chargement des informations de l\'hôtel',
+    
+    // Settings Page
+    'settings.tab.hotel': 'Informations sur l\'Hôtel',
+    'settings.tab.social': 'Réseaux Sociaux',
+    'settings.tab.theme': 'Thème & Apparence',
+    'settings.tab.language': 'Paramètres de Langue',
+    'settings.save': 'Enregistrer',
+    'settings.saving': 'Enregistrement...',
     
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',

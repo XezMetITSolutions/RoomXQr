@@ -377,12 +377,12 @@ export default function SettingsPage() {
   const [showPaletteModal, setShowPaletteModal] = useState(false);
 
 
-  const tabs = [
-    { id: 'hotel', label: 'Otel Bilgileri', icon: Hotel },
-    { id: 'social', label: 'Sosyal Medya', icon: GlobeIcon },
-    { id: 'theme', label: 'Tema & Görünüm', icon: Palette },
-    { id: 'language', label: 'Dil Ayarları', icon: Globe },
-  ];
+  const tabs = useMemo(() => [
+    { id: 'hotel', label: getTranslation('settings.tab.hotel'), icon: Hotel },
+    { id: 'social', label: getTranslation('settings.tab.social'), icon: GlobeIcon },
+    { id: 'theme', label: getTranslation('settings.tab.theme'), icon: Palette },
+    { id: 'language', label: getTranslation('settings.tab.language'), icon: Globe },
+  ], [getTranslation]);
 
   const languages = [
     { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
@@ -500,7 +500,7 @@ export default function SettingsPage() {
             className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2 disabled:opacity-50"
           >
             <Save className="w-5 h-5" />
-            <span>{isSaving ? 'Kaydediliyor...' : 'Kaydet'}</span>
+            <span>{isSaving ? getTranslation('settings.saving') : getTranslation('settings.save')}</span>
           </button>
         </div>
       </div>
