@@ -545,8 +545,12 @@ export default function MenuManagement() {
       return;
     }
 
+    // Mevcut çevirileri state'ten al (kullanıcı düzenlemiş olabilir)
+    const existingTranslations = { ...categoryTranslations };
+    
     // Otomatik çeviri yap (timeout ile, hata olsa bile devam et)
-    let categoryTranslations: { [lang: string]: string } = {};
+    // Sadece kategori adı değiştiyse veya yeni kategori ekleniyorsa çeviri yap
+    let newAutoTranslations: { [lang: string]: string } = {};
     try {
       const supportedLanguages = getSupportedLanguagesForTranslation();
       
@@ -560,17 +564,25 @@ export default function MenuManagement() {
         ]);
       };
       
-      for (const lang of supportedLanguages) {
-        if (lang === 'tr') continue;
-        try {
-          const translatedName = await translateWithTimeout(newCategoryName.trim(), lang).catch(() => null);
-          if (translatedName && translatedName !== newCategoryName.trim() && translatedName.trim() !== '') {
-            categoryTranslations[lang] = translatedName;
-          }
-        } catch (err) {
-          // Çeviri hatası durumunda sessizce devam et
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(`Kategori çeviri hatası (${lang}):`, err);
+      // Sadece kategori adı değiştiyse veya yeni kategori ekleniyorsa çeviri yap
+      const shouldTranslate = !selectedCategoryForEdit || (selectedCategoryForEdit.name !== newCategoryName.trim());
+      
+      if (shouldTranslate) {
+        for (const lang of supportedLanguages) {
+          if (lang === 'tr') continue;
+          // Eğer mevcut çeviri varsa ve kullanıcı düzenlemişse, otomatik çeviri yapma
+          if (existingTranslations[lang]) continue;
+          
+          try {
+            const translatedName = await translateWithTimeout(newCategoryName.trim(), lang).catch(() => null);
+            if (translatedName && translatedName !== newCategoryName.trim() && translatedName.trim() !== '') {
+              newAutoTranslations[lang] = translatedName;
+            }
+          } catch (err) {
+            // Çeviri hatası durumunda sessizce devam et
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`Kategori çeviri hatası (${lang}):`, err);
+            }
           }
         }
       }
@@ -584,8 +596,13 @@ export default function MenuManagement() {
     if (selectedCategoryForEdit) {
       // Kategori güncelle
       const oldName = selectedCategoryForEdit.name;
-      // Mevcut çevirileri koru, sadece güncellenenleri ekle
-      const finalTranslations = { ...categoryTranslations };
+      
+      // Mevcut çevirileri (kullanıcı düzenlemiş olabilir) ve yeni otomatik çevirileri birleştir
+      const finalTranslations = { 
+        ...existingTranslations, // Mevcut çeviriler (state'ten, kullanıcı düzenlemiş olabilir)
+        ...newAutoTranslations  // Yeni otomatik çeviriler (eğer varsa, üzerine yazar)
+      };
+      
       setCategories(cats => 
         cats.map(cat => 
           cat.id === selectedCategoryForEdit.id 
@@ -606,10 +623,15 @@ export default function MenuManagement() {
       showSuccessToast('Kategori başarıyla güncellendi!');
     } else {
       // Yeni kategori ekle
+      const finalTranslations = { 
+        ...existingTranslations, // Mevcut çeviriler (varsa)
+        ...newAutoTranslations  // Yeni otomatik çeviriler
+      };
+      
       const newCategory: Category = {
         id: Date.now().toString(),
         name: newCategoryName.trim(),
-        description: JSON.stringify(categoryTranslations),
+        description: JSON.stringify(finalTranslations),
       };
       setCategories(cats => [...cats, newCategory]);
       showSuccessToast('Kategori başarıyla eklendi!');
