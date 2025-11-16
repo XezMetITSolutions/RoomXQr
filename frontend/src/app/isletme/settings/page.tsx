@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeStore } from '@/store/themeStore';
 import { useLanguageStore } from '@/store/languageStore';
