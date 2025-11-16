@@ -120,19 +120,30 @@ export async function POST(request: Request) {
       const backendData = await backendResponse.json();
 
       if (backendResponse.ok) {
-        return NextResponse.json({ 
-          success: true, 
-          ...backendData
-        }, { status: 200 });
+        // Backend başarılı döndü ama items array'i boşsa veya yoksa kontrol et
+        if (backendData.items && backendData.items.length > 0) {
+          return NextResponse.json({ 
+            success: true, 
+            ...backendData
+          }, { status: 200 });
+        } else {
+          // Backend başarılı dedi ama item kaydedilmedi
+          return NextResponse.json({ 
+            success: false,
+            error: 'Backend başarılı döndü ama item kaydedilmedi',
+            warning: backendData.message || 'Item kaydedilemedi',
+            backendResponse: backendData
+          }, { status: 500 });
+        }
       } else {
-        // Backend hatası ama client-side'da zaten kaydedildi, başarılı dön
+        // Backend hatası - gerçek hata mesajını döndür
         return NextResponse.json({ 
-          success: true,
-          count: items.length,
-          message: 'Menü kaydedildi (backend hatası, sadece client-side)',
-          warning: 'Backend hatası: ' + (backendData.error || 'Bilinmeyen hata'),
-          note: 'Client-side kayıt başarılı'
-        }, { status: 200 });
+          success: false,
+          error: 'Backend hatası',
+          message: backendData.message || 'Bilinmeyen hata',
+          details: backendData.details || backendData.error,
+          backendResponse: backendData
+        }, { status: backendResponse.status });
       }
     } catch (backendError: any) {
       // Backend'e ulaşılamazsa, client-side'da zaten kaydedildi, başarılı dön

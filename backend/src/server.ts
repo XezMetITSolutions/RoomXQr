@@ -2101,9 +2101,22 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
           })
           createdItems.push(menuItem)
         } else {
-          throw createError; // Başka bir hata ise fırlat
+          // Başka bir hata ise logla ve devam et (item kaydedilemedi)
+          console.error(`❌ Item ${i + 1} kaydedilemedi:`, createError.message);
+          // Item kaydedilemedi ama diğer item'lar için devam et
         }
       }
+    }
+
+    // Eğer hiç item kaydedilemediyse hata döndür
+    if (createdItems.length === 0) {
+      res.status(500).json({
+        success: false,
+        message: 'Hiçbir item kaydedilemedi',
+        count: 0,
+        items: []
+      });
+      return;
     }
 
     res.status(201).json({
