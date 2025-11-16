@@ -26,23 +26,33 @@ const getSupportedLanguagesForTranslation = (): SupportedLanguage[] => {
   
   try {
     const savedSettings = localStorage.getItem('hotel-settings');
+    console.log('MenuTranslator - localStorage hotel-settings:', savedSettings ? 'Var' : 'Yok');
+    
     if (savedSettings) {
       const settingsData = JSON.parse(savedSettings);
+      console.log('MenuTranslator - Settings data:', settingsData);
+      console.log('MenuTranslator - language object:', settingsData.language);
+      console.log('MenuTranslator - supportedLanguages:', settingsData.language?.supportedLanguages);
+      
       if (settingsData.language?.supportedLanguages && Array.isArray(settingsData.language.supportedLanguages)) {
         // Türkçe'yi çıkar çünkü orijinal dil
         const supported = settingsData.language.supportedLanguages
           .filter((lang: string) => lang !== 'tr') as SupportedLanguage[];
         
-        console.log('MenuTranslator - Settings\'ten alınan diller:', supported);
+        console.log('MenuTranslator - Settings\'ten alınan diller (Türkçe hariç):', supported);
         return supported;
+      } else {
+        console.warn('MenuTranslator - supportedLanguages bulunamadı veya array değil:', settingsData.language);
       }
+    } else {
+      console.warn('MenuTranslator - hotel-settings localStorage\'da yok');
     }
   } catch (error) {
-    console.warn('Settings yüklenirken hata:', error);
+    console.error('MenuTranslator - Settings yüklenirken hata:', error);
   }
   
   // Eğer settings yoksa veya dil seçilmemişse, boş array döndür
-  console.log('MenuTranslator - Settings bulunamadı, boş dil listesi döndürülüyor');
+  console.log('MenuTranslator - Settings bulunamadı veya geçersiz, boş dil listesi döndürülüyor');
   return [];
 };
 

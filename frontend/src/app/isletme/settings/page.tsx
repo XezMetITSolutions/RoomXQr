@@ -480,7 +480,22 @@ export default function SettingsPage() {
               socialMedia: links,
               lastUpdated: new Date().toISOString()
             };
+            
+            console.log('Settings kaydediliyor - languageSettings:', languageSettings);
+            console.log('Settings kaydediliyor - settingsData:', settingsData);
+            
             localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
+            
+            // Kaydedilen veriyi doğrula
+            const savedData = localStorage.getItem('hotel-settings');
+            if (savedData) {
+              const parsed = JSON.parse(savedData);
+              console.log('Settings kaydedildi - Doğrulama:', {
+                language: parsed.language,
+                supportedLanguages: parsed.language?.supportedLanguages,
+                count: parsed.language?.supportedLanguages?.length
+              });
+            }
             
             // MenuTranslator'ı güncellemek için custom event gönder
             window.dispatchEvent(new Event('settings-updated'));
