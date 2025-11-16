@@ -197,7 +197,19 @@ export default function QRMenuPage() {
             }
             
             // Dil seçimine göre çeviriyi al
-            const translations = item.translations || {};
+            let translations = {};
+            try {
+              if (item.translations) {
+                if (typeof item.translations === 'string') {
+                  translations = JSON.parse(item.translations);
+                } else if (typeof item.translations === 'object') {
+                  translations = item.translations;
+                }
+              }
+            } catch (parseError) {
+              console.warn(`Translation parse error for item ${item.id}:`, parseError);
+              translations = {};
+            }
             const currentLang = currentLanguage || 'tr';
             const translation = translations[currentLang];
             
@@ -239,7 +251,19 @@ export default function QRMenuPage() {
   useEffect(() => {
     if (menuData.length > 0 && currentLanguage) {
       const updatedMenu = menuData.map((item: any) => {
-        const translations = item.translations || {};
+        let translations = {};
+        try {
+          if (item.translations) {
+            if (typeof item.translations === 'string') {
+              translations = JSON.parse(item.translations);
+            } else if (typeof item.translations === 'object') {
+              translations = item.translations;
+            }
+          }
+        } catch (parseError) {
+          console.warn(`Translation parse error for item ${item.id}:`, parseError);
+          translations = {};
+        }
         const translation = translations[currentLanguage];
         
         return {
@@ -250,7 +274,7 @@ export default function QRMenuPage() {
       });
       setMenuData(updatedMenu);
     }
-  }, [currentLanguage]);
+  }, [currentLanguage, menuData.length]);
   
   // Duyurular state
   const [announcements, setAnnouncements] = useState<any[]>([]);
