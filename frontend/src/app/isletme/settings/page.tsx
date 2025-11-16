@@ -386,7 +386,7 @@ export default function SettingsPage() {
 
   const [languageSettings, setLanguageSettings] = useState<LanguageSettings>({
     defaultLanguage: 'tr',
-    supportedLanguages: ['tr', 'en', 'de', 'fr'],
+    supportedLanguages: ['tr', 'en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'],
   });
 
   const [showPaletteModal, setShowPaletteModal] = useState(false);
@@ -404,6 +404,11 @@ export default function SettingsPage() {
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'zh', name: '中文', flag: '🇨🇳' },
   ];
 
   const handleSave = async () => {
