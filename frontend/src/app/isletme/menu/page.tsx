@@ -469,8 +469,10 @@ export default function MenuManagement() {
       }
 
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      const tenantSlug = getTenantSlug();
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
+        'x-tenant': tenantSlug,
       };
 
       if (token) {

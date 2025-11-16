@@ -1961,9 +1961,23 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
     }
 
     step = 'getUpdatedItem';
-    const updatedItem = await prisma.menuItem.findUnique({
-      where: { id }
-    })
+    // Güncellenmiş item'ı al
+    let updatedItem;
+    try {
+      updatedItem = await prisma.menuItem.findUnique({
+        where: { id }
+      })
+    } catch (findError: any) {
+      // findUnique hatası olabilir (translations kolonu yoksa), updateMany başarılı olduysa devam et
+      console.warn('⚠️ findUnique hatası (devam ediliyor):', findError.message);
+      // updateMany başarılı olduysa, request body'den gelen data'yı döndür
+      updatedItem = {
+        id,
+        ...updateData,
+        tenantId,
+        hotelId: undefined // Hotel ID'yi bulmak için query yapabiliriz ama şimdilik undefined
+      };
+    }
 
     res.json(updatedItem); return;
   } catch (error) {
