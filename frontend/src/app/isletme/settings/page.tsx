@@ -83,9 +83,17 @@ export default function SettingsPage() {
     if (savedSettings) {
       try {
         const settingsData = JSON.parse(savedSettings);
+        console.log('Settings yükleniyor - settingsData:', settingsData);
+        
         if (settingsData.hotel) setHotelSettings(settingsData.hotel);
         if (settingsData.theme) setThemeSettings(settingsData.theme);
-        if (settingsData.language) setLanguageSettings(settingsData.language);
+        if (settingsData.language) {
+          console.log('Settings yükleniyor - language:', settingsData.language);
+          console.log('Settings yükleniyor - supportedLanguages:', settingsData.language.supportedLanguages);
+          setLanguageSettings(settingsData.language);
+        } else {
+          console.warn('Settings yüklenirken language bulunamadı, varsayılan değerler kullanılıyor');
+        }
         if (settingsData.socialMedia) {
           // Social media store'u güncelle
           useSocialMediaStore.getState().setLinks(settingsData.socialMedia);
@@ -93,6 +101,8 @@ export default function SettingsPage() {
       } catch (error) {
         console.error('Kaydedilen ayarlar yüklenirken hata oluştu:', error);
       }
+    } else {
+      console.log('Settings yüklenirken localStorage\'da hotel-settings bulunamadı');
     }
   }, []);
 
