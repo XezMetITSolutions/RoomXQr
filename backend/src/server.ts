@@ -959,10 +959,13 @@ app.delete('/api/users/:id', tenantMiddleware, authMiddleware, requirePermission
 
 // API Routes
 app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
+  let step = 'init';
   try {
+    step = 'getTenantId';
     const tenantId = getTenantId(req)
     console.log('GET /api/menu - Tenant ID:', tenantId);
     
+    step = 'prismaQuery';
     const menuItems = await prisma.menuItem.findMany({
       where: { 
         tenantId,
@@ -974,51 +977,80 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
     
     console.log('GET /api/menu - Found items:', menuItems.length);
     
+    step = 'formatMenu';
     // Translations'ı parse et (JSON olarak saklanıyor olabilir)
-    const formattedMenu = menuItems.map(item => {
-      let translations = {};
+    const formattedMenu = menuItems.map((item, index) => {
       try {
-        if (item.translations) {
-          if (typeof item.translations === 'string') {
-            translations = JSON.parse(item.translations);
-          } else if (typeof item.translations === 'object') {
-            translations = item.translations;
+        let translations = {};
+        try {
+          if (item.translations) {
+            if (typeof item.translations === 'string') {
+              translations = JSON.parse(item.translations);
+            } else if (typeof item.translations === 'object') {
+              translations = item.translations;
+            }
           }
+        } catch (parseError) {
+          console.warn(`Translation parse error for item ${item.id}:`, parseError);
+          translations = {};
         }
-      } catch (parseError) {
-        console.warn(`Translation parse error for item ${item.id}:`, parseError);
-        translations = {};
+        
+        // Price field'ı güvenli şekilde parse et
+        let price = 0;
+        try {
+          if (item.price) {
+            if (typeof item.price === 'string') {
+              price = parseFloat(item.price);
+            } else if (typeof item.price === 'number') {
+              price = item.price;
+            } else if (item.price.toString) {
+              price = parseFloat(item.price.toString());
+            }
+          }
+        } catch (priceError) {
+          console.warn(`Price parse error for item ${item.id}:`, priceError);
+          price = 0;
+        }
+        
+        return {
+          id: item.id,
+          name: item.name,
+          description: item.description || '',
+          price: price,
+          category: item.category,
+          image: item.image || '',
+          allergens: item.allergens || [],
+          calories: item.calories,
+          isAvailable: item.isAvailable,
+          preparationTime: 15, // Varsayılan
+          rating: 4.0, // Varsayılan
+          translations
+        };
+      } catch (itemError) {
+        console.error(`Error formatting item ${item.id} at index ${index}:`, itemError);
+        // Hatalı item'ı atla ve devam et
+        return null;
       }
-      
-      return {
-        id: item.id,
-        name: item.name,
-        description: item.description || '',
-        price: parseFloat(item.price.toString()),
-        category: item.category,
-        image: item.image || '',
-        allergens: item.allergens || [],
-        calories: item.calories,
-        isAvailable: item.isAvailable,
-        preparationTime: 15, // Varsayılan
-        rating: 4.0, // Varsayılan
-        translations
-      };
-    })
+    }).filter(item => item !== null); // null item'ları filtrele
     
+    step = 'sendResponse';
     // Hem menuItems hem de menu formatında döndür (uyumluluk için)
     res.json({ 
       menuItems: formattedMenu,
       menu: formattedMenu 
     }); return;
   } catch (error) {
+    console.error('Menu error at step:', step);
     console.error('Menu error:', error);
     console.error('Menu error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV !== 'production'
+    
+    // Production'da da error mesajını döndür (debug için)
     res.status(500).json({ 
       message: 'Database error',
-      error: isDevelopment ? (error instanceof Error ? error.message : String(error)) : undefined,
-      stack: isDevelopment && error instanceof Error ? error.stack : undefined
+      error: error instanceof Error ? error.message : String(error),
+      step: step,
+      // Stack trace sadece development'ta
+      stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
     })
     return;
   }
