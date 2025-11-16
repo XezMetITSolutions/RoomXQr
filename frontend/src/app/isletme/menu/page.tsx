@@ -69,6 +69,7 @@ export default function MenuManagement() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [showAddCategoryInSelector, setShowAddCategoryInSelector] = useState(false);
+  const [categoryTranslations, setCategoryTranslations] = useState<{ [lang: string]: string }>({});
 
   // Menü verileri state'i
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -505,6 +506,22 @@ export default function MenuManagement() {
   const editCategory = (category: Category) => {
     setSelectedCategoryForEdit(category);
     setNewCategoryName(category.name);
+    
+    // Çevirileri parse et
+    let translations: { [lang: string]: string } = {};
+    try {
+      if (category.description) {
+        if (typeof category.description === 'string') {
+          translations = JSON.parse(category.description);
+        } else if (typeof category.description === 'object') {
+          translations = category.description;
+        }
+      }
+    } catch (error) {
+      console.warn('Kategori çevirileri parse edilemedi:', error);
+      translations = {};
+    }
+    setCategoryTranslations(translations);
     setShowAddCategoryModal(true);
   };
 
@@ -518,6 +535,7 @@ export default function MenuManagement() {
   const addNewCategory = () => {
     setSelectedCategoryForEdit(null);
     setNewCategoryName('');
+    setCategoryTranslations({});
     setShowAddCategoryModal(true);
   };
 
@@ -597,6 +615,7 @@ export default function MenuManagement() {
     
     setShowAddCategoryModal(false);
     setNewCategoryName('');
+    setCategoryTranslations({});
     setSelectedCategoryForEdit(null);
   };
 
@@ -1207,15 +1226,52 @@ export default function MenuManagement() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => {
             const itemCount = menuItems.filter(item => item.category === category.name).length;
+            
+            // Çevirileri parse et
+            let translations: { [lang: string]: string } = {};
+            try {
+              if (category.description) {
+                if (typeof category.description === 'string') {
+                  translations = JSON.parse(category.description);
+                } else if (typeof category.description === 'object') {
+                  translations = category.description;
+                }
+              }
+            } catch (error) {
+              // JSON parse hatası, çeviri yok demektir
+            }
+            
+            const langNames: { [key: string]: string } = {
+              en: 'EN',
+              de: 'DE',
+              fr: 'FR',
+              es: 'ES',
+              it: 'IT',
+              ru: 'RU',
+              ar: 'AR',
+              zh: 'ZH'
+            };
+            
             return (
-              <div key={category.id} className="hotel-card p-6">
+              <div key={category.id} className="hotel-card p-6 dark:bg-gray-800 dark:border-gray-700">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
-                    {category.description && (
-                      <p className="text-gray-600 text-sm mt-1">{category.description}</p>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{category.name}</h3>
+                    {Object.keys(translations).length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {Object.entries(translations).map(([lang, translation]) => (
+                          <span
+                            key={lang}
+                            className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
+                            title={`${langNames[lang] || lang}: ${translation}`}
+                          >
+                            <span className="font-semibold mr-1">{langNames[lang] || lang}:</span>
+                            <span>{translation}</span>
+                          </span>
+                        ))}
+                      </div>
                     )}
-                    <p className="text-sm text-gray-500 mt-2">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                       {itemCount} ürün
                     </p>
                   </div>
@@ -1494,25 +1550,59 @@ export default function MenuManagement() {
 
       {/* Add/Edit Category Modal */}
       {showAddCategoryModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
               {selectedCategoryForEdit ? 'Kategori Düzenle' : 'Yeni Kategori Ekle'}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Kategori Adı *
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Kategori Adı (Türkçe) *
                 </label>
                 <input
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   placeholder="Kategori adı"
                 />
               </div>
+
+              {/* Çeviriler */}
+              {selectedCategoryForEdit && Object.keys(categoryTranslations).length > 0 && (
+                <div className="border-t dark:border-gray-700 pt-4">
+                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Çeviriler</h4>
+                  <div className="space-y-2">
+                    {Object.entries(categoryTranslations).map(([lang, translation]) => {
+                      const langNames: { [key: string]: string } = {
+                        en: 'İngilizce',
+                        de: 'Almanca',
+                        fr: 'Fransızca',
+                        es: 'İspanyolca',
+                        it: 'İtalyanca',
+                        ru: 'Rusça',
+                        ar: 'Arapça',
+                        zh: 'Çince'
+                      };
+                      return (
+                        <div key={lang} className="flex items-center space-x-2">
+                          <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-20">
+                            {langNames[lang] || lang}:
+                          </label>
+                          <input
+                            type="text"
+                            value={translation}
+                            readOnly
+                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               
               <div className="flex justify-end space-x-3 mt-6">
                 <button
@@ -1520,9 +1610,10 @@ export default function MenuManagement() {
                   onClick={() => {
                     setShowAddCategoryModal(false);
                     setNewCategoryName('');
+                    setCategoryTranslations({});
                     setSelectedCategoryForEdit(null);
                   }}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800"
                 >
                   İptal
                 </button>
