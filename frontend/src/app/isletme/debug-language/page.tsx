@@ -9,19 +9,32 @@ export default function DebugLanguagePage() {
   const [menuTranslatorSupported, setMenuTranslatorSupported] = useState<string[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Language store'dan bilgileri al
-  const languageStoreState = useLanguageStore();
+  // Language store'dan bilgileri al (null kontrolü ile)
+  let languageStoreState: any = null;
+  try {
+    languageStoreState = useLanguageStore();
+  } catch (error) {
+    console.warn('Language store henüz hazır değil:', error);
+  }
 
   useEffect(() => {
     // Client-side only
     if (typeof window === 'undefined') return;
+    
+    // Language store hazır olana kadar bekle
+    if (!languageStoreState) {
+      const timeout = setTimeout(() => {
+        setRefreshKey(prev => prev + 1);
+      }, 100);
+      return () => clearTimeout(timeout);
+    }
     
     loadData();
     
     // Her 2 saniyede bir güncelle
     const interval = setInterval(loadData, 2000);
     return () => clearInterval(interval);
-  }, [refreshKey]);
+  }, [refreshKey, languageStoreState]);
 
   const loadData = () => {
     // LocalStorage'dan settings'i oku
@@ -40,9 +53,19 @@ export default function DebugLanguagePage() {
 
     // Language store'dan bilgileri al
     try {
+      if (!languageStoreState) {
+        setLanguageStore({ error: 'Language store henüz hazır değil' });
+        return;
+      }
+      
       const currentLanguage = languageStoreState.currentLanguage;
-      const getCurrentLanguage = languageStoreState.getCurrentLanguage();
-      const getSupportedLanguages = languageStoreState.getSupportedLanguages();
+      const getCurrentLanguage = languageStoreState.getCurrentLanguage?.();
+      const getSupportedLanguages = languageStoreState.getSupportedLanguages?.();
+      
+      if (!getSupportedLanguages || !Array.isArray(getSupportedLanguages)) {
+        setLanguageStore({ error: 'getSupportedLanguages fonksiyonu çalışmıyor' });
+        return;
+      }
       
       setLanguageStore({
         currentLanguage,
