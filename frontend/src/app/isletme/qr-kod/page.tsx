@@ -531,8 +531,8 @@ export default function QRKodPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div className="border-b border-gray-200 pb-4">
-        <h1 className="text-2xl font-bold text-gray-900">QR Kod Oluşturucu</h1>
-        <p className="text-gray-600">Her oda için özel QR kod oluşturun ve yazdırın</p>
+        <h1 className="text-2xl font-bold text-gray-900">{getTranslation('sidebar.qr_generator')}</h1>
+        <p className="text-gray-600">{getTranslation('page.qr.subtitle')}</p>
       </div>
 
       {/* Main QR Generator */}
@@ -543,12 +543,12 @@ export default function QRKodPage() {
             {/* Otel Konfigürasyonu */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <h4 className="text-sm font-medium text-blue-900 mb-3">
-                Otel Konfigürasyonu
+                {getTranslation('qr.hotel_config')}
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-blue-700 mb-1">
-                    Kat Sayısı
+                    {getTranslation('qr.floor_count')}
                   </label>
                   <input
                     type="number"
@@ -567,7 +567,7 @@ export default function QRKodPage() {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-blue-700 mb-1">
-                    Her Katta Oda Sayısı
+                    {getTranslation('qr.rooms_per_floor')}
                   </label>
                   <input
                     type="number"
@@ -586,9 +586,9 @@ export default function QRKodPage() {
                 </div>
               </div>
               <div className="mt-3 text-xs text-blue-600 mb-3">
-                <strong>Toplam:</strong> {floorCount * roomsPerFloor} oda oluşturulacak
+                <strong>{getTranslation('qr.total')}:</strong> {floorCount * roomsPerFloor} {getTranslation('qr.rooms_will_be_created')}
                 <br />
-                <strong>Örnek:</strong> {floorCount} kat × {roomsPerFloor} oda = {Array.from({ length: Math.min(floorCount * roomsPerFloor, 3) }, (_, i) => {
+                <strong>{getTranslation('qr.example')}:</strong> {floorCount} {getTranslation('qr.floor_count')} × {roomsPerFloor} {getTranslation('qr.rooms_per_floor')} = {Array.from({ length: Math.min(floorCount * roomsPerFloor, 3) }, (_, i) => {
                   const floor = Math.floor(i / roomsPerFloor) + 1;
                   const room = (i % roomsPerFloor) + 1;
                   return `${floor}${room.toString().padStart(2, '0')}`;
@@ -598,18 +598,18 @@ export default function QRKodPage() {
                 onClick={handleGenerateRooms}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
               >
-                Odaları Oluştur
+                {getTranslation('qr.create_rooms')}
               </button>
               {useGeneratedRooms && generatedRooms.length > 0 && (
                 <div className="mt-2 text-xs text-green-600">
-                  ✓ {generatedRooms.length} oda oluşturuldu
+                  ✓ {generatedRooms.length} {getTranslation('qr.rooms_created')}
                 </div>
               )}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Oda Seçimi
+                {getTranslation('qr.select_room')}
               </label>
               
               {/* Toggle Buttons */}
@@ -625,7 +625,7 @@ export default function QRKodPage() {
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
-                  {useGeneratedRooms ? 'Oluşturulan Odalar' : 'Veritabanı Odaları'} ({isLoading ? '...' : (useGeneratedRooms ? generatedRooms.length : rooms.length)})
+                  {useGeneratedRooms ? getTranslation('qr.generated_rooms') : getTranslation('qr.database_rooms')} ({isLoading ? '...' : (useGeneratedRooms ? generatedRooms.length : rooms.length)})
                 </button>
                 <button
                   onClick={() => setShowCustomInput(true)}
@@ -635,7 +635,7 @@ export default function QRKodPage() {
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
-                  Özel Odalar ({customRooms.length})
+                  {getTranslation('qr.custom_rooms')} ({customRooms.length})
                 </button>
               </div>
 
@@ -644,7 +644,7 @@ export default function QRKodPage() {
                 <>
                   {isLoading ? (
                     <div className="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-gray-500">
-                      Odalar yükleniyor...
+                      {getTranslation('qr.loading_rooms')}
                     </div>
                   ) : (useGeneratedRooms ? generatedRooms : rooms).length > 0 ? (
                     <select
@@ -657,13 +657,13 @@ export default function QRKodPage() {
                     >
                       {(useGeneratedRooms ? generatedRooms : rooms).map((room: any) => (
                         <option key={room.number} value={room.number}>
-                          Oda {room.number} - Kat {room.floor}
+                          {getTranslation('qr.select_room')} {room.number} - {getTranslation('qr.floor_count')} {room.floor}
                         </option>
                       ))}
                     </select>
                   ) : (
                     <div className="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-gray-500">
-                      Henüz oda bulunmuyor. Yukarıdaki "Odaları Oluştur" butonuna tıklayın.
+                      {getTranslation('qr.no_rooms')}
                     </div>
                   )}
                 </>
@@ -674,13 +674,13 @@ export default function QRKodPage() {
                 <div className="space-y-4">
                   {/* Yeni Oda Ekleme */}
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-green-900 mb-3">Yeni Özel Oda Ekle</h4>
+                    <h4 className="text-sm font-medium text-green-900 mb-3">{getTranslation('qr.add_custom_room')}</h4>
                     <div className="flex space-x-2">
                       <input
                         type="text"
                         value={customRoom}
                         onChange={(e) => setCustomRoom(e.target.value)}
-                        placeholder="Örn: 201, 301, A101, Suite-1..."
+                        placeholder={getTranslation('qr.room_placeholder')}
                         className="flex-1 px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-lg"
                         onKeyPress={(e) => e.key === 'Enter' && handleSaveCustomRoom()}
                       />
@@ -689,7 +689,7 @@ export default function QRKodPage() {
                         disabled={!customRoom.trim()}
                         className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium"
                       >
-                        Kaydet
+                        {getTranslation('qr.save')}
                       </button>
                     </div>
                     <p className="text-xs text-green-600 mt-2">
@@ -756,12 +756,12 @@ export default function QRKodPage() {
                   {copied ? (
                     <>
                       <Check className="w-4 h-4" />
-                      <span className="text-sm font-medium">Kopyalandı</span>
+                      <span className="text-sm font-medium">{getTranslation('qr.copied')}</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-4 h-4" />
-                      <span className="text-sm font-medium">Kopyala</span>
+                      <span className="text-sm font-medium">{getTranslation('qr.copy')}</span>
                     </>
                   )}
                 </button>
@@ -774,7 +774,7 @@ export default function QRKodPage() {
                 className="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Printer className="w-4 h-4 mr-2" />
-                Yazdır
+                {getTranslation('qr.print')}
               </button>
               
               <button
@@ -782,7 +782,7 @@ export default function QRKodPage() {
                 className="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 <Download className="w-4 h-4 mr-2" />
-                İndir
+                {getTranslation('qr.download')}
               </button>
 
               {showCustomInput && customRooms.length > 1 && (
