@@ -1207,7 +1207,7 @@ export default function MenuManagement() {
                     name="name"
                     defaultValue={selectedItem?.name || ''}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     placeholder="Ürün adı"
                   />
                 </div>
@@ -1227,7 +1227,7 @@ export default function MenuManagement() {
                           e.target.value = '';
                         }
                       }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     >
                       <option value="">Kategori seçin</option>
                       {categories.map(category => (
@@ -1257,7 +1257,7 @@ export default function MenuManagement() {
                   name="description"
                   defaultValue={selectedItem?.description || ''}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                   placeholder="Ürün açıklaması"
                 />
               </div>
@@ -1274,7 +1274,7 @@ export default function MenuManagement() {
                     required
                     min="0"
                     step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     placeholder="0.00"
                   />
                 </div>
@@ -1289,7 +1289,7 @@ export default function MenuManagement() {
                     defaultValue={selectedItem?.preparationTime || ''}
                     min="1"
                     max="120"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     placeholder="15"
                   />
                 </div>
@@ -1303,7 +1303,7 @@ export default function MenuManagement() {
                     name="calories"
                     defaultValue={selectedItem?.calories || ''}
                     min="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     placeholder="Kalori"
                   />
                 </div>
@@ -1316,7 +1316,7 @@ export default function MenuManagement() {
                     name="rating"
                     defaultValue={selectedItem?.rating || '4.0'}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                   >
                     <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
                     <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi++)</option>
@@ -1338,7 +1338,7 @@ export default function MenuManagement() {
                     type="text"
                     name="allergens"
                     defaultValue={selectedItem?.allergens?.join(', ') || ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     placeholder="Gluten, Süt, Yumurta"
                   />
                 </div>
@@ -1399,7 +1399,7 @@ export default function MenuManagement() {
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                   placeholder="Kategori adı"
                 />
               </div>
@@ -1445,7 +1445,7 @@ export default function MenuManagement() {
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                   placeholder="Kategori adı"
                   autoFocus
                 />
