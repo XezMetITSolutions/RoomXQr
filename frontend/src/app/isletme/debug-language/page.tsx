@@ -13,6 +13,9 @@ export default function DebugLanguagePage() {
   const languageStoreState = useLanguageStore();
 
   useEffect(() => {
+    // Client-side only
+    if (typeof window === 'undefined') return;
+    
     loadData();
     
     // Her 2 saniyede bir güncelle
@@ -74,6 +77,7 @@ export default function DebugLanguagePage() {
   };
 
   const clearLocalStorage = () => {
+    if (typeof window === 'undefined') return;
     if (confirm('localStorage\'daki hotel-settings silinsin mi?')) {
       localStorage.removeItem('hotel-settings');
       setRefreshKey(prev => prev + 1);
@@ -81,6 +85,7 @@ export default function DebugLanguagePage() {
   };
 
   const testSave = () => {
+    if (typeof window === 'undefined') return;
     const testSettings = {
       hotel: { name: 'Test Hotel' },
       theme: { mode: 'light' },
