@@ -584,10 +584,12 @@ export default function MenuManagement() {
     if (selectedCategoryForEdit) {
       // Kategori güncelle
       const oldName = selectedCategoryForEdit.name;
+      // Mevcut çevirileri koru, sadece güncellenenleri ekle
+      const finalTranslations = { ...categoryTranslations };
       setCategories(cats => 
         cats.map(cat => 
           cat.id === selectedCategoryForEdit.id 
-            ? { ...cat, name: newCategoryName.trim(), description: JSON.stringify(categoryTranslations) }
+            ? { ...cat, name: newCategoryName.trim(), description: JSON.stringify(finalTranslations) }
             : cat
         )
       );
@@ -1594,8 +1596,13 @@ export default function MenuManagement() {
                           <input
                             type="text"
                             value={translation}
-                            readOnly
-                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                            onChange={(e) => {
+                              setCategoryTranslations({
+                                ...categoryTranslations,
+                                [lang]: e.target.value
+                              });
+                            }}
+                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
                           />
                         </div>
                       );
