@@ -1824,10 +1824,13 @@ app.post('/api/notifications', tenantMiddleware, async (req: Request, res: Respo
 
 // Menu endpoints
 app.post('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
+  let step = 'init';
   try {
+    step = 'getTenantId';
     const tenantId = getTenantId(req)
-    const { name, description, price, category, image, allergens, calories, isAvailable } = req.body
+    const { name, description, price, category, image, allergens, calories, isAvailable, translations } = req.body
 
+    step = 'getHotel';
     // Get hotel ID from tenant
     const hotel = await prisma.hotel.findFirst({
       where: { tenantId }
@@ -1837,8 +1840,11 @@ app.post('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res
       res.status(404).json({ message: 'Hotel not found' }); return;
     }
 
-    const menuItem = await prisma.menuItem.create({
-      data: {
+    step = 'createMenuItem';
+    // Önce translations kolonu olmadan dene
+    let menuItem;
+    try {
+      const createData: any = {
         name,
         description: description || '',
         price: parseFloat(price) || 0,
@@ -1850,53 +1856,124 @@ app.post('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res
         isActive: true,
         tenantId,
         hotelId: hotel.id
+      };
+      
+      // Translations kolonu varsa ekle
+      if (translations !== undefined) {
+        createData.translations = translations;
       }
-    })
+      
+      menuItem = await prisma.menuItem.create({
+        data: createData
+      })
+    } catch (createError: any) {
+      // Eğer translations kolonu hatası ise, translations olmadan tekrar dene
+      if (createError.message && createError.message.includes('translations')) {
+        console.log('⚠️ Translations kolonu bulunamadı, translations olmadan kaydediliyor...');
+        menuItem = await prisma.menuItem.create({
+          data: {
+            name,
+            description: description || '',
+            price: parseFloat(price) || 0,
+            category: category || 'Diğer',
+            image: image || '',
+            allergens: allergens || [],
+            calories: calories ? parseInt(calories) : null,
+            isAvailable: isAvailable !== false,
+            isActive: true,
+            tenantId,
+            hotelId: hotel.id
+          }
+        })
+      } else {
+        throw createError; // Başka bir hata ise fırlat
+      }
+    }
 
     res.status(201).json(menuItem); return;
   } catch (error) {
-    console.error('Menu create error:', error)
-    res.status(500).json({ message: 'Database error' })
+    console.error('Menu create error at step:', step);
+    console.error('Menu create error:', error);
+    res.status(500).json({ 
+      message: 'Database error',
+      error: error instanceof Error ? error.message : String(error),
+      step: step
+    })
     return;
   }
 })
 
 app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
+  let step = 'init';
   try {
+    step = 'getTenantId';
     const tenantId = getTenantId(req)
     const { id } = req.params
     const { name, description, price, category, image, allergens, calories, isAvailable, translations } = req.body
 
-    const menuItem = await prisma.menuItem.updateMany({
-      where: { 
-        id,
-        tenantId
-      },
-      data: {
-        ...(name && { name }),
-        ...(description !== undefined && { description }),
-        ...(price !== undefined && { price: parseFloat(price) }),
-        ...(category && { category }),
-        ...(image !== undefined && { image }),
-        ...(allergens !== undefined && { allergens }),
-        ...(calories !== undefined && { calories: calories ? parseInt(calories) : null }),
-        ...(isAvailable !== undefined && { isAvailable }),
-        ...(translations !== undefined && { translations })
+    step = 'updateMenuItem';
+    // Update data objesi oluştur
+    const updateData: any = {};
+    if (name) updateData.name = name;
+    if (description !== undefined) updateData.description = description;
+    if (price !== undefined) updateData.price = parseFloat(price);
+    if (category) updateData.category = category;
+    if (image !== undefined) updateData.image = image;
+    if (allergens !== undefined) updateData.allergens = allergens;
+    if (calories !== undefined) updateData.calories = calories ? parseInt(calories) : null;
+    if (isAvailable !== undefined) updateData.isAvailable = isAvailable;
+    
+    // Translations kolonu varsa ekle, yoksa ekleme
+    if (translations !== undefined) {
+      updateData.translations = translations;
+    }
+
+    let menuItem;
+    try {
+      menuItem = await prisma.menuItem.updateMany({
+        where: { 
+          id,
+          tenantId
+        },
+        data: updateData
+      })
+    } catch (updateError: any) {
+      // Eğer translations kolonu hatası ise, translations olmadan tekrar dene
+      if (updateError.message && updateError.message.includes('translations')) {
+        console.log('⚠️ Translations kolonu bulunamadı, translations olmadan güncelleniyor...');
+        const updateDataWithoutTranslations = { ...updateData };
+        delete updateDataWithoutTranslations.translations;
+        
+        menuItem = await prisma.menuItem.updateMany({
+          where: { 
+            id,
+            tenantId
+          },
+          data: updateDataWithoutTranslations
+        })
+      } else {
+        throw updateError; // Başka bir hata ise fırlat
       }
-    })
+    }
 
     if (menuItem.count === 0) {
       res.status(404).json({ message: 'Menu item not found' }); return;
     }
 
+    step = 'getUpdatedItem';
     const updatedItem = await prisma.menuItem.findUnique({
       where: { id }
     })
 
     res.json(updatedItem); return;
   } catch (error) {
-    console.error('Menu update error:', error)
-    res.status(500).json({ message: 'Database error' })
+    console.error('Menu update error at step:', step);
+    console.error('Menu update error:', error);
+    res.status(500).json({ 
+      message: 'Database error',
+      error: error instanceof Error ? error.message : String(error),
+      step: step
+    })
     return;
   }
 })
@@ -1926,7 +2003,9 @@ app.delete('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Reques
 })
 
 app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
+  let step = 'init';
   try {
+    step = 'getTenantId';
     const tenantId = getTenantId(req)
     const { items } = req.body
 
@@ -1934,6 +2013,7 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
       res.status(400).json({ message: 'Items array is required and cannot be empty' }); return;
     }
 
+    step = 'getHotel';
     // Get hotel ID from tenant
     const hotel = await prisma.hotel.findFirst({
       where: { tenantId }
@@ -1943,6 +2023,7 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
       res.status(404).json({ message: 'Hotel not found' }); return;
     }
 
+    step = 'validateItems';
     // Validate items
     const errors: string[] = []
     items.forEach((item: any, idx: number) => {
@@ -1956,11 +2037,13 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
       res.status(422).json({ message: 'Validation error', details: errors }); return;
     }
 
+    step = 'createMenuItems';
     // Create menu items
     const createdItems = []
-    for (const item of items) {
-      const menuItem = await prisma.menuItem.create({
-        data: {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      try {
+        const createData: any = {
           name: item.name,
           description: item.description || '',
           price: parseFloat(item.price) || 0,
@@ -1972,9 +2055,41 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
           isActive: true,
           tenantId,
           hotelId: hotel.id
+        };
+        
+        // Translations kolonu varsa ekle
+        if (item.translations !== undefined) {
+          createData.translations = item.translations;
         }
-      })
-      createdItems.push(menuItem)
+        
+        const menuItem = await prisma.menuItem.create({
+          data: createData
+        })
+        createdItems.push(menuItem)
+      } catch (createError: any) {
+        // Eğer translations kolonu hatası ise, translations olmadan tekrar dene
+        if (createError.message && createError.message.includes('translations')) {
+          console.log(`⚠️ Translations kolonu bulunamadı, item ${i + 1} translations olmadan kaydediliyor...`);
+          const menuItem = await prisma.menuItem.create({
+            data: {
+              name: item.name,
+              description: item.description || '',
+              price: parseFloat(item.price) || 0,
+              category: item.category || 'Diğer',
+              image: item.image || '',
+              allergens: item.allergens || [],
+              calories: item.calories ? parseInt(item.calories) : null,
+              isAvailable: item.available !== undefined ? item.available : (item.isAvailable !== false),
+              isActive: true,
+              tenantId,
+              hotelId: hotel.id
+            }
+          })
+          createdItems.push(menuItem)
+        } else {
+          throw createError; // Başka bir hata ise fırlat
+        }
+      }
     }
 
     res.status(201).json({
@@ -1984,8 +2099,13 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
       items: createdItems
     }); return;
   } catch (error) {
-    console.error('Menu save error:', error)
-    res.status(500).json({ message: 'Database error' })
+    console.error('Menu save error at step:', step);
+    console.error('Menu save error:', error);
+    res.status(500).json({ 
+      message: 'Database error',
+      error: error instanceof Error ? error.message : String(error),
+      step: step
+    })
     return;
   }
 })
