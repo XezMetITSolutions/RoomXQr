@@ -240,10 +240,38 @@ async function onlineTranslate(text: string, targetLang: string): Promise<string
     }
     
     const data = await res.json();
-    const translated = (data?.translatedText || '').trim();
+    
+    // Response formatını kontrol et
+    let translated: string | null = null;
+    
+    if (data?.translatedText) {
+      // String olup olmadığını kontrol et
+      if (typeof data.translatedText === 'string') {
+        translated = data.translatedText.trim();
+      } else {
+        console.warn('translatedText bir string değil:', typeof data.translatedText, data.translatedText);
+        return null;
+      }
+    } else if (data?.translations && Array.isArray(data.translations) && data.translations.length > 0) {
+      // Alternatif format: translations array
+      const firstTranslation = data.translations[0];
+      if (typeof firstTranslation === 'string') {
+        translated = firstTranslation.trim();
+      } else if (firstTranslation?.text && typeof firstTranslation.text === 'string') {
+        translated = firstTranslation.text.trim();
+      }
+    } else {
+      console.warn('API response formatı beklenmeyen:', data);
+      return null;
+    }
     
     if (!translated || translated === text) {
-      console.warn('Çeviri sonucu geçersiz veya orijinal metinle aynı:', { original: text, translated });
+      console.warn('Çeviri sonucu geçersiz veya orijinal metinle aynı:', { 
+        original: text, 
+        translated: translated,
+        targetLang: targetLang,
+        responseData: data 
+      });
       return null;
     }
     
@@ -285,7 +313,11 @@ export async function translateText(text: string, targetLang: string): Promise<s
 
   // Eğer çeviri başarısız olduysa, orijinal metni döndür ama bu durumda MenuTranslator'da kontrol edilecek
   // Bu durumda MenuTranslator'da hata mesajı gösterilecek
-  console.warn('Çeviri başarısız oldu, orijinal metin döndürülüyor:', { text, targetLang, online });
+  console.warn('Çeviri başarısız oldu, orijinal metin döndürülüyor:', { 
+    text: typeof text === 'string' ? text : String(text), 
+    targetLang, 
+    online: typeof online === 'string' ? online : String(online) 
+  });
   return text;
 }
 
