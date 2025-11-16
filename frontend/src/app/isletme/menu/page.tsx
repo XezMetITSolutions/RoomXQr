@@ -23,6 +23,7 @@ import {
   Tag
 } from 'lucide-react';
 import { MenuTranslator } from '@/components/MenuTranslator';
+import { translateText } from '@/lib/translateService';
 
 interface MenuItem {
   id: string;
@@ -120,6 +121,61 @@ export default function MenuManagement() {
       return subdomain;
     }
     return 'default';
+  };
+
+  // Settings'ten desteklenen dilleri al (Türkçe hariç - çeviri için)
+  const getSupportedLanguagesForTranslation = (): string[] => {
+    if (typeof window === 'undefined') return [];
+    
+    try {
+      const savedSettings = localStorage.getItem('hotel-settings');
+      if (savedSettings) {
+        const settingsData = JSON.parse(savedSettings);
+        if (settingsData.language?.supportedLanguages && Array.isArray(settingsData.language.supportedLanguages)) {
+          // Türkçe'yi çıkar çünkü orijinal dil
+          return settingsData.language.supportedLanguages.filter((lang: string) => lang !== 'tr');
+        }
+      }
+    } catch (error) {
+      console.error('Settings yüklenirken hata:', error);
+    }
+    
+    // Varsayılan diller (Türkçe hariç)
+    return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
+  };
+
+  // Otomatik çeviri yap
+  const autoTranslate = async (name: string, description: string): Promise<{ [lang: string]: { name: string; description: string } }> => {
+    const translations: { [lang: string]: { name: string; description: string } } = {};
+    const supportedLanguages = getSupportedLanguagesForTranslation();
+    
+    // Türkçe'yi de ekle (orijinal metin)
+    translations['tr'] = {
+      name: name,
+      description: description
+    };
+    
+    // Her dil için çeviri yap
+    for (const lang of supportedLanguages) {
+      if (lang === 'tr') continue;
+      
+      try {
+        const translatedName = await translateText(name, lang);
+        const translatedDesc = await translateText(description, lang);
+        
+        // Çeviri başarılı olduysa kaydet
+        if (translatedName && translatedName !== name) {
+          translations[lang] = {
+            name: translatedName,
+            description: translatedDesc || description
+          };
+        }
+      } catch (err) {
+        console.error(`Çeviri hatası (${lang}):`, err);
+      }
+    }
+    
+    return translations;
   };
 
   // Kategorileri yükle (tenant-specific, varsayılan kategoriler yok)
@@ -414,10 +470,29 @@ export default function MenuManagement() {
     setShowAddCategoryModal(true);
   };
 
-  const saveCategory = () => {
+  const saveCategory = async () => {
     if (!newCategoryName.trim()) {
       showErrorToast('Kategori adı boş olamaz!');
       return;
+    }
+
+    // Otomatik çeviri yap
+    let categoryTranslations: { [lang: string]: string } = {};
+    try {
+      const supportedLanguages = getSupportedLanguagesForTranslation();
+      for (const lang of supportedLanguages) {
+        if (lang === 'tr') continue;
+        try {
+          const translatedName = await translateText(newCategoryName.trim(), lang);
+          if (translatedName && translatedName !== newCategoryName.trim()) {
+            categoryTranslations[lang] = translatedName;
+          }
+        } catch (err) {
+          console.error(`Kategori çeviri hatası (${lang}):`, err);
+        }
+      }
+    } catch (err) {
+      console.error('Kategori çeviri hatası:', err);
     }
 
     if (selectedCategoryForEdit) {
@@ -426,7 +501,7 @@ export default function MenuManagement() {
       setCategories(cats => 
         cats.map(cat => 
           cat.id === selectedCategoryForEdit.id 
-            ? { ...cat, name: newCategoryName.trim() }
+            ? { ...cat, name: newCategoryName.trim(), description: JSON.stringify(categoryTranslations) }
             : cat
         )
       );
@@ -446,6 +521,7 @@ export default function MenuManagement() {
       const newCategory: Category = {
         id: Date.now().toString(),
         name: newCategoryName.trim(),
+        description: JSON.stringify(categoryTranslations),
       };
       setCategories(cats => [...cats, newCategory]);
       showSuccessToast('Kategori başarıyla eklendi!');
@@ -466,6 +542,23 @@ export default function MenuManagement() {
       } else if (imagePreview && !imagePreview.startsWith('data:')) {
         // Eğer mevcut resim varsa ve base64 değilse, olduğu gibi kullan
         imageUrl = imagePreview;
+      }
+
+      // Otomatik çeviri yap (sadece yeni ürün eklerken veya isim/açıklama değiştiyse)
+      let translations = itemData.translations || selectedItem?.translations || {};
+      const name = itemData.name || '';
+      const description = itemData.description || '';
+      
+      // Yeni ürün ekleniyorsa veya isim/açıklama değiştiyse çeviri yap
+      if (!selectedItem || (name && name !== selectedItem.name) || (description && description !== selectedItem.description)) {
+        if (name && description) {
+          try {
+            translations = await autoTranslate(name, description);
+          } catch (err) {
+            console.error('Otomatik çeviri hatası:', err);
+            // Çeviri başarısız olsa bile devam et
+          }
+        }
       }
 
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
@@ -490,6 +583,7 @@ export default function MenuManagement() {
           allergens: itemData.allergens || [],
           calories: itemData.calories,
           isAvailable: itemData.isAvailable ?? true,
+          translations: translations,
         };
 
         const response = await fetch(`/api/menu/${selectedItem.id}`, {
@@ -506,7 +600,7 @@ export default function MenuManagement() {
         const responseData = await response.json();
         setMenuItems(items => 
           items.map(item => 
-            item.id === selectedItem.id ? { ...item, ...itemData, image: imageUrl } : item
+            item.id === selectedItem.id ? { ...item, ...itemData, image: imageUrl, translations } : item
           )
         );
         setShowEditModal(false);
@@ -523,6 +617,7 @@ export default function MenuManagement() {
           preparationTime: itemData.preparationTime,
           rating: itemData.rating || 4,
           isAvailable: itemData.isAvailable ?? true,
+          translations: translations,
         };
 
         const response = await fetch('/api/menu/save', {
@@ -550,6 +645,7 @@ export default function MenuManagement() {
           image: imageUrl,
           preparationTime: itemData.preparationTime,
           rating: itemData.rating,
+          translations: translations,
         };
         setMenuItems(items => [...items, newItem]);
         setShowAddModal(false);
