@@ -1022,8 +1022,11 @@ const getSupportedLanguagesFromSettings = (): string[] => {
     const savedSettings = localStorage.getItem('hotel-settings');
     if (savedSettings) {
       const settingsData = JSON.parse(savedSettings);
-      if (settingsData.language?.supportedLanguages) {
-        return settingsData.language.supportedLanguages;
+      if (settingsData.language?.supportedLanguages && Array.isArray(settingsData.language.supportedLanguages)) {
+        // En az bir dil olmalı
+        if (settingsData.language.supportedLanguages.length > 0) {
+          return settingsData.language.supportedLanguages;
+        }
       }
     }
   } catch (error) {
@@ -1032,6 +1035,25 @@ const getSupportedLanguagesFromSettings = (): string[] => {
   
   // Varsayılan diller
   return ['tr', 'en', 'de', 'fr'];
+};
+
+// Settings'ten varsayılan dili al
+const getDefaultLanguageFromSettings = (): string => {
+  if (typeof window === 'undefined') return 'tr';
+  
+  try {
+    const savedSettings = localStorage.getItem('hotel-settings');
+    if (savedSettings) {
+      const settingsData = JSON.parse(savedSettings);
+      if (settingsData.language?.defaultLanguage) {
+        return settingsData.language.defaultLanguage;
+      }
+    }
+  } catch (error) {
+    console.warn('Settings yüklenirken hata:', error);
+  }
+  
+  return 'tr';
 };
 
 export const useLanguageStore = create<LanguageStore>()(
@@ -1061,8 +1083,13 @@ export const useLanguageStore = create<LanguageStore>()(
         // Eğer currentLanguage desteklenmiyorsa, varsayılan dile geç
         const { currentLanguage } = get();
         if (!supportedCodes.includes(currentLanguage)) {
-          const defaultLang = getSupportedLanguagesFromSettings()[0] || 'tr';
-          set({ currentLanguage: defaultLang });
+          const defaultLang = getDefaultLanguageFromSettings();
+          // Varsayılan dil de desteklenmiyorsa, ilk desteklenen dile geç
+          if (!supportedCodes.includes(defaultLang)) {
+            set({ currentLanguage: supportedCodes[0] || 'tr' });
+          } else {
+            set({ currentLanguage: defaultLang });
+          }
         }
         
         return supported;
