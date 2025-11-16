@@ -1059,7 +1059,7 @@ const getDefaultLanguageFromSettings = (): string => {
 export const useLanguageStore = create<LanguageStore>()(
   persist(
     (set, get) => ({
-      currentLanguage: 'tr',
+      currentLanguage: typeof window !== 'undefined' ? getDefaultLanguageFromSettings() : 'tr',
       
       setLanguage: (language: string) => {
         set({ currentLanguage: language });
