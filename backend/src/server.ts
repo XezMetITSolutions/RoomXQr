@@ -966,24 +966,61 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
     console.log('GET /api/menu - Tenant ID:', tenantId);
     
     step = 'prismaQuery';
-    const menuItems = await prisma.menuItem.findMany({
-      where: { 
-        tenantId,
-        isActive: true
-        // isAvailable filtresi kaldırıldı - tüm ürünler gösterilsin (mevcut olmayanlar da dahil)
-      },
-      orderBy: { name: 'asc' }
-    })
+    // Önce translations kolonunun var olup olmadığını kontrol et
+    let menuItems;
+    try {
+      // Tüm field'ları seçmeyi dene (translations dahil)
+      menuItems = await prisma.menuItem.findMany({
+        where: { 
+          tenantId,
+          isActive: true
+          // isAvailable filtresi kaldırıldı - tüm ürünler gösterilsin (mevcut olmayanlar da dahil)
+        },
+        orderBy: { name: 'asc' }
+      })
+    } catch (error: any) {
+      // Eğer translations kolonu yoksa, select ile sadece mevcut kolonları seç
+      if (error.message && error.message.includes('translations')) {
+        console.log('⚠️ Translations kolonu bulunamadı, mevcut kolonlar seçiliyor...');
+        menuItems = await prisma.menuItem.findMany({
+          where: { 
+            tenantId,
+            isActive: true
+          },
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            price: true,
+            category: true,
+            image: true,
+            allergens: true,
+            calories: true,
+            isAvailable: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+            tenantId: true,
+            hotelId: true
+            // translations: false (kolon yok)
+          },
+          orderBy: { name: 'asc' }
+        })
+      } else {
+        throw error; // Başka bir hata ise fırlat
+      }
+    }
     
     console.log('GET /api/menu - Found items:', menuItems.length);
     
     step = 'formatMenu';
     // Translations'ı parse et (JSON olarak saklanıyor olabilir)
-    const formattedMenu = menuItems.map((item, index) => {
+    const formattedMenu = menuItems.map((item: any, index: number) => {
       try {
         let translations = {};
         try {
-          if (item.translations) {
+          // translations field'ı varsa parse et
+          if ('translations' in item && item.translations) {
             if (typeof item.translations === 'string') {
               translations = JSON.parse(item.translations);
             } else if (typeof item.translations === 'object') {
