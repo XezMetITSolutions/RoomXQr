@@ -37,9 +37,16 @@ export async function GET(request: Request) {
 
       if (backendResponse.ok) {
         const backendData = await backendResponse.json();
+        console.log('Backend\'den gelen menu data:', {
+          hasMenuItems: !!backendData.menuItems,
+          hasMenu: !!backendData.menu,
+          menuItemsCount: backendData.menuItems?.length || 0,
+          menuCount: backendData.menu?.length || 0
+        });
         // Backend'den gelen formatı frontend formatına çevir
         // Backend hem menuItems hem de menu döndürebilir
         const menuItems = backendData.menuItems || backendData.menu || [];
+        console.log('Parse edilen menu items sayısı:', menuItems.length);
         const menu = menuItems.map((item: any) => {
           // Translations'ı parse et
           let translations = {};
@@ -72,6 +79,7 @@ export async function GET(request: Request) {
           };
         });
         
+        console.log('Frontend\'e döndürülen menu sayısı:', menu.length);
         return NextResponse.json({ menu }, { status: 200 });
       }
     } catch (backendError) {

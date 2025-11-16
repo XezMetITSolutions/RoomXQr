@@ -14,6 +14,8 @@ type IncomingItem = {
   calories?: number;
   rating?: number;
   available?: boolean;
+  isAvailable?: boolean;
+  translations?: { [lang: string]: { name: string; description: string } };
 };
 
 export async function POST(request: Request) {
@@ -73,10 +75,35 @@ export async function POST(request: Request) {
         backendHeaders['Authorization'] = authHeader;
       }
 
+      // Items'ı backend formatına çevir (isAvailable -> available, translations'ı ekle)
+      const backendItems = items.map((item: IncomingItem) => {
+        const backendItem: any = {
+          name: item.name,
+          price: item.price,
+          description: item.description || '',
+          category: item.category || 'Diğer',
+          image: item.image || '',
+          preparationTime: item.preparationTime || 15,
+          allergens: item.allergens || [],
+          calories: item.calories,
+          rating: item.rating || 4,
+          isAvailable: item.isAvailable !== false && item.available !== false,
+        };
+        
+        // Translations'ı ekle
+        if (item.translations) {
+          backendItem.translations = item.translations;
+        }
+        
+        return backendItem;
+      });
+
+      console.log('Backend\'e gönderilecek items:', JSON.stringify(backendItems, null, 2));
+
       const backendResponse = await fetch(`${BACKEND_URL}/api/menu/save`, {
         method: 'POST',
         headers: backendHeaders,
-        body: JSON.stringify({ items }),
+        body: JSON.stringify({ items: backendItems }),
       });
 
       // 404 - Backend endpoint yok, client-side'da zaten kaydedildi, başarılı dön

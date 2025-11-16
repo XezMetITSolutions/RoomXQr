@@ -199,16 +199,27 @@ export default function MenuAddDebugPage() {
 
       const responseData = await response.json();
       console.log('Backend response:', responseData);
+      console.log('Response status:', response.status);
+      console.log('Response OK:', response.ok);
 
       if (!response.ok) {
         throw new Error(responseData.error || 'Kaydetme hatası');
       }
 
+      // Backend'den dönen item'ı kontrol et
+      const savedItem = responseData.items?.[0] || responseData.item || responseData.menuItems?.[0] || null;
+      console.log('Saved item from backend:', savedItem);
+
       setSaveResult({
         success: true,
         response: responseData,
-        savedItem: responseData.items?.[0] || null,
-        translations: translationsObj
+        savedItem: savedItem,
+        translations: translationsObj,
+        backendResponse: {
+          status: response.status,
+          ok: response.ok,
+          data: responseData
+        }
       });
     } catch (error: any) {
       console.error('Kaydetme hatası:', error);
@@ -357,6 +368,10 @@ export default function MenuAddDebugPage() {
                   </p>
                   <p>
                     <span className="font-medium">Ürün Adı:</span> {saveResult.savedItem?.name || productName}
+                  </p>
+                  <p className="text-xs text-gray-600 mt-3">
+                    💡 Şimdi <a href="/isletme/menu" target="_blank" className="text-blue-600 underline">menü sayfasına</a> gidip ürünün göründüğünü kontrol edin. 
+                    Eğer görünmüyorsa, sayfayı yenileyin (F5).
                   </p>
                   <details className="mt-2">
                     <summary className="cursor-pointer font-medium text-gray-700">Backend Response</summary>
