@@ -191,11 +191,12 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
           <span className="text-lg">🌍</span>
           <h3 className="font-semibold text-gray-900">Menü Çevirisi</h3>
         </div>
-        <button
-          onClick={handleTranslateAll}
-          disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-        >
+        {supportedLanguages.length > 0 && (
+          <button
+            onClick={handleTranslateAll}
+            disabled={loading}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
           {loading ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
