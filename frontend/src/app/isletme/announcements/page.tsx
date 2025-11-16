@@ -2,243 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { translateText as translateTextAsync } from '@/lib/translateService';
+import { translateText } from '@/lib/translateService';
 
-// Otomatik çeviri tablosu
-const translationDictionary: Record<string, Record<string, string>> = {
-  // Tam cümle çevirileri
-  'Yeni Menü Öğeleri': {
-    en: 'New Menu Items',
-    ru: 'Новые пункты меню',
-    ar: 'عناصر القائمة الجديدة',
-    de: 'Neue Menüpunkte'
-  },
-  'Özel İndirim': {
-    en: 'Special Discount',
-    ru: 'Специальная скидка',
-    ar: 'خصم خاص',
-    de: 'Sonderrabatt'
-  },
-  'Chef\'in Özel Menüsü': {
-    en: 'Chef\'s Special Menu',
-    ru: 'Специальное меню шеф-повара',
-    ar: 'قائمة الشيف الخاصة',
-    de: 'Chef\'s Spezialmenü'
-  },
-  'Happy Hour': {
-    en: 'Happy Hour',
-    ru: 'Счастливый час',
-    ar: 'ساعة سعيدة',
-    de: 'Happy Hour'
-  },
-  'Sağlıklı Seçenekler': {
-    en: 'Healthy Options',
-    ru: 'Здоровые варианты',
-    ar: 'خيارات صحية',
-    de: 'Gesunde Optionen'
-  },
-  'Havuz Bakımı': {
-    en: 'Pool Maintenance',
-    ru: 'Обслуживание бассейна',
-    ar: 'صيانة المسبح',
-    de: 'Pool-Wartung'
-  },
-  'Otel Reklamı': {
-    en: 'Hotel Advertisement',
-    ru: 'Реклама отеля',
-    ar: 'إعلان الفندق',
-    de: 'Hotel-Werbung'
-  },
-  'Yeni lezzetli yemekler menümüze eklendi': {
-    en: 'New delicious dishes added to our menu',
-    ru: 'Новые вкусные блюда добавлены в наше меню',
-    ar: 'تم إضافة أطباق لذيذة جديدة إلى قائمتنا',
-    de: 'Neue köstliche Gerichte zu unserer Speisekarte hinzugefügt'
-  },
-  'Havuz bakım çalışması nedeniyle 2 gün kapalı': {
-    en: 'Pool closed for 2 days due to maintenance work',
-    ru: 'Бассейн закрыт на 2 дня из-за ремонтных работ',
-    ar: 'المسبح مغلق لمدة يومين بسبب أعمال الصيانة',
-    de: 'Pool 2 Tage geschlossen wegen Wartungsarbeiten'
-  },
-  'Detaylı Bilgi': {
-    en: 'More Details',
-    ru: 'Подробнее',
-    ar: 'مزيد من التفاصيل',
-    de: 'Weitere Details'
-  },
-  'İncele': {
-    en: 'Explore',
-    ru: 'Изучить',
-    ar: 'استكشف',
-    de: 'Erkunden'
-  },
-  
-  // Kelime çevirileri
-  'yeni': {
-    en: 'new',
-    ru: 'новый',
-    ar: 'جديد',
-    de: 'neu'
-  },
-  'menü': {
-    en: 'menu',
-    ru: 'меню',
-    ar: 'قائمة',
-    de: 'menü'
-  },
-  'öğeleri': {
-    en: 'items',
-    ru: 'пункты',
-    ar: 'عناصر',
-    de: 'punkte'
-  },
-  'özel': {
-    en: 'special',
-    ru: 'специальный',
-    ar: 'خاص',
-    de: 'spezial'
-  },
-  'indirim': {
-    en: 'discount',
-    ru: 'скидка',
-    ar: 'خصم',
-    de: 'rabatt'
-  },
-  'chef': {
-    en: 'chef',
-    ru: 'шеф-повар',
-    ar: 'شيف',
-    de: 'chef'
-  },
-  'sağlıklı': {
-    en: 'healthy',
-    ru: 'здоровый',
-    ar: 'صحي',
-    de: 'gesund'
-  },
-  'seçenekler': {
-    en: 'options',
-    ru: 'варианты',
-    ar: 'خيارات',
-    de: 'optionen'
-  },
-  'havuz': {
-    en: 'pool',
-    ru: 'бассейн',
-    ar: 'مسبح',
-    de: 'pool'
-  },
-  'bakım': {
-    en: 'maintenance',
-    ru: 'обслуживание',
-    ar: 'صيانة',
-    de: 'wartung'
-  },
-  'otel': {
-    en: 'hotel',
-    ru: 'отель',
-    ar: 'فندق',
-    de: 'hotel'
-  },
-  'reklamı': {
-    en: 'advertisement',
-    ru: 'реклама',
-    ar: 'إعلان',
-    de: 'werbung'
-  },
-  'lezzetli': {
-    en: 'delicious',
-    ru: 'вкусный',
-    ar: 'لذيذ',
-    de: 'köstlich'
-  },
-  'yemekler': {
-    en: 'dishes',
-    ru: 'блюда',
-    ar: 'أطباق',
-    de: 'gerichte'
-  },
-  'eklendi': {
-    en: 'added',
-    ru: 'добавлены',
-    ar: 'تم إضافة',
-    de: 'hinzugefügt'
-  },
-  'çalışması': {
-    en: 'work',
-    ru: 'работы',
-    ar: 'أعمال',
-    de: 'arbeiten'
-  },
-  'nedeniyle': {
-    en: 'due to',
-    ru: 'из-за',
-    ar: 'بسبب',
-    de: 'wegen'
-  },
-  'gün': {
-    en: 'days',
-    ru: 'дня',
-    ar: 'أيام',
-    de: 'tage'
-  },
-  'kapalı': {
-    en: 'closed',
-    ru: 'закрыт',
-    ar: 'مغلق',
-    de: 'geschlossen'
-  },
-  'detaylı': {
-    en: 'detailed',
-    ru: 'подробный',
-    ar: 'مفصل',
-    de: 'detailliert'
-  },
-  'bilgi': {
-    en: 'information',
-    ru: 'информация',
-    ar: 'معلومات',
-    de: 'information'
-  },
-  'incele': {
-    en: 'explore',
-    ru: 'изучить',
-    ar: 'استكشف',
-    de: 'erkunden'
-  }
-};
-
-// Otomatik çeviri fonksiyonu (offline sözlük) - hızlı ön-çeviri
-const translateText = (text: string, targetLang: string): string => {
-  if (targetLang === 'tr' || !text.trim()) return text; // Türkçe ise aynen döndür
-  
-  // Önce tam eşleşme ara
-  if (translationDictionary[text] && translationDictionary[text][targetLang]) {
-    return translationDictionary[text][targetLang];
-  }
-  
-  // Kelime kelime çeviri yap
-  const words = text.split(' ').map(word => word.toLowerCase());
-  const translatedWords = words.map(word => {
-    // Temizleme işlemi (noktalama işaretlerini kaldır)
-    const cleanWord = word.replace(/[.,!?;:]/g, '');
-    
-    if (translationDictionary[cleanWord] && translationDictionary[cleanWord][targetLang]) {
-      return translationDictionary[cleanWord][targetLang];
-    }
-    
-    // Büyük harfle başlayan kelimeler için
-    const capitalizedWord = cleanWord.charAt(0).toUpperCase() + cleanWord.slice(1);
-    if (translationDictionary[capitalizedWord] && translationDictionary[capitalizedWord][targetLang]) {
-      return translationDictionary[capitalizedWord][targetLang];
-    }
-    
-    return word; // Çeviri bulunamazsa orijinal kelimeyi döndür
-  });
-  
-  return translatedWords.join(' ');
-};
 import { 
   Plus, 
   Edit, 
@@ -306,22 +71,63 @@ export default function AnnouncementsManagement() {
   const [formData, setFormData] = useState<Partial<Announcement> & { translations?: { [lang: string]: { title: string; content: string; linkText?: string; } } }>({});
   const [showTranslations, setShowTranslations] = useState(false);
 
-  // Otomatik çeviri fonksiyonu - Türkçe metin değiştiğinde tetiklenir (async)
+  // Settings'ten desteklenen dilleri al
+  const getSupportedLanguagesForTranslation = (): string[] => {
+    try {
+      const savedSettings = localStorage.getItem('hotel-settings');
+      if (savedSettings) {
+        const settingsData = JSON.parse(savedSettings);
+        if (settingsData.language?.supportedLanguages && Array.isArray(settingsData.language.supportedLanguages)) {
+          return settingsData.language.supportedLanguages;
+        }
+      }
+    } catch (error) {
+      console.error('Settings yüklenirken hata:', error);
+    }
+    // Varsayılan diller
+    return ['tr', 'en', 'de', 'fr'];
+  };
+
+  // Otomatik çeviri fonksiyonu - Türkçe metin değiştiğinde tetiklenir
   const autoTranslateOnChange = async (field: 'title' | 'content' | 'linkText', value: string) => {
     if (!value.trim()) return;
     
     const newFormData: any = { ...formData, [field]: value };
+    const supportedLanguages = getSupportedLanguagesForTranslation();
     
-    // Otomatik çevirileri yap
-    for (const lang of ['en', 'ru', 'ar', 'de']) {
-      if (!newFormData.translations) newFormData.translations = {};
+    // Türkçe'yi ekle
+    if (!newFormData.translations) newFormData.translations = {};
+    newFormData.translations['tr'] = {
+      ...newFormData.translations['tr'],
+      [field]: value
+    };
+    
+    // Otomatik çevirileri yap (sadece desteklenen diller için)
+    for (const lang of supportedLanguages) {
+      if (lang === 'tr') continue;
+      
       if (!newFormData.translations[lang]) newFormData.translations[lang] = {};
-      // Önce offline sözlük dene, bulunamazsa async servise düş
-      let translatedText = translateText(value, lang);
-      if (translatedText === value) {
-        translatedText = await translateTextAsync(value, lang);
+      
+      try {
+        const translateWithTimeout = (text: string, targetLang: string, timeout: number = 5000): Promise<string> => {
+          return Promise.race([
+            translateText(text, targetLang),
+            new Promise<string>((_, reject) =>
+              setTimeout(() => reject(new Error('Translation timeout')), timeout)
+            )
+          ]);
+        };
+
+        const translatedText = await translateWithTimeout(value, lang).catch(() => null);
+        
+        if (translatedText && translatedText !== value && translatedText.trim() !== '') {
+          newFormData.translations[lang][field] = translatedText;
+        }
+      } catch (err) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`Çeviri hatası (${lang}):`, err);
+        }
       }
-      newFormData.translations[lang][field] = translatedText;
     }
     
     setFormData(newFormData);
@@ -729,9 +535,10 @@ export default function AnnouncementsManagement() {
       ...(formDataObj.get('linkText') && { linkText: formDataObj.get('linkText') as string })
     };
     
-    // Diğer diller için formData state'inden al
-    ['en', 'ru', 'ar', 'de'].forEach(lang => {
-      if (formData.translations?.[lang]) {
+    // Diğer diller için formData state'inden al (desteklenen diller)
+    const supportedLanguages = getSupportedLanguagesForTranslation();
+    supportedLanguages.forEach(lang => {
+      if (lang !== 'tr' && formData.translations?.[lang]) {
         translations[lang] = {
           title: formData.translations[lang].title,
           content: formData.translations[lang].content,
@@ -967,16 +774,20 @@ export default function AnnouncementsManagement() {
                         <span className="text-sm font-medium">Otomatik Çeviri Aktif</span>
                       </div>
                       <p className="text-xs text-blue-600 mt-1">
-                        Türkçe metin yazdığınızda sistem otomatik olarak diğer dillere çevirir.
+                        Türkçe metin yazdığınızda sistem otomatik olarak seçili dillere çevirir.
                       </p>
                     </div>
                     
-                {['en', 'ru', 'ar', 'de'].map((lang) => {
-                  const langNames = {
+                {getSupportedLanguagesForTranslation().filter(lang => lang !== 'tr').map((lang) => {
+                  const langNames: { [key: string]: string } = {
                     en: 'İngilizce',
                     ru: 'Rusça', 
                     ar: 'Arapça',
-                    de: 'Almanca'
+                    de: 'Almanca',
+                    fr: 'Fransızca',
+                    es: 'İspanyolca',
+                    it: 'İtalyanca',
+                    zh: 'Çince'
                   };
                   
                   return (
@@ -1189,17 +1000,41 @@ export default function AnnouncementsManagement() {
                   e.preventDefault();
                   const form = document.querySelector('form');
                   if (form) {
-                    const formData = new FormData(form);
+                    const formDataObj = new FormData(form);
+                    
+                    // Otomatik çevirileri formData state'inden al
+                    const translations: { [lang: string]: { title: string; content: string; linkText?: string } } = {};
+                    
+                    // Türkçe için form'dan al
+                    translations['tr'] = {
+                      title: formDataObj.get('title') as string,
+                      content: formDataObj.get('content') as string,
+                      ...(formDataObj.get('linkText') && { linkText: formDataObj.get('linkText') as string })
+                    };
+                    
+                    // Diğer diller için formData state'inden al (desteklenen diller)
+                    const supportedLanguages = getSupportedLanguagesForTranslation();
+                    supportedLanguages.forEach(lang => {
+                      if (lang !== 'tr' && formData.translations?.[lang]) {
+                        translations[lang] = {
+                          title: formData.translations[lang].title,
+                          content: formData.translations[lang].content,
+                          ...(formData.translations[lang].linkText && { linkText: formData.translations[lang].linkText })
+                        };
+                      }
+                    });
+                    
                     const announcementData = {
-                      title: formData.get('title') as string,
-                      content: formData.get('content') as string,
-                      type: formData.get('type') as any,
-                      category: formData.get('category') as any,
-                      startDate: formData.get('startDate') as string,
-                      endDate: formData.get('endDate') as string || undefined,
-                      isActive: formData.get('isActive') === 'on',
-                      linkUrl: formData.get('linkUrl') as string || undefined,
-                      linkText: formData.get('linkText') as string || undefined,
+                      title: formDataObj.get('title') as string,
+                      content: formDataObj.get('content') as string,
+                      type: formDataObj.get('type') as any,
+                      category: formDataObj.get('category') as any,
+                      startDate: formDataObj.get('startDate') as string,
+                      endDate: formDataObj.get('endDate') as string || undefined,
+                      isActive: formDataObj.get('isActive') === 'on',
+                      linkUrl: formDataObj.get('linkUrl') as string || undefined,
+                      linkText: formDataObj.get('linkText') as string || undefined,
+                      translations: Object.keys(translations).length > 0 ? translations : undefined,
                     };
                     saveAnnouncement(announcementData);
                   }
