@@ -274,7 +274,7 @@ export default function QRMenuPage() {
       });
       setMenuData(updatedMenu);
     }
-  }, [currentLanguage, menuData.length]);
+  }, [currentLanguage]);
   
   // Duyurular state
   const [announcements, setAnnouncements] = useState<any[]>([]);
