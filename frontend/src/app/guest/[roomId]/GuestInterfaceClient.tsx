@@ -39,7 +39,8 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
   const { addNotification } = useNotifications();
 
   // Dil store'u
-  const { currentLanguage, setLanguage, getTranslation, getCurrentLanguage } = useLanguageStore();
+  const { currentLanguage, setLanguage, getTranslation, getCurrentLanguage, getSupportedLanguages } = useLanguageStore();
+  const supportedLanguages = getSupportedLanguages();
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   
@@ -291,7 +292,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
             {/* Dil Seçenekleri Dropdown */}
             {showLanguageSelector && (
               <div className="absolute right-0 top-full mt-1 w-48 rounded-lg shadow-lg z-50" style={{ background: theme.cardBackground, border: `1px solid ${theme.borderColor}` }}>
-                {languages.map((lang) => (
+                {supportedLanguages.map((lang) => (
                   <button
                     key={lang.code}
                     onClick={() => {

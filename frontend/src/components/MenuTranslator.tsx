@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation, SupportedLanguage, LANGUAGE_FLAGS, LANGUAGE_NAMES } from '@/hooks/useTranslation';
 import { translateText } from '@/lib/translateService';
 import { Language } from '@/types';
+import { useLanguageStore } from '@/store/languageStore';
 
 interface MenuTranslatorProps {
   menuItem: {
@@ -19,7 +20,27 @@ interface MenuTranslatorProps {
   className?: string;
 }
 
-const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
+// Settings'ten desteklenen dilleri al (Türkçe hariç - çeviri için)
+const getSupportedLanguagesForTranslation = (): SupportedLanguage[] => {
+  if (typeof window === 'undefined') return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
+  
+  try {
+    const savedSettings = localStorage.getItem('hotel-settings');
+    if (savedSettings) {
+      const settingsData = JSON.parse(savedSettings);
+      if (settingsData.language?.supportedLanguages) {
+        // Türkçe'yi çıkar çünkü orijinal dil
+        return settingsData.language.supportedLanguages
+          .filter((lang: string) => lang !== 'tr') as SupportedLanguage[];
+      }
+    }
+  } catch (error) {
+    console.warn('Settings yüklenirken hata:', error);
+  }
+  
+  // Varsayılan diller (Türkçe hariç)
+  return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
+};
 
 export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuTranslatorProps) {
   const [selectedLang, setSelectedLang] = useState<SupportedLanguage>('en');
@@ -29,6 +50,30 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
   const [editingLang, setEditingLang] = useState<SupportedLanguage | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [supportedLanguages, setSupportedLanguages] = useState<SupportedLanguage[]>(getSupportedLanguagesForTranslation());
+  
+  // Settings değiştiğinde desteklenen dilleri güncelle
+  useEffect(() => {
+    const updateSupportedLanguages = () => {
+      setSupportedLanguages(getSupportedLanguagesForTranslation());
+    };
+    
+    // localStorage değişikliklerini dinle
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'hotel-settings') {
+        updateSupportedLanguages();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    // Sayfa içi değişiklikler için interval kontrolü
+    const interval = setInterval(updateSupportedLanguages, 1000);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
   
   // Tüm dillere çeviri yap
   const handleTranslateAll = async () => {
@@ -46,8 +91,8 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
         description: menuItem.description
       };
       
-      // Tüm dillere çeviri yap (Türkçe hariç)
-      for (const lang of SUPPORTED_LANGUAGES) {
+      // Sadece settings'te seçili dillere çeviri yap (Türkçe hariç)
+      for (const lang of supportedLanguages) {
         if (lang === 'tr') continue;
         
         try {
@@ -171,7 +216,7 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
         </div>
         
         {/* Diğer Diller */}
-        {SUPPORTED_LANGUAGES.map((lang) => {
+        {supportedLanguages.map((lang) => {
           const translation = translations[lang];
           const isEditing = editingLang === lang;
           

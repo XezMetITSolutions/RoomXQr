@@ -1011,7 +1011,28 @@ interface LanguageStore {
   setLanguage: (language: string) => void;
   getTranslation: (key: string) => string;
   getCurrentLanguage: () => Language;
+  getSupportedLanguages: () => Language[];
 }
+
+// Settings'ten desteklenen dilleri al
+const getSupportedLanguagesFromSettings = (): string[] => {
+  if (typeof window === 'undefined') return ['tr', 'en', 'de', 'fr'];
+  
+  try {
+    const savedSettings = localStorage.getItem('hotel-settings');
+    if (savedSettings) {
+      const settingsData = JSON.parse(savedSettings);
+      if (settingsData.language?.supportedLanguages) {
+        return settingsData.language.supportedLanguages;
+      }
+    }
+  } catch (error) {
+    console.warn('Settings yüklenirken hata:', error);
+  }
+  
+  // Varsayılan diller
+  return ['tr', 'en', 'de', 'fr'];
+};
 
 export const useLanguageStore = create<LanguageStore>()(
   persist(
@@ -1031,6 +1052,11 @@ export const useLanguageStore = create<LanguageStore>()(
       getCurrentLanguage: () => {
         const { currentLanguage } = get();
         return languages.find(lang => lang.code === currentLanguage) || languages[0];
+      },
+      
+      getSupportedLanguages: () => {
+        const supportedCodes = getSupportedLanguagesFromSettings();
+        return languages.filter(lang => supportedCodes.includes(lang.code));
       },
     }),
     {
