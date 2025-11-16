@@ -241,7 +241,7 @@ export default function AnalyticsPage() {
               className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2"
             >
               <Download className="w-5 h-5" />
-              <span>Rapor İndir</span>
+              <span>{getTranslation('analytics.download_report')}</span>
             </button>
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function AnalyticsPage() {
         <div className="hotel-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Gelir</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('analytics.total_revenue')}</p>
               <p className="text-2xl font-bold text-gray-900">{formatCurrency(analyticsData.totalRevenue)}</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -264,14 +264,14 @@ export default function AnalyticsPage() {
             <span className={`text-sm font-medium ml-1 ${getChangeColor(analyticsData.revenueChange)}`}>
               {analyticsData.revenueChange > 0 ? '+' : ''}{analyticsData.revenueChange}%
             </span>
-            <span className="text-sm text-gray-500 ml-2">önceki döneme göre</span>
+            <span className="text-sm text-gray-500 ml-2">{getTranslation('analytics.previous_period')}</span>
           </div>
         </div>
 
         <div className="hotel-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Sipariş</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('analytics.total_orders')}</p>
               <p className="text-2xl font-bold text-gray-900">{formatNumber(analyticsData.totalOrders)}</p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -283,14 +283,14 @@ export default function AnalyticsPage() {
             <span className={`text-sm font-medium ml-1 ${getChangeColor(analyticsData.ordersChange)}`}>
               {analyticsData.ordersChange > 0 ? '+' : ''}{analyticsData.ordersChange}%
             </span>
-            <span className="text-sm text-gray-500 ml-2">önceki döneme göre</span>
+            <span className="text-sm text-gray-500 ml-2">{getTranslation('analytics.previous_period')}</span>
           </div>
         </div>
 
         <div className="hotel-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Ortalama Sipariş</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('analytics.avg_order')}</p>
               <p className="text-2xl font-bold text-gray-900">{formatCurrency(analyticsData.averageOrderValue)}</p>
             </div>
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -302,14 +302,14 @@ export default function AnalyticsPage() {
             <span className={`text-sm font-medium ml-1 ${getChangeColor(analyticsData.aovChange)}`}>
               {analyticsData.aovChange > 0 ? '+' : ''}{analyticsData.aovChange}%
             </span>
-            <span className="text-sm text-gray-500 ml-2">önceki döneme göre</span>
+            <span className="text-sm text-gray-500 ml-2">{getTranslation('analytics.previous_period')}</span>
           </div>
         </div>
 
         <div className="hotel-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Aktif Misafir</p>
+              <p className="text-sm font-medium text-gray-600">{getTranslation('analytics.active_guests')}</p>
               <p className="text-2xl font-bold text-gray-900">{formatNumber(analyticsData.activeGuests)}</p>
             </div>
             <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -321,7 +321,7 @@ export default function AnalyticsPage() {
             <span className={`text-sm font-medium ml-1 ${getChangeColor(analyticsData.guestsChange)}`}>
               {analyticsData.guestsChange > 0 ? '+' : ''}{analyticsData.guestsChange}%
             </span>
-            <span className="text-sm text-gray-500 ml-2">önceki döneme göre</span>
+            <span className="text-sm text-gray-500 ml-2">{getTranslation('analytics.previous_period')}</span>
           </div>
         </div>
       </div>
@@ -330,7 +330,7 @@ export default function AnalyticsPage() {
         {/* Revenue Chart */}
         <div className="hotel-card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">Gelir Trendi</h3>
+            <h3 className="text-lg font-medium text-gray-900">{getTranslation('analytics.revenue_trend')}</h3>
             <div className="flex space-x-2">
               {metrics.map((metric) => {
                 const Icon = metric.icon;
@@ -354,15 +354,15 @@ export default function AnalyticsPage() {
           <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
             <div className="text-center">
               <Activity className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-500">Grafik buraya gelecek</p>
-              <p className="text-sm text-gray-400">Chart.js veya başka bir kütüphane ile</p>
+              <p className="text-gray-500">{getTranslation('analytics.chart_placeholder')}</p>
+              <p className="text-sm text-gray-400">{getTranslation('analytics.chart_note')}</p>
             </div>
           </div>
         </div>
 
         {/* Category Breakdown */}
         <div className="hotel-card p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Kategori Dağılımı</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{getTranslation('analytics.category_distribution')}</h3>
           <div className="space-y-4">
             {categoryData.map((category, index) => (
               <div key={category.category} className="flex items-center justify-between">
@@ -378,7 +378,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">{formatCurrency(category.revenue)}</p>
-                    <p className="text-xs text-gray-500">{category.orders} sipariş</p>
+                    <p className="text-xs text-gray-500">{category.orders} {getTranslation('analytics.orders')}</p>
                   </div>
                   <div className="w-16 text-right">
                     <p className="text-sm font-medium text-gray-900">{category.percentage}%</p>
@@ -394,14 +394,14 @@ export default function AnalyticsPage() {
       <div className="hotel-card">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium text-gray-900">Son Siparişler</h3>
+            <h3 className="text-lg font-medium text-gray-900">{getTranslation('analytics.recent_orders')}</h3>
             <button 
               onClick={() => {
                 alert('Sipariş detayları sayfasına yönlendiriliyor... (Demo)');
               }}
               className="text-sm text-hotel-gold hover:text-hotel-navy font-medium"
             >
-              Tümünü Görüntüle →
+              {getTranslation('analytics.view_all')} →
             </button>
           </div>
         </div>
@@ -410,13 +410,13 @@ export default function AnalyticsPage() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sipariş
+                  {getTranslation('analytics.order')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Oda
+                  {getTranslation('analytics.room')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tutar
+                  {getTranslation('analytics.amount')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tarih

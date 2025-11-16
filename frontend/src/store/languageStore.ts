@@ -298,6 +298,25 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Okundu olarak işaretle',
     'notifications.mark_unread': 'Okunmamış olarak işaretle',
     'notifications.new': 'Yeni',
+    
+    // Analytics Page
+    'analytics.total_revenue': 'Toplam Gelir',
+    'analytics.total_orders': 'Toplam Sipariş',
+    'analytics.avg_order': 'Ortalama Sipariş',
+    'analytics.active_guests': 'Aktif Misafir',
+    'analytics.previous_period': 'önceki döneme göre',
+    'analytics.download_report': 'Rapor İndir',
+    'analytics.revenue_trend': 'Gelir Trendi',
+    'analytics.category_distribution': 'Kategori Dağılımı',
+    'analytics.recent_orders': 'Son Siparişler',
+    'analytics.view_all': 'Tümünü Görüntüle',
+    'analytics.order': 'Sipariş',
+    'analytics.room': 'Oda',
+    'analytics.amount': 'Tutar',
+    'analytics.status': 'Durum',
+    'analytics.chart_placeholder': 'Grafik buraya gelecek',
+    'analytics.chart_note': 'Chart.js veya başka bir kütüphane ile',
+    'analytics.orders': 'sipariş',
   },
   
   en: {
@@ -547,6 +566,25 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Mark as Read',
     'notifications.mark_unread': 'Mark as Unread',
     'notifications.new': 'New',
+    
+    // Analytics Page
+    'analytics.total_revenue': 'Total Revenue',
+    'analytics.total_orders': 'Total Orders',
+    'analytics.avg_order': 'Average Order',
+    'analytics.active_guests': 'Active Guests',
+    'analytics.previous_period': 'vs previous period',
+    'analytics.download_report': 'Download Report',
+    'analytics.revenue_trend': 'Revenue Trend',
+    'analytics.category_distribution': 'Category Distribution',
+    'analytics.recent_orders': 'Recent Orders',
+    'analytics.view_all': 'View All',
+    'analytics.order': 'Order',
+    'analytics.room': 'Room',
+    'analytics.amount': 'Amount',
+    'analytics.status': 'Status',
+    'analytics.chart_placeholder': 'Chart will appear here',
+    'analytics.chart_note': 'Using Chart.js or another library',
+    'analytics.orders': 'orders',
     
     // Survey/Evaluation
     'survey.title': 'Rate Us',
@@ -1036,6 +1074,25 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_unread': 'Als ungelesen markieren',
     'notifications.new': 'Neu',
     
+    // Analytics Page
+    'analytics.total_revenue': 'Gesamteinnahmen',
+    'analytics.total_orders': 'Gesamtbestellungen',
+    'analytics.avg_order': 'Durchschnittliche Bestellung',
+    'analytics.active_guests': 'Aktive Gäste',
+    'analytics.previous_period': 'im Vergleich zur Vorperiode',
+    'analytics.download_report': 'Bericht herunterladen',
+    'analytics.revenue_trend': 'Umsatztrend',
+    'analytics.category_distribution': 'Kategorieverteilung',
+    'analytics.recent_orders': 'Letzte Bestellungen',
+    'analytics.view_all': 'Alle anzeigen',
+    'analytics.order': 'Bestellung',
+    'analytics.room': 'Zimmer',
+    'analytics.amount': 'Betrag',
+    'analytics.status': 'Status',
+    'analytics.chart_placeholder': 'Diagramm wird hier angezeigt',
+    'analytics.chart_note': 'Mit Chart.js oder einer anderen Bibliothek',
+    'analytics.orders': 'Bestellungen',
+    
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -1308,6 +1365,25 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Marquer comme Lu',
     'notifications.mark_unread': 'Marquer comme Non Lu',
     'notifications.new': 'Nouveau',
+    
+    // Analytics Page
+    'analytics.total_revenue': 'Revenu Total',
+    'analytics.total_orders': 'Total des Commandes',
+    'analytics.avg_order': 'Commande Moyenne',
+    'analytics.active_guests': 'Invités Actifs',
+    'analytics.previous_period': 'par rapport à la période précédente',
+    'analytics.download_report': 'Télécharger le Rapport',
+    'analytics.revenue_trend': 'Tendance des Revenus',
+    'analytics.category_distribution': 'Répartition par Catégorie',
+    'analytics.recent_orders': 'Commandes Récentes',
+    'analytics.view_all': 'Voir Tout',
+    'analytics.order': 'Commande',
+    'analytics.room': 'Chambre',
+    'analytics.amount': 'Montant',
+    'analytics.status': 'Statut',
+    'analytics.chart_placeholder': 'Le graphique apparaîtra ici',
+    'analytics.chart_note': 'En utilisant Chart.js ou une autre bibliothèque',
+    'analytics.orders': 'commandes',
     
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',
