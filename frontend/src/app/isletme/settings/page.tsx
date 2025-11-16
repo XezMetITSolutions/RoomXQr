@@ -415,6 +415,35 @@ export default function SettingsPage() {
     if (!token || !user) return;
     
     setIsSaving(true);
+    
+    // Önce localStorage'a kaydet (her zaman)
+    const settingsData = {
+      hotel: hotelSettings,
+      theme: themeSettings,
+      language: languageSettings,
+      socialMedia: links,
+      lastUpdated: new Date().toISOString()
+    };
+    
+    console.log('Settings kaydediliyor - languageSettings:', languageSettings);
+    console.log('Settings kaydediliyor - settingsData:', settingsData);
+    
+    localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
+    
+    // Kaydedilen veriyi doğrula
+    const savedData = localStorage.getItem('hotel-settings');
+    if (savedData) {
+      const parsed = JSON.parse(savedData);
+      console.log('Settings kaydedildi - Doğrulama:', {
+        language: parsed.language,
+        supportedLanguages: parsed.language?.supportedLanguages,
+        count: parsed.language?.supportedLanguages?.length
+      });
+    }
+    
+    // MenuTranslator'ı güncellemek için custom event gönder
+    window.dispatchEvent(new Event('settings-updated'));
+    
     try {
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
       
@@ -472,43 +501,22 @@ export default function SettingsPage() {
           });
 
           if (updateResponse.ok) {
-            // LocalStorage'a da kaydet (fallback)
-            const settingsData = {
-              hotel: hotelSettings,
-              theme: themeSettings,
-              language: languageSettings,
-              socialMedia: links,
-              lastUpdated: new Date().toISOString()
-            };
-            
-            console.log('Settings kaydediliyor - languageSettings:', languageSettings);
-            console.log('Settings kaydediliyor - settingsData:', settingsData);
-            
-            localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
-            
-            // Kaydedilen veriyi doğrula
-            const savedData = localStorage.getItem('hotel-settings');
-            if (savedData) {
-              const parsed = JSON.parse(savedData);
-              console.log('Settings kaydedildi - Doğrulama:', {
-                language: parsed.language,
-                supportedLanguages: parsed.language?.supportedLanguages,
-                count: parsed.language?.supportedLanguages?.length
-              });
-            }
-            
-            // MenuTranslator'ı güncellemek için custom event gönder
-            window.dispatchEvent(new Event('settings-updated'));
-            
             alert('Ayarlar başarıyla kaydedildi!');
           } else {
-            throw new Error('Güncelleme başarısız');
+            console.warn('Backend güncelleme başarısız, ancak localStorage\'a kaydedildi');
+            alert('Ayarlar localStorage\'a kaydedildi, ancak backend güncellemesi başarısız oldu.');
           }
+        } else {
+          console.warn('Tenant bulunamadı, ancak localStorage\'a kaydedildi');
+          alert('Ayarlar localStorage\'a kaydedildi.');
         }
+      } else {
+        console.warn('Backend bağlantı hatası, ancak localStorage\'a kaydedildi');
+        alert('Ayarlar localStorage\'a kaydedildi, ancak backend bağlantısı başarısız oldu.');
       }
     } catch (error) {
-      console.error('Ayarlar kaydedilirken hata oluştu:', error);
-      alert('Ayarlar kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
+      console.error('Backend kaydetme hatası (localStorage zaten kaydedildi):', error);
+      alert('Ayarlar localStorage\'a kaydedildi, ancak backend güncellemesi sırasında bir hata oluştu.');
     } finally {
       setIsSaving(false);
     }
