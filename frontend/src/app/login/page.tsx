@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Hotel, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Hotel, Eye, EyeOff, AlertCircle, Globe, ChevronDown } from 'lucide-react';
+import { useLanguageStore, languages } from '@/store/languageStore';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,9 +13,14 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   
   const { login, user } = useAuth();
   const router = useRouter();
+  const { currentLanguage, setLanguage, getTranslation, getCurrentLanguage } = useLanguageStore();
+  
+  // Sadece TR, EN, DE, FR dillerini göster
+  const supportedLanguages = languages.filter(lang => ['tr', 'en', 'de', 'fr'].includes(lang.code));
 
   useEffect(() => {
     // localStorage'da varsa otomatik doldur
@@ -109,21 +115,81 @@ export default function LoginPage() {
             savedUserData: savedUserData ? 'exists' : 'missing'
           });
           setIsLoading(false);
-          setError('Giriş başarılı ancak oturum kaydedilemedi. Lütfen tekrar deneyin.');
+          setError(getTranslation('login.error_session'));
         }
       } else {
         setIsLoading(false);
-        setError('Geçersiz email veya şifre');
+        setError(getTranslation('login.error_invalid'));
       }
     } catch (err: any) {
       console.error('Login error in handleSubmit:', err);
       setIsLoading(false);
-      setError(err?.message || 'Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+      setError(err?.message || getTranslation('login.error_general'));
     }
   };
 
+  // Dropdown dışına tıklandığında kapat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.language-selector')) {
+        setShowLanguageSelector(false);
+      }
+    };
+
+    if (showLanguageSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showLanguageSelector]);
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      {/* Dil Seçici - Sağ Üst Köşe */}
+      <div className="absolute top-4 right-4 language-selector">
+        <div className="relative">
+          <button
+            onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+            className="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-300 hover:bg-gray-50 transition-colors"
+          >
+            <Globe className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">
+              {getCurrentLanguage().flag}
+            </span>
+            <ChevronDown className="w-4 h-4 text-gray-600" />
+          </button>
+          
+          {/* Dil Seçenekleri Dropdown */}
+          {showLanguageSelector && (
+            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+              {supportedLanguages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => {
+                    setLanguage(lang.code);
+                    setShowLanguageSelector(false);
+                  }}
+                  className={`w-full px-4 py-3 text-left transition-colors flex items-center space-x-3 ${
+                    currentLanguage === lang.code 
+                      ? 'bg-hotel-gold bg-opacity-10' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <span className="text-lg">{lang.flag}</span>
+                  <div>
+                    <div className="font-medium text-gray-900">{lang.name}</div>
+                    <div className="text-xs text-gray-500">{lang.nativeName}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <div className="flex items-center space-x-2">
@@ -132,10 +198,10 @@ export default function LoginPage() {
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          İşletme Paneline Giriş
+          {getTranslation('login.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Hesabınızla giriş yapın
+          {getTranslation('login.subtitle')}
         </p>
       </div>
 
@@ -159,7 +225,7 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                E-posta Adresi veya Kullanıcı Adı
+                {getTranslation('login.email')}
               </label>
               <div className="mt-1">
                 <input
@@ -171,14 +237,14 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-hotel-gold focus:border-hotel-gold sm:text-sm"
-                  placeholder="ornek@email.com veya kullaniciadi"
+                  placeholder={getTranslation('login.email_placeholder')}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Şifre
+                {getTranslation('login.password')}
               </label>
               <div className="mt-1 relative">
                 <input
@@ -190,7 +256,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-hotel-gold focus:border-hotel-gold sm:text-sm"
-                  placeholder="Şifrenizi girin"
+                  placeholder={getTranslation('login.password_placeholder')}
                 />
                 <button
                   type="button"
@@ -217,13 +283,13 @@ export default function LoginPage() {
                   onChange={e => setRememberMe(e.target.checked)}
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Beni hatırla
+                  {getTranslation('login.remember')}
                 </label>
               </div>
 
               <div className="text-sm">
                 <a href="#" className="font-medium text-hotel-gold hover:text-hotel-navy">
-                  Şifremi unuttum
+                  {getTranslation('login.forgot')}
                 </a>
               </div>
             </div>
@@ -237,10 +303,10 @@ export default function LoginPage() {
                 {isLoading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Giriş yapılıyor...
+                    {getTranslation('login.submitting')}
                   </div>
                 ) : (
-                  'Giriş Yap'
+                  getTranslation('login.submit')
                 )}
               </button>
             </div>

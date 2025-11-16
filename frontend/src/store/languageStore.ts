@@ -134,6 +134,21 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Şampuan',
     'quick.soap': 'Sabun',
     'quick.water': 'Su',
+    
+    // Login
+    'login.title': 'İşletme Paneline Giriş',
+    'login.subtitle': 'Hesabınızla giriş yapın',
+    'login.email': 'E-posta Adresi veya Kullanıcı Adı',
+    'login.password': 'Şifre',
+    'login.remember': 'Beni hatırla',
+    'login.forgot': 'Şifremi unuttum',
+    'login.submit': 'Giriş Yap',
+    'login.submitting': 'Giriş yapılıyor...',
+    'login.email_placeholder': 'ornek@email.com veya kullaniciadi',
+    'login.password_placeholder': 'Şifrenizi girin',
+    'login.error_invalid': 'Geçersiz email veya şifre',
+    'login.error_general': 'Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.',
+    'login.error_session': 'Giriş başarılı ancak oturum kaydedilemedi. Lütfen tekrar deneyin.',
   },
   
   en: {
@@ -219,6 +234,21 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Shampoo',
     'quick.soap': 'Soap',
     'quick.water': 'Water',
+    
+    // Login
+    'login.title': 'Business Panel Login',
+    'login.subtitle': 'Sign in to your account',
+    'login.email': 'Email Address or Username',
+    'login.password': 'Password',
+    'login.remember': 'Remember me',
+    'login.forgot': 'Forgot password',
+    'login.submit': 'Sign In',
+    'login.submitting': 'Signing in...',
+    'login.email_placeholder': 'example@email.com or username',
+    'login.password_placeholder': 'Enter your password',
+    'login.error_invalid': 'Invalid email or password',
+    'login.error_general': 'An error occurred during login. Please try again.',
+    'login.error_session': 'Login successful but session could not be saved. Please try again.',
     
     // Survey/Evaluation
     'survey.title': 'Rate Us',
@@ -544,6 +574,21 @@ export const translations: Record<string, Translations> = {
     'quick.soap': 'Seife',
     'quick.water': 'Wasser',
     
+    // Login
+    'login.title': 'Geschäftspanel-Anmeldung',
+    'login.subtitle': 'Melden Sie sich mit Ihrem Konto an',
+    'login.email': 'E-Mail-Adresse oder Benutzername',
+    'login.password': 'Passwort',
+    'login.remember': 'Angemeldet bleiben',
+    'login.forgot': 'Passwort vergessen',
+    'login.submit': 'Anmelden',
+    'login.submitting': 'Wird angemeldet...',
+    'login.email_placeholder': 'beispiel@email.com oder benutzername',
+    'login.password_placeholder': 'Geben Sie Ihr Passwort ein',
+    'login.error_invalid': 'Ungültige E-Mail oder Passwort',
+    'login.error_general': 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+    'login.error_session': 'Anmeldung erfolgreich, aber Sitzung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.',
+    
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -652,6 +697,21 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Shampoing',
     'quick.soap': 'Savon',
     'quick.water': 'Eau',
+    
+    // Login
+    'login.title': 'Connexion au Panneau d\'Administration',
+    'login.subtitle': 'Connectez-vous à votre compte',
+    'login.email': 'Adresse e-mail ou nom d\'utilisateur',
+    'login.password': 'Mot de passe',
+    'login.remember': 'Se souvenir de moi',
+    'login.forgot': 'Mot de passe oublié',
+    'login.submit': 'Se connecter',
+    'login.submitting': 'Connexion en cours...',
+    'login.email_placeholder': 'exemple@email.com ou nomutilisateur',
+    'login.password_placeholder': 'Entrez votre mot de passe',
+    'login.error_invalid': 'E-mail ou mot de passe invalide',
+    'login.error_general': 'Une erreur s\'est produite lors de la connexion. Veuillez réessayer.',
+    'login.error_session': 'Connexion réussie mais la session n\'a pas pu être enregistrée. Veuillez réessayer.',
     
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',
