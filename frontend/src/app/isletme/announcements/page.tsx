@@ -628,7 +628,7 @@ export default function AnnouncementsManagement() {
               className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2"
             >
               <Plus className="w-5 h-5" />
-              <span>Duyuru Ekle</span>
+              <span>{getTranslation('announcements.add')}</span>
             </button>
           </div>
         </div>
@@ -637,7 +637,7 @@ export default function AnnouncementsManagement() {
       {/* Filters */}
       <div className="hotel-card p-6 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filtrele:</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{getTranslation('announcements.filter')}</span>
           <div className="flex space-x-2">
             {(['all', 'active', 'inactive'] as const).map((filterOption) => (
               <button
@@ -649,7 +649,7 @@ export default function AnnouncementsManagement() {
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
-                {filterOption === 'all' ? 'Tümü' : filterOption === 'active' ? 'Aktif' : 'Pasif'}
+                {filterOption === 'all' ? getTranslation('announcements.all') : filterOption === 'active' ? getTranslation('announcements.active') : getTranslation('announcements.inactive')}
               </button>
             ))}
           </div>
@@ -676,7 +676,7 @@ export default function AnnouncementsManagement() {
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {announcement.isActive ? 'Aktif' : 'Pasif'}
+                    {announcement.isActive ? getTranslation('announcements.active') : getTranslation('announcements.inactive')}
                   </span>
                 </div>
                 
@@ -685,16 +685,16 @@ export default function AnnouncementsManagement() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center space-x-2">
                     <Calendar className="w-4 h-4" />
-                    <span>Başlangıç: {new Date(announcement.startDate).toLocaleDateString('tr-TR')}</span>
+                    <span>{getTranslation('announcements.start_date')}: {new Date(announcement.startDate).toLocaleDateString('tr-TR')}</span>
                   </div>
                   {announcement.endDate && (
                     <div className="flex items-center space-x-2">
                       <Calendar className="w-4 h-4" />
-                      <span>Bitiş: {new Date(announcement.endDate).toLocaleDateString('tr-TR')}</span>
+                      <span>{getTranslation('announcements.end_date')}: {new Date(announcement.endDate).toLocaleDateString('tr-TR')}</span>
                     </div>
                   )}
                   <div className="flex items-center space-x-2">
-                    <span>Oluşturan: {announcement.createdBy}</span>
+                    <span>{getTranslation('announcements.created_by')}: {announcement.createdBy}</span>
                   </div>
                 </div>
               </div>
@@ -707,21 +707,21 @@ export default function AnnouncementsManagement() {
                       ? 'text-green-600 hover:bg-green-50' 
                       : 'text-red-600 hover:bg-red-50'
                   }`}
-                  title={announcement.isActive ? 'Pasif yap' : 'Aktif yap'}
+                  title={announcement.isActive ? getTranslation('announcements.make_inactive') : getTranslation('announcements.make_active')}
                 >
                   {announcement.isActive ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                 </button>
                 <button
                   onClick={() => editAnnouncement(announcement)}
                   className="p-2 text-hotel-gold hover:bg-yellow-50 rounded-lg"
-                  title="Düzenle"
+                  title={getTranslation('announcements.edit')}
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDeleteAnnouncement(announcement.id)}
                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                  title="Sil"
+                  title={getTranslation('announcements.delete')}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -734,9 +734,9 @@ export default function AnnouncementsManagement() {
       {filteredAnnouncements.length === 0 && (
         <div className="text-center py-12">
           <Megaphone className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">Duyuru bulunamadı</h3>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">{getTranslation('announcements.not_found')}</h3>
           <p className="mt-1 text-sm text-gray-500">
-            Yeni bir duyuru oluşturmak için "Duyuru Ekle" butonuna tıklayın.
+            {getTranslation('announcements.not_found_desc')}
           </p>
         </div>
       )}
@@ -747,7 +747,7 @@ export default function AnnouncementsManagement() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {showAddModal ? 'Yeni Duyuru Ekle' : 'Duyuru Düzenle'}
+                {showAddModal ? getTranslation('announcements.new') : getTranslation('announcements.edit_title')}
               </h3>
               <button
                 onClick={() => {
@@ -765,7 +765,7 @@ export default function AnnouncementsManagement() {
               {/* Ana Türkçe İçerik */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Başlık (Türkçe) *
+                  {getTranslation('announcements.title_label')}
                 </label>
                 <input
                   type="text"
@@ -774,13 +774,13 @@ export default function AnnouncementsManagement() {
                   onChange={(e) => autoTranslateOnChange('title', e.target.value)}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
-                  placeholder="Duyuru başlığı"
+                  placeholder={getTranslation('announcements.title_placeholder')}
                 />
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  İçerik (Türkçe) *
+                  {getTranslation('announcements.content_label')}
                 </label>
                 <textarea
                   name="content"
@@ -789,14 +789,14 @@ export default function AnnouncementsManagement() {
                   rows={4}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
-                  placeholder="Duyuru içeriği"
+                  placeholder={getTranslation('announcements.content_placeholder')}
                 />
               </div>
 
               {/* Çok Dilli Çeviriler */}
               <div className="border-t pt-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Çok Dilli Çeviriler (Otomatik)</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{getTranslation('announcements.translations_title')}</h3>
                   <button
                     type="button"
                     onClick={() => setShowTranslations(!showTranslations)}
