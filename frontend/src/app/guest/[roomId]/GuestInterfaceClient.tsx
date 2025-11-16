@@ -123,9 +123,16 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
   // Misafir bilgileri artık yüklenmiyor - soyisim sorusu kaldırıldı
 
   // Otel adına göre hoş geldiniz mesajı formatla (Türkçe dilbilgisi: e/a ekleme)
-  const formatWelcomeMessage = (name: string): string => {
-    if (!name) return 'Hoş Geldiniz';
+  const formatWelcomeMessage = (name: string, lang: string = 'tr'): string => {
+    if (!name) return safeGetTranslation('room.welcome', 'Hoş Geldiniz');
     
+    // Türkçe dışındaki dillerde sadece "Welcome to {name}" formatı kullan
+    if (lang !== 'tr') {
+      const welcomeText = safeGetTranslation('room.welcome', 'Welcome');
+      return `${welcomeText} ${name}`;
+    }
+    
+    // Türkçe için dilbilgisi kurallarına göre formatla
     const trimmedName = name.trim();
     const lastChar = trimmedName.slice(-1).toLowerCase();
     const vowels = ['a', 'e', 'ı', 'i', 'o', 'ö', 'u', 'ü'];
@@ -204,7 +211,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
         <div className="w-full max-w-md px-4 mb-4 flex items-center justify-between">
           <h1 className="text-xl sm:text-2xl font-bold flex-1" style={{ color: theme.textColor }}>
             {hotelName 
-              ? formatWelcomeMessage(hotelName)
+              ? formatWelcomeMessage(hotelName, currentLanguage)
               : safeGetTranslation('room.welcome', 'Hoş Geldiniz')
             }
           </h1>
@@ -261,7 +268,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
       <div className="w-full max-w-md px-4 mb-4 flex items-center justify-between">
           <h1 className="text-xl sm:text-2xl font-bold flex-1" style={{ color: theme.textColor }}>
             {hotelName 
-              ? formatWelcomeMessage(hotelName)
+              ? formatWelcomeMessage(hotelName, currentLanguage)
               : safeGetTranslation('room.welcome', 'Hoş Geldiniz')
             }
           </h1>
