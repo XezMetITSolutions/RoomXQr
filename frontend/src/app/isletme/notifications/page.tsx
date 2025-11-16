@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguageStore } from '@/store/languageStore';
 import { 
   Bell, 
   CheckCircle, 
@@ -25,10 +26,17 @@ interface Notification {
 
 export default function NotificationsPage() {
   const { token, user } = useAuth();
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('page.notifications.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   // Bildirimleri API'den yükle
   useEffect(() => {
@@ -218,8 +226,8 @@ export default function NotificationsPage() {
       <div className="border-b border-gray-200 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Bildirimler</h1>
-            <p className="text-gray-600">Sistem bildirimlerini yönetin</p>
+            <h1 className="text-2xl font-bold text-gray-900">{getTranslation('page.notifications.title')}</h1>
+            <p className="text-gray-600">{getTranslation('page.notifications.subtitle')}</p>
           </div>
           <div className="flex items-center space-x-3">
             <button

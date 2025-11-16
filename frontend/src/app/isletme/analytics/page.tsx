@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguageStore } from '@/store/languageStore';
 import { 
   TrendingUp, 
   TrendingDown,
@@ -45,9 +46,16 @@ interface CategoryData {
 export default function AnalyticsPage() {
   const router = useRouter();
   const { token, user } = useAuth();
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [dateRange, setDateRange] = useState('7d');
   const [selectedMetric, setSelectedMetric] = useState('revenue');
   const [isLoading, setIsLoading] = useState(true);
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('page.analytics.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
     totalRevenue: 0,
     totalOrders: 0,
@@ -211,8 +219,8 @@ export default function AnalyticsPage() {
       <div className="border-b border-gray-200 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Analitik & Raporlar</h1>
-            <p className="text-gray-600">Performans metriklerini ve detaylı raporları görüntüleyin</p>
+            <h1 className="text-2xl font-bold text-gray-900">{getTranslation('page.analytics.title')}</h1>
+            <p className="text-gray-600">{getTranslation('page.analytics.subtitle')}</p>
           </div>
           <div className="flex items-center space-x-3">
             <select

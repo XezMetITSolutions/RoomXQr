@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useLanguageStore } from '@/store/languageStore';
 import { Save, Wifi, Clock, UtensilsCrossed, Building2, Phone, Plus, X } from 'lucide-react';
 
 interface HotelInfo {
@@ -33,11 +34,18 @@ interface HotelInfo {
 }
 
 export default function HotelInfoPage() {
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [hotelInfo, setHotelInfo] = useState<HotelInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [newAmenity, setNewAmenity] = useState('');
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('page.hotel_info.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   useEffect(() => {
     loadHotelInfo();
@@ -174,8 +182,8 @@ export default function HotelInfoPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Otel Bilgileri</h1>
-          <p className="text-sm text-gray-600 mt-1">Misafirlerin göreceği bilgileri buradan yönetebilirsiniz</p>
+          <h1 className="text-2xl font-bold text-gray-900">{getTranslation('page.hotel_info.title')}</h1>
+          <p className="text-sm text-gray-600 mt-1">{getTranslation('page.hotel_info.subtitle')}</p>
         </div>
         <button
           onClick={handleSave}

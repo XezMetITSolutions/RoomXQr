@@ -188,6 +188,20 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Bildirimler',
     'sidebar.analytics': 'Analitik',
     'sidebar.settings': 'Ayarlar',
+    
+    // Page Titles
+    'page.announcements.title': 'Duyuru Yönetimi',
+    'page.announcements.subtitle': 'Misafirlere gösterilecek duyuruları yönetin',
+    'page.notifications.title': 'Bildirimler',
+    'page.notifications.subtitle': 'Sistem bildirimlerini yönetin',
+    'page.analytics.title': 'Analitik & Raporlar',
+    'page.analytics.subtitle': 'Performans metriklerini ve detaylı raporları görüntüleyin',
+    'page.users.title': 'Kullanıcı Yönetimi',
+    'page.users.subtitle': 'Personel hesaplarını yönetin ve yetkilendirin',
+    'page.hotel_info.title': 'Otel Bilgileri',
+    'page.hotel_info.subtitle': 'Misafirlerin göreceği bilgileri buradan yönetebilirsiniz',
+    'page.settings.title': 'Ayarlar',
+    'page.settings.subtitle': 'Sistem ayarlarını yönetin',
   },
   
   en: {
@@ -327,6 +341,20 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Notifications',
     'sidebar.analytics': 'Analytics',
     'sidebar.settings': 'Settings',
+    
+    // Page Titles
+    'page.announcements.title': 'Announcement Management',
+    'page.announcements.subtitle': 'Manage announcements to show to guests',
+    'page.notifications.title': 'Notifications',
+    'page.notifications.subtitle': 'Manage system notifications',
+    'page.analytics.title': 'Analytics & Reports',
+    'page.analytics.subtitle': 'View performance metrics and detailed reports',
+    'page.users.title': 'User Management',
+    'page.users.subtitle': 'Manage and authorize staff accounts',
+    'page.hotel_info.title': 'Hotel Information',
+    'page.hotel_info.subtitle': 'Manage information that guests will see',
+    'page.settings.title': 'Settings',
+    'page.settings.subtitle': 'Manage system settings',
     
     // Survey/Evaluation
     'survey.title': 'Rate Us',
@@ -706,6 +734,20 @@ export const translations: Record<string, Translations> = {
     'sidebar.analytics': 'Analytik',
     'sidebar.settings': 'Einstellungen',
     
+    // Page Titles
+    'page.announcements.title': 'Ankündigungsverwaltung',
+    'page.announcements.subtitle': 'Verwalten Sie Ankündigungen für Gäste',
+    'page.notifications.title': 'Benachrichtigungen',
+    'page.notifications.subtitle': 'Systembenachrichtigungen verwalten',
+    'page.analytics.title': 'Analytik & Berichte',
+    'page.analytics.subtitle': 'Leistungsmetriken und detaillierte Berichte anzeigen',
+    'page.users.title': 'Benutzerverwaltung',
+    'page.users.subtitle': 'Personalverwaltung und Autorisierung',
+    'page.hotel_info.title': 'Hotelinformationen',
+    'page.hotel_info.subtitle': 'Verwalten Sie Informationen, die Gäste sehen werden',
+    'page.settings.title': 'Einstellungen',
+    'page.settings.subtitle': 'Systemeinstellungen verwalten',
+    
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -868,6 +910,20 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Notifications',
     'sidebar.analytics': 'Analytique',
     'sidebar.settings': 'Paramètres',
+    
+    // Page Titles
+    'page.announcements.title': 'Gestion des Annonces',
+    'page.announcements.subtitle': 'Gérer les annonces à afficher aux invités',
+    'page.notifications.title': 'Notifications',
+    'page.notifications.subtitle': 'Gérer les notifications système',
+    'page.analytics.title': 'Analytique et Rapports',
+    'page.analytics.subtitle': 'Afficher les métriques de performance et les rapports détaillés',
+    'page.users.title': 'Gestion des Utilisateurs',
+    'page.users.subtitle': 'Gérer et autoriser les comptes du personnel',
+    'page.hotel_info.title': 'Informations sur l\'Hôtel',
+    'page.hotel_info.subtitle': 'Gérer les informations que les invités verront',
+    'page.settings.title': 'Paramètres',
+    'page.settings.subtitle': 'Gérer les paramètres système',
     
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',

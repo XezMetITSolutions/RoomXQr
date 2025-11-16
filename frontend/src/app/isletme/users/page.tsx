@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguageStore } from '@/store/languageStore';
 import { 
   Plus, 
   Edit, 
@@ -36,6 +37,7 @@ interface User {
 
 export default function UsersManagement() {
   const { token, user } = useAuth();
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -45,6 +47,12 @@ export default function UsersManagement() {
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('page.users.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   // İşletme paneli sayfaları
   const availablePages = [
@@ -430,8 +438,8 @@ export default function UsersManagement() {
       <div className="border-b border-gray-200 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Kullanıcı Yönetimi</h1>
-            <p className="text-gray-600">Personel hesaplarını yönetin ve yetkilendirin</p>
+            <h1 className="text-2xl font-bold text-gray-900">{getTranslation('page.users.title')}</h1>
+            <p className="text-gray-600">{getTranslation('page.users.subtitle')}</p>
           </div>
           <button
             onClick={addNewUser}

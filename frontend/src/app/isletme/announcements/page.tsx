@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { translateText } from '@/lib/translateService';
 import { useThemeStore } from '@/store/themeStore';
+import { useLanguageStore } from '@/store/languageStore';
 import { Moon, Sun } from 'lucide-react';
 
 import { 
@@ -65,6 +66,7 @@ interface Announcement {
 }
 
 export default function AnnouncementsManagement() {
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
@@ -72,6 +74,12 @@ export default function AnnouncementsManagement() {
   const [selectedIcon, setSelectedIcon] = useState<string>('');
   const [formData, setFormData] = useState<Partial<Announcement> & { translations?: { [lang: string]: { title: string; content: string; linkText?: string; } } }>({});
   const [showTranslations, setShowTranslations] = useState(false);
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('page.announcements.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   // Settings'ten desteklenen dilleri al
   const getSupportedLanguagesForTranslation = (): string[] => {
@@ -595,8 +603,8 @@ export default function AnnouncementsManagement() {
       <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Duyuru Yönetimi</h1>
-            <p className="text-gray-600 dark:text-gray-400">Misafirlere gösterilecek duyuruları yönetin</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{getTranslation('page.announcements.title')}</h1>
+            <p className="text-gray-600 dark:text-gray-400">{getTranslation('page.announcements.subtitle')}</p>
           </div>
           <div className="flex items-center space-x-3">
             <button

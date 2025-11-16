@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeStore } from '@/store/themeStore';
+import { useLanguageStore } from '@/store/languageStore';
 import Image from 'next/image';
 import { useSocialMediaStore } from '@/store/socialMediaStore';
 import { 
@@ -64,8 +65,15 @@ export default function SettingsPage() {
   // Authentication hook - component'in en üstünde çağrılmalı (React hooks kuralları)
   const { token, user } = useAuth();
   const themeStore = useThemeStore();
+  const { currentLanguage, getTranslation } = useLanguageStore();
   const [activeTab, setActiveTab] = useState<'hotel' | 'theme' | 'language' | 'social'>('hotel');
   const { links, setLinks } = useSocialMediaStore();
+
+  // Browser tab title'ını ayarla
+  useEffect(() => {
+    const title = getTranslation('page.settings.title');
+    document.title = `${title} - RoomXQR`;
+  }, [currentLanguage, getTranslation]);
 
   // URL parametresinden tab'ı belirle
   useEffect(() => {
@@ -483,8 +491,8 @@ export default function SettingsPage() {
       <div className="border-b border-gray-200 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Ayarlar</h1>
-            <p className="text-gray-600">Sistem ayarlarını yönetin</p>
+            <h1 className="text-2xl font-bold text-gray-900">{getTranslation('page.settings.title')}</h1>
+            <p className="text-gray-600">{getTranslation('page.settings.subtitle')}</p>
           </div>
           <button
             onClick={handleSave}
