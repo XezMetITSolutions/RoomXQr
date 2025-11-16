@@ -209,6 +209,7 @@ export function MenuTranslator({ menuItem, onTranslated, className = '' }: MenuT
             </>
           )}
         </button>
+        )}
       </div>
       
       {/* Hata Mesajı */}
