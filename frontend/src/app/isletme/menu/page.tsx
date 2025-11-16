@@ -1437,16 +1437,15 @@ export default function MenuManagement() {
                           // Backend'e kaydet
                           try {
                             const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-                            const token = localStorage.getItem('token');
+                            const token = localStorage.getItem('auth_token'); // auth_token kullan
                             
-                            let tenantSlug = 'demo';
-                            if (typeof window !== 'undefined') {
-                              const hostname = window.location.hostname;
-                              const subdomain = hostname.split('.')[0];
-                              if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
-                                tenantSlug = subdomain;
-                              }
+                            if (!token) {
+                              console.error('❌ Token bulunamadı. Lütfen tekrar giriş yapın.');
+                              alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+                              return;
                             }
+                            
+                            const tenantSlug = getTenantSlug(); // getTenantSlug fonksiyonunu kullan
                             
                             const response = await fetch(`${API_BASE_URL}/api/menu/${item.id}`, {
                               method: 'PUT',
@@ -1464,9 +1463,16 @@ export default function MenuManagement() {
                               console.log('✅ Çeviriler başarıyla kaydedildi');
                               // Başarı mesajı göster (isteğe bağlı - toast notification eklenebilir)
                             } else {
-                              const errorData = await response.json();
+                              const errorData = await response.json().catch(() => ({ message: 'Bilinmeyen hata' }));
                               console.error('❌ Çeviriler kaydedilirken hata:', errorData);
-                              alert('Çeviriler kaydedilirken bir hata oluştu: ' + (errorData.message || 'Bilinmeyen hata'));
+                              
+                              if (response.status === 401) {
+                                alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+                                // İsteğe bağlı: login sayfasına yönlendir
+                                // window.location.href = '/login';
+                              } else {
+                                alert('Çeviriler kaydedilirken bir hata oluştu: ' + (errorData.message || 'Bilinmeyen hata'));
+                              }
                             }
                           } catch (error) {
                             console.error('❌ Çeviriler kaydedilirken hata:', error);
