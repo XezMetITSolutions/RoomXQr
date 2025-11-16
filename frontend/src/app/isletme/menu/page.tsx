@@ -175,14 +175,16 @@ export default function MenuManagement() {
           ]);
         };
         
-        const translatedName = await translateWithTimeout(name, lang).catch(() => name);
-        const translatedDesc = await translateWithTimeout(description, lang).catch(() => description);
+        const translatedName = await translateWithTimeout(name, lang).catch(() => null);
+        const translatedDesc = await translateWithTimeout(description, lang).catch(() => null);
         
-        // Çeviri başarılı olduysa kaydet (orijinal metinle aynı değilse)
-        if (translatedName && translatedName !== name && translatedName.trim() !== '') {
+        // Çeviri başarılı olduysa kaydet (orijinal metinle aynı değilse ve boş değilse)
+        // Not: Bazı kelimeler (özellikle özel isimler, markalar) birçok dilde aynı kalabilir
+        // Bu durumda çeviri yapılmaz, sadece farklı olanlar kaydedilir
+        if (translatedName && translatedName !== name && translatedName.trim() !== '' && translatedName.trim() !== name.trim()) {
           translations[lang] = {
             name: translatedName,
-            description: (translatedDesc && translatedDesc !== description) ? translatedDesc : description
+            description: (translatedDesc && translatedDesc !== description && translatedDesc.trim() !== '') ? translatedDesc : description
           };
         }
       } catch (err) {

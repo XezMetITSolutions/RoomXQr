@@ -276,12 +276,8 @@ async function onlineTranslate(text: string, targetLang: string): Promise<string
     }
     
     if (!translated || translated === text) {
-      console.warn('Çeviri sonucu geçersiz veya orijinal metinle aynı:', { 
-        original: text, 
-        translated: translated,
-        targetLang: targetLang,
-        responseData: data 
-      });
+      // Çeviri sonucu orijinal metinle aynıysa, bu normal olabilir (özellikle özel isimler, markalar için)
+      // Sessizce null döndür, uyarı gösterme
       return null;
     }
     
