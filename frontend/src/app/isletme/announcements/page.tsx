@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { translateText } from '@/lib/translateService';
+import { useThemeStore } from '@/store/themeStore';
+import { Moon, Sun } from 'lucide-react';
 
 import { 
   Plus, 
@@ -173,6 +175,8 @@ export default function AnnouncementsManagement() {
   const { token, user } = useAuth();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const theme = useThemeStore();
+  const isDarkMode = theme.mode === 'dark';
 
   // Duyuruları API'den yükle
   useEffect(() => {
@@ -244,6 +248,17 @@ export default function AnnouncementsManagement() {
 
     loadAnnouncements();
   }, [token, user]);
+
+  // Dark mode class'ını document'e ekle
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, [isDarkMode]);
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -575,28 +590,46 @@ export default function AnnouncementsManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:bg-gray-900 min-h-screen">
       {/* Page Header */}
-      <div className="border-b border-gray-200 pb-4">
+      <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Duyuru Yönetimi</h1>
-            <p className="text-gray-600">Misafirlere gösterilecek duyuruları yönetin</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Duyuru Yönetimi</h1>
+            <p className="text-gray-600 dark:text-gray-400">Misafirlere gösterilecek duyuruları yönetin</p>
           </div>
-          <button
-            onClick={addNewAnnouncement}
-            className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2"
-          >
-            <Plus className="w-5 h-5" />
-            <span>Duyuru Ekle</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => {
+                const newMode = isDarkMode ? 'light' : 'dark';
+                theme.setTheme({ 
+                  mode: newMode,
+                  backgroundColor: newMode === 'dark' ? '#0F172A' : '#FFFFFF',
+                  textColor: newMode === 'dark' ? '#F9FAFB' : '#1F2937',
+                  cardBackground: newMode === 'dark' ? '#1E293B' : '#F9FAFB',
+                  borderColor: newMode === 'dark' ? '#334155' : '#E5E7EB'
+                });
+              }}
+              className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              title={isDarkMode ? 'Açık Moda Geç' : 'Koyu Moda Geç'}
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={addNewAnnouncement}
+              className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Duyuru Ekle</span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="hotel-card p-6">
+      <div className="hotel-card p-6 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-medium text-gray-700">Filtrele:</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filtrele:</span>
           <div className="flex space-x-2">
             {(['all', 'active', 'inactive'] as const).map((filterOption) => (
               <button
@@ -605,7 +638,7 @@ export default function AnnouncementsManagement() {
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   filter === filterOption
                     ? 'bg-hotel-gold text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {filterOption === 'all' ? 'Tümü' : filterOption === 'active' ? 'Aktif' : 'Pasif'}
@@ -618,12 +651,12 @@ export default function AnnouncementsManagement() {
       {/* Announcements List */}
       <div className="space-y-4">
         {filteredAnnouncements.map((announcement) => (
-          <div key={announcement.id} className="hotel-card p-6">
+          <div key={announcement.id} className="hotel-card p-6 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-2">
                   {renderIcon(announcement.icon)}
-                  <h3 className="text-lg font-semibold text-gray-900">{announcement.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{announcement.title}</h3>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(announcement.type)}`}>
                     {getTypeLabel(announcement.type)}
                   </span>
@@ -639,9 +672,9 @@ export default function AnnouncementsManagement() {
                   </span>
                 </div>
                 
-                <p className="text-gray-600 mb-4">{announcement.content}</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{announcement.content}</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center space-x-2">
                     <Calendar className="w-4 h-4" />
                     <span>Başlangıç: {new Date(announcement.startDate).toLocaleDateString('tr-TR')}</span>
@@ -702,10 +735,10 @@ export default function AnnouncementsManagement() {
 
       {/* Add/Edit Modal */}
       {(showAddModal || showEditModal) && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-900">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
                 {showAddModal ? 'Yeni Duyuru Ekle' : 'Duyuru Düzenle'}
               </h3>
               <button
@@ -723,7 +756,7 @@ export default function AnnouncementsManagement() {
             <form onSubmit={handleFormSubmit} className="space-y-4">
               {/* Ana Türkçe İçerik */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Başlık (Türkçe) *
                 </label>
                 <input
@@ -732,13 +765,13 @@ export default function AnnouncementsManagement() {
                   defaultValue={selectedAnnouncement?.title || ''}
                   onChange={(e) => autoTranslateOnChange('title', e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   placeholder="Duyuru başlığı"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   İçerik (Türkçe) *
                 </label>
                 <textarea
@@ -747,7 +780,7 @@ export default function AnnouncementsManagement() {
                   onChange={(e) => autoTranslateOnChange('content', e.target.value)}
                   rows={4}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   placeholder="Duyuru içeriği"
                 />
               </div>
@@ -755,7 +788,7 @@ export default function AnnouncementsManagement() {
               {/* Çok Dilli Çeviriler */}
               <div className="border-t pt-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Çok Dilli Çeviriler (Otomatik)</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Çok Dilli Çeviriler (Otomatik)</h3>
                   <button
                     type="button"
                     onClick={() => setShowTranslations(!showTranslations)}
@@ -791,43 +824,43 @@ export default function AnnouncementsManagement() {
                   };
                   
                   return (
-                    <div key={lang} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
-                      <h4 className="font-medium text-gray-700 mb-3">{langNames[lang as keyof typeof langNames]}</h4>
+                    <div key={lang} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700">
+                      <h4 className="font-medium text-gray-700 dark:text-gray-200 mb-3">{langNames[lang as keyof typeof langNames]}</h4>
                       
                       <div className="space-y-3">
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Başlık</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Başlık</label>
                           <input
                             type="text"
                             name={`${lang}_title`}
                             value={formData.translations?.[lang]?.title || ''}
                             readOnly
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-gray-900 dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                             placeholder="Otomatik çevrilecek..."
                           />
                         </div>
                         
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">İçerik</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">İçerik</label>
                           <textarea
                             name={`${lang}_content`}
                             value={formData.translations?.[lang]?.content || ''}
                             readOnly
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-gray-900 dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                             placeholder="Otomatik çevrilecek..."
                           />
                         </div>
                         
                         {formData.linkText && (
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Link Metni</label>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Link Metni</label>
                             <input
                               type="text"
                               name={`${lang}_linkText`}
                               value={formData.translations?.[lang]?.linkText || ''}
                               readOnly
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-gray-900 dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                               placeholder="Otomatik çevrilecek..."
                             />
                           </div>
@@ -842,14 +875,14 @@ export default function AnnouncementsManagement() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Tip *
                   </label>
                   <select 
                     name="type"
                     defaultValue={selectedAnnouncement?.type || 'info'}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   >
                     <option value="info">Bilgi</option>
                     <option value="warning">Uyarı</option>
@@ -860,14 +893,14 @@ export default function AnnouncementsManagement() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Kategori *
                   </label>
                   <select 
                     name="category"
                     defaultValue={selectedAnnouncement?.category || 'general'}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   >
                     <option value="general">Genel</option>
                     <option value="menu">Menü</option>
@@ -877,7 +910,7 @@ export default function AnnouncementsManagement() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Başlangıç Tarihi *
                   </label>
                   <input
@@ -885,24 +918,24 @@ export default function AnnouncementsManagement() {
                     name="startDate"
                     defaultValue={selectedAnnouncement?.startDate || ''}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   />
                 </div>
               </div>
 
               {/* İkon Seçici */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   İkon Seçin (Opsiyonel)
                 </label>
-                <div className="grid grid-cols-6 gap-2 p-4 border border-gray-300 rounded-lg bg-gray-50 max-h-48 overflow-y-auto">
+                <div className="grid grid-cols-6 gap-2 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 max-h-48 overflow-y-auto">
                   {iconOptions.map((option) => {
                     const IconComponent = option.icon;
                     return (
                       <label
                         key={option.name}
-                        className={`flex flex-col items-center p-2 cursor-pointer hover:bg-white rounded-lg transition-colors group ${
-                          selectedIcon === option.name ? 'bg-blue-50 border-2 border-blue-200' : ''
+                        className={`flex flex-col items-center p-2 cursor-pointer hover:bg-white dark:hover:bg-gray-600 rounded-lg transition-colors group ${
+                          selectedIcon === option.name ? 'bg-blue-50 dark:bg-blue-900 border-2 border-blue-200 dark:border-blue-600' : ''
                         }`}
                       >
                         <input
@@ -918,44 +951,44 @@ export default function AnnouncementsManagement() {
                         }`}>
                           <IconComponent className="w-6 h-6" />
                         </div>
-                        <span className="text-xs text-gray-600 text-center">{option.label}</span>
+                        <span className="text-xs text-gray-600 dark:text-gray-300 text-center">{option.label}</span>
                       </label>
                     );
                   })}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Duyuruya uygun bir ikon seçin. Bu ikon QR menüde görünecektir.
                 </p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Bitiş Tarihi (Opsiyonel)
                 </label>
                 <input
                   type="date"
                   name="endDate"
                   defaultValue={selectedAnnouncement?.endDate || ''}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                 />
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Link URL (Opsiyonel)
                   </label>
                   <input
                     type="url"
                     name="linkUrl"
                     defaultValue={selectedAnnouncement?.linkUrl || ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                     placeholder="https://example.com veya /sayfa"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Link Metni (Opsiyonel)
                   </label>
                   <input
@@ -963,7 +996,7 @@ export default function AnnouncementsManagement() {
                     name="linkText"
                     defaultValue={selectedAnnouncement?.linkText || ''}
                     onChange={(e) => autoTranslateOnChange('linkText', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
                     placeholder="Örnek: Menüyü İncele"
                   />
                 </div>
@@ -976,7 +1009,7 @@ export default function AnnouncementsManagement() {
                   defaultChecked={selectedAnnouncement?.isActive ?? true}
                   className="rounded border-gray-300 text-hotel-gold focus:ring-hotel-gold"
                 />
-                <label className="ml-2 text-sm text-gray-700">
+                <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
                   Duyuru aktif
                 </label>
               </div>
@@ -990,7 +1023,7 @@ export default function AnnouncementsManagement() {
                   setShowEditModal(false);
                   setSelectedAnnouncement(null);
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800"
               >
                 İptal
               </button>
