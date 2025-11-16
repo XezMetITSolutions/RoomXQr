@@ -40,19 +40,37 @@ export async function GET(request: Request) {
         // Backend'den gelen formatı frontend formatına çevir
         // Backend hem menuItems hem de menu döndürebilir
         const menuItems = backendData.menuItems || backendData.menu || [];
-        const menu = menuItems.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          description: item.description || '',
-          price: parseFloat(item.price) || 0,
-          category: item.category || 'Diğer',
-          image: item.image || '',
-          allergens: item.allergens || [],
-          calories: item.calories,
-          preparationTime: 15, // Varsayılan
-          rating: 4.0, // Varsayılan
-          available: item.isAvailable !== false,
-        }));
+        const menu = menuItems.map((item: any) => {
+          // Translations'ı parse et
+          let translations = {};
+          try {
+            if (item.translations) {
+              if (typeof item.translations === 'string') {
+                translations = JSON.parse(item.translations);
+              } else if (typeof item.translations === 'object') {
+                translations = item.translations;
+              }
+            }
+          } catch (parseError) {
+            console.warn(`Translation parse error for item ${item.id}:`, parseError);
+            translations = {};
+          }
+          
+          return {
+            id: item.id,
+            name: item.name,
+            description: item.description || '',
+            price: parseFloat(item.price) || 0,
+            category: item.category || 'Diğer',
+            image: item.image || '',
+            allergens: item.allergens || [],
+            calories: item.calories,
+            preparationTime: item.preparationTime || 15,
+            rating: item.rating || 4.0,
+            available: item.isAvailable !== false,
+            translations: translations,
+          };
+        });
         
         return NextResponse.json({ menu }, { status: 200 });
       }

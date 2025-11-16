@@ -225,24 +225,45 @@ export default function MenuManagement() {
         });
         if (response.ok) {
           const data = await response.json();
+          console.log('Menü yüklendi, toplam item sayısı:', data.menu?.length || 0);
           const formattedItems = data.menu
             .filter((item: any) => !isDemoProduct(item.name)) // Demo ürünleri filtrele
-            .map((item: any, index: number) => ({
-              id: item.id || `api-${index}`,
-              name: item.name,
-              description: item.description || '',
-              price: item.price,
-              category: item.category || 'Diğer',
-              isAvailable: item.available !== false,
-              allergens: item.allergens || [],
-              calories: item.calories,
-              image: item.image,
-              preparationTime: item.preparationTime,
-              rating: item.rating,
-            }));
+            .map((item: any, index: number) => {
+              // Translations'ı parse et
+              let translations = {};
+              try {
+                if (item.translations) {
+                  if (typeof item.translations === 'string') {
+                    translations = JSON.parse(item.translations);
+                  } else if (typeof item.translations === 'object') {
+                    translations = item.translations;
+                  }
+                }
+              } catch (parseError) {
+                console.warn(`Translation parse error for item ${item.id}:`, parseError);
+                translations = {};
+              }
+              
+              return {
+                id: item.id || `api-${index}`,
+                name: item.name,
+                description: item.description || '',
+                price: item.price,
+                category: item.category || 'Diğer',
+                isAvailable: item.available !== false,
+                allergens: item.allergens || [],
+                calories: item.calories,
+                image: item.image,
+                preparationTime: item.preparationTime,
+                rating: item.rating,
+                translations: translations,
+              };
+            });
           
+          console.log('Filtrelenmiş menü item sayısı:', formattedItems.length);
           setMenuItems(formattedItems);
         } else {
+          console.error('Menü yükleme hatası, response status:', response.status);
           setMenuItems([]);
         }
       } catch (error) {
@@ -632,9 +653,15 @@ export default function MenuManagement() {
         }
 
         const responseData = await response.json();
+        console.log('Menu save response:', responseData);
+        
         // Backend'den dönen ID'yi kullan
+        // Backend'den items array'i dönebilir veya direkt item objesi dönebilir
+        const savedItem = responseData.items?.[0] || responseData.item || null;
+        const itemId = savedItem?.id || responseData.items?.[0]?.id || Date.now().toString();
+        
         const newItem: MenuItem = {
-          id: responseData.items?.[0]?.id || Date.now().toString(),
+          id: itemId,
           name: itemData.name || '',
           description: itemData.description || '',
           price: itemData.price || 0,
@@ -647,6 +674,8 @@ export default function MenuManagement() {
           rating: itemData.rating,
           translations: translations,
         };
+        
+        console.log('Yeni ürün eklendi:', newItem);
         setMenuItems(items => [...items, newItem]);
         setShowAddModal(false);
       }
