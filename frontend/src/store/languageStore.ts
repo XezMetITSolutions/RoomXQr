@@ -1056,7 +1056,16 @@ export const useLanguageStore = create<LanguageStore>()(
       
       getSupportedLanguages: () => {
         const supportedCodes = getSupportedLanguagesFromSettings();
-        return languages.filter(lang => supportedCodes.includes(lang.code));
+        const supported = languages.filter(lang => supportedCodes.includes(lang.code));
+        
+        // Eğer currentLanguage desteklenmiyorsa, varsayılan dile geç
+        const { currentLanguage } = get();
+        if (!supportedCodes.includes(currentLanguage)) {
+          const defaultLang = getSupportedLanguagesFromSettings()[0] || 'tr';
+          set({ currentLanguage: defaultLang });
+        }
+        
+        return supported;
       },
     }),
     {
