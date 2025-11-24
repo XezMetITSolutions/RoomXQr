@@ -226,7 +226,7 @@ export default function MenuManagement() {
   const isDemoProduct = (name: string): boolean => {
     const normalizedName = name.toLowerCase().trim();
     const demoProducts = [
-      'karniyarik',
+
       'cheeseburger',
       'cheese burger',
       'caesar salad',

@@ -50,7 +50,7 @@ export default function DebugMenuPage() {
   const isDemoProduct = (name: string): boolean => {
     const normalizedName = name.toLowerCase().trim();
     const demoProducts = [
-      'karniyarik',
+
       'cheeseburger',
       'cheese burger',
       'caesar salad',
@@ -62,12 +62,12 @@ export default function DebugMenuPage() {
   const loadDebugInfo = async () => {
     try {
       setDebugInfo(prev => ({ ...prev, isLoading: true, error: null }));
-      
+
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-      
+
       // Backend URL'yi düzelt (roomxqr.onrender.com -> roomxqr-backend.onrender.com)
       const backendUrl = API_BASE_URL.replace('roomxqr.onrender.com', 'roomxqr-backend.onrender.com');
-      
+
       // URL'den tenant slug'ını al
       let tenantSlug = 'demo';
       if (typeof window !== 'undefined') {
@@ -80,7 +80,7 @@ export default function DebugMenuPage() {
 
       const backendApiUrl = `${backendUrl}/api/menu`;
       const frontendApiUrl = '/api/menu';
-      
+
       // Backend API'den direkt veri çek
       let backendData = null;
       let backendResponse = null;
@@ -90,7 +90,7 @@ export default function DebugMenuPage() {
             'x-tenant': tenantSlug
           }
         });
-        
+
         if (backendRes.ok) {
           backendData = await backendRes.json();
           backendResponse = {
@@ -122,7 +122,7 @@ export default function DebugMenuPage() {
             'x-tenant': tenantSlug
           }
         });
-        
+
         if (frontendRes.ok) {
           frontendData = await frontendRes.json();
           frontendResponse = {
@@ -169,7 +169,7 @@ export default function DebugMenuPage() {
       let frontendMenuItems: MenuItem[] = [];
       let filteredItems: MenuItem[] = [];
       let demoProductsFiltered: string[] = [];
-      
+
       if (frontendData?.menu) {
         frontendMenuItems = frontendData.menu.map((item: any, index: number) => ({
           id: item.id || `frontend-${index}`,
@@ -295,9 +295,8 @@ export default function DebugMenuPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-500">Status:</span>
-              <span className={`px-2 py-1 rounded text-sm font-semibold ${
-                debugInfo.apiResponse.backend.status === 200 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-              }`}>
+              <span className={`px-2 py-1 rounded text-sm font-semibold ${debugInfo.apiResponse.backend.status === 200 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
                 {debugInfo.apiResponse.backend.status || 'N/A'} {debugInfo.apiResponse.backend.statusText || ''}
               </span>
             </div>
@@ -323,9 +322,8 @@ export default function DebugMenuPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-500">Status:</span>
-              <span className={`px-2 py-1 rounded text-sm font-semibold ${
-                debugInfo.apiResponse.frontend.status === 200 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-              }`}>
+              <span className={`px-2 py-1 rounded text-sm font-semibold ${debugInfo.apiResponse.frontend.status === 200 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
                 {debugInfo.apiResponse.frontend.status || 'N/A'} {debugInfo.apiResponse.frontend.statusText || ''}
               </span>
             </div>
@@ -366,7 +364,7 @@ export default function DebugMenuPage() {
                       <div className="font-semibold text-gray-900">{item.name}</div>
                       <div className="text-sm text-gray-600">{item.description}</div>
                       <div className="text-sm text-gray-500 mt-1">
-                        Kategori: {item.category} | Fiyat: {item.price} ₺ | 
+                        Kategori: {item.category} | Fiyat: {item.price} ₺ |
                         {item.isAvailable ? ' ✓ Mevcut' : ' ✗ Mevcut Değil'}
                       </div>
                     </div>
@@ -413,7 +411,7 @@ export default function DebugMenuPage() {
                       <div className="font-semibold text-gray-900">{item.name}</div>
                       <div className="text-sm text-gray-600">{item.description}</div>
                       <div className="text-sm text-gray-500 mt-1">
-                        Kategori: {item.category} | Fiyat: {item.price} ₺ | 
+                        Kategori: {item.category} | Fiyat: {item.price} ₺ |
                         {item.isAvailable ? ' ✓ Mevcut' : ' ✗ Mevcut Değil'}
                       </div>
                     </div>
@@ -470,7 +468,7 @@ export default function DebugMenuPage() {
                   <div className="font-semibold text-gray-900">{item.name}</div>
                   <div className="text-sm text-gray-600">{item.description}</div>
                   <div className="text-sm text-gray-500 mt-1">
-                    Kategori: {item.category} | Fiyat: {item.price} ₺ | 
+                    Kategori: {item.category} | Fiyat: {item.price} ₺ |
                     {item.isAvailable ? ' ✓ Mevcut' : ' ✗ Mevcut Değil'}
                   </div>
                 </div>
