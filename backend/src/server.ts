@@ -2016,6 +2016,28 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
   }
 })
 
+// Tüm menu item'ları sil
+app.delete('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const tenantId = getTenantId(req)
+
+    const result = await prisma.menuItem.deleteMany({
+      where: { 
+        tenantId
+      }
+    })
+
+    res.json({ 
+      message: 'Tüm menu item\'lar başarıyla silindi',
+      deletedCount: result.count
+    }); return;
+  } catch (error) {
+    console.error('Menu delete all error:', error)
+    res.status(500).json({ message: 'Database error' })
+    return;
+  }
+})
+
 app.delete('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
     const tenantId = getTenantId(req)

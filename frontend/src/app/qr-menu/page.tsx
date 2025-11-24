@@ -53,79 +53,8 @@ import Image from 'next/image';
 //   return categoryMap[category] || 'main';
 // };
 
-// Varsayılan menü verileri (API çalışmazsa kullanılacak)
-const defaultMenuData = [
-  {
-    id: '1',
-    name: 'Cheeseburger',
-    description: 'Sulu dana köftesi, cheddar peyniri, taze marul, domates ve özel sos ile',
-    price: 210,
-    preparationTime: 18,
-    rating: 4.8,
-    category: 'main',
-    subCategory: 'burger',
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80',
-    allergens: ['gluten', 'süt'],
-    service: 'Patates kızartması ve turşu ile servis edilir.',
-    available: true,
-  },
-  {
-    id: '2',
-    name: 'Margherita Pizza',
-    description: 'Mozzarella, domates sosu ve taze fesleğen ile',
-    price: 185,
-    preparationTime: 20,
-    rating: 4.7,
-    category: 'main',
-    subCategory: 'pizza',
-    image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80',
-    allergens: ['gluten', 'süt'],
-    service: 'Zeytinyağı ve baharat ile servis edilir.',
-    available: true,
-  },
-  {
-    id: '3',
-    name: 'Caesar Salata',
-    description: 'Romaine marul, parmesan, kruton ve Caesar sos',
-    price: 120,
-    preparationTime: 10,
-    rating: 4.6,
-    category: 'appetizer',
-    subCategory: 'salad',
-    image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80',
-    allergens: ['süt', 'gluten'],
-    service: 'Izgara tavuk ile tercih edilebilir.',
-    available: true,
-  },
-  {
-    id: '4',
-    name: 'Tiramisu',
-    description: 'Klasik İtalyan tatlısı, mascarpone ve kahve ile',
-    price: 95,
-    preparationTime: 8,
-    rating: 4.9,
-    category: 'dessert',
-    subCategory: 'classic',
-    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80',
-    allergens: ['süt', 'gluten', 'yumurta'],
-    service: 'Kakao serpilerek servis edilir.',
-    available: true,
-  },
-  {
-    id: '5',
-    name: 'Cappuccino',
-    description: 'Yoğun espresso, süt köpüğü ile',
-    price: 55,
-    preparationTime: 4,
-    rating: 4.7,
-    category: 'beverage',
-    subCategory: 'hot',
-    image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80',
-    allergens: ['süt'],
-    service: 'Mini kurabiye ile servis edilir.',
-    available: true,
-  },
-];
+// Varsayılan menü verileri - Tüm ürünler silindi, boş array
+const defaultMenuData: any[] = [];
 
 export default function QRMenuPage() {
   // Tema store
