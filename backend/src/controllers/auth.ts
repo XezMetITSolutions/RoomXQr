@@ -18,6 +18,18 @@ export async function login(req: Request, res: Response) {
 
     console.log('🔍 Login attempt:', { email, tenant: req.tenant?.slug })
 
+    // Sadece demo tenant'ına giriş izni ver
+    if (!req.tenant || req.tenant.slug !== 'demo') {
+      console.log('❌ Login denied - Only demo tenant allowed:', { 
+        tenantSlug: req.tenant?.slug,
+        allowedTenant: 'demo'
+      })
+      res.status(403).json({ 
+        message: 'Giriş sadece demo hesabı için izinlidir' 
+      })
+      return
+    }
+
     // Eğer email formatında değilse (username), tenant slug'ına göre email formatına çevir
     let loginEmail = email
     if (!email.includes('@') && req.tenant?.slug) {
@@ -76,6 +88,18 @@ export async function login(req: Request, res: Response) {
     if (!user.tenant.isActive) {
       res.status(403).json({ 
         message: 'İşletme hesabı aktif değil' 
+      })
+      return
+    }
+
+    // Kullanıcının tenant'ının demo olduğunu kontrol et
+    if (user.tenant.slug !== 'demo') {
+      console.log('❌ User not from demo tenant:', { 
+        userTenant: user.tenant.slug,
+        userEmail: user.email
+      })
+      res.status(403).json({ 
+        message: 'Giriş sadece demo hesabı için izinlidir' 
       })
       return
     }
