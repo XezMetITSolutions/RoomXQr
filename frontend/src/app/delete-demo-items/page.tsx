@@ -52,42 +52,50 @@ export default function DeleteDemoItemsPage() {
             setDeleting(true);
             const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
 
-            let successCount = 0;
-            let errorCount = 0;
+            // Karnıyarık ve Cheeseburger için ayrı ayrı sil
+            const patterns = ['karniyarik', 'cheeseburger'];
+            let totalDeleted = 0;
+            const deletedItems: string[] = [];
 
-            for (const item of menuItems) {
+            for (const pattern of patterns) {
                 try {
-                    const response = await fetch(`${API_URL}/api/menu/${item.id}`, {
+                    const response = await fetch(`${API_URL}/api/menu/public/delete-by-name`, {
                         method: 'DELETE',
                         headers: {
-                            'x-tenant': 'demo',
                             'Content-Type': 'application/json'
-                        }
+                        },
+                        body: JSON.stringify({
+                            namePattern: pattern,
+                            tenantSlug: 'demo'
+                        })
                     });
 
                     if (response.ok) {
-                        successCount++;
-                        console.log(`✓ Silindi: ${item.name}`);
+                        const data = await response.json();
+                        totalDeleted += data.deletedCount || 0;
+                        if (data.items) {
+                            deletedItems.push(...data.items.map((i: any) => i.name));
+                        }
+                        console.log(`✓ ${pattern} silindi:`, data);
                     } else {
-                        errorCount++;
-                        console.error(`✗ Silinemedi: ${item.name}`);
+                        const error = await response.text();
+                        console.error(`✗ ${pattern} silinemedi:`, error);
                     }
                 } catch (err) {
-                    errorCount++;
-                    console.error(`✗ Hata: ${item.name}`, err);
+                    console.error(`✗ ${pattern} hata:`, err);
                 }
 
                 // Kısa bekleme
-                await new Promise(resolve => setTimeout(resolve, 300));
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
 
-            if (errorCount === 0) {
-                setMessage(`✓ Tüm ürünler başarıyla silindi! (${successCount} ürün)`);
+            if (totalDeleted > 0) {
+                setMessage(`✓ ${totalDeleted} ürün başarıyla silindi!`);
                 setTimeout(() => {
                     router.push('/qr-menu?roomId=101');
                 }, 2000);
             } else {
-                setMessage(`⚠️ ${successCount} ürün silindi, ${errorCount} ürün silinemedi`);
+                setMessage('⚠️ Hiçbir ürün silinemedi. Ürünler zaten silinmiş olabilir.');
             }
 
             // Listeyi yenile
@@ -123,8 +131,8 @@ export default function DeleteDemoItemsPage() {
 
                     {message && (
                         <div className={`mb-6 p-4 rounded-lg ${message.startsWith('✓') ? 'bg-green-100 text-green-800 border border-green-200' :
-                                message.startsWith('⚠️') ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
-                                    'bg-red-100 text-red-800 border border-red-200'
+                            message.startsWith('⚠️') ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
+                                'bg-red-100 text-red-800 border border-red-200'
                             }`}>
                             <p className="font-semibold">{message}</p>
                         </div>

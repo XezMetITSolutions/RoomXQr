@@ -31,18 +31,18 @@ const io = new Server(server, {
       if (!origin) {
         return callback(null, true)
       }
-      
+
       const normalizedOrigin = origin.replace(/\/$/, '')
-      
+
       // Allow all roomxqr.com and roomxr.com domains
-      if (normalizedOrigin.includes('roomxqr.com') || 
-          normalizedOrigin.includes('roomxr.com') ||
-          normalizedOrigin.includes('onrender.com') ||
-          normalizedOrigin.includes('netlify.app') ||
-          normalizedOrigin.includes('localhost')) {
+      if (normalizedOrigin.includes('roomxqr.com') ||
+        normalizedOrigin.includes('roomxr.com') ||
+        normalizedOrigin.includes('onrender.com') ||
+        normalizedOrigin.includes('netlify.app') ||
+        normalizedOrigin.includes('localhost')) {
         return callback(null, true)
       }
-      
+
       callback(new Error('Not allowed by CORS'))
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -111,25 +111,25 @@ const corsOptions: cors.CorsOptions = {
       console.log('✅ CORS: Allowing request with no origin')
       return callback(null, true)
     }
-    
+
     // Normalize origin (remove trailing slash)
     const normalizedOrigin = origin.replace(/\/$/, '')
     console.log(`🔍 CORS: Checking origin: ${normalizedOrigin}`)
-    
+
     // Check if origin contains allowed domains
     const allowedDomains = ['roomxqr.com', 'roomxr.com', 'onrender.com', 'netlify.app', 'localhost']
-    
+
     for (const domain of allowedDomains) {
       if (normalizedOrigin.includes(domain)) {
         console.log(`✅ CORS: Allowed origin ${normalizedOrigin} (matches ${domain})`)
         return callback(null, true)
       }
     }
-    
+
     // Log blocked origin for debugging
     console.log(`❌ CORS: Blocked origin: ${normalizedOrigin}`)
     console.log(`   Allowed domains: ${allowedDomains.join(', ')}`)
-    
+
     callback(new Error(`CORS policy violation: ${normalizedOrigin} is not allowed`))
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -151,7 +151,7 @@ app.options('*', (req: Request, res: Response) => {
   if (origin) {
     const normalizedOrigin = origin.replace(/\/$/, '')
     const allowedDomains = ['roomxqr.com', 'roomxr.com', 'onrender.com', 'netlify.app', 'localhost']
-    
+
     for (const domain of allowedDomains) {
       if (normalizedOrigin.includes(domain)) {
         res.setHeader('Access-Control-Allow-Origin', origin)
@@ -164,7 +164,7 @@ app.options('*', (req: Request, res: Response) => {
       }
     }
   }
-  
+
   // CORS middleware'i de uygula
   cors(corsOptions)(req, res, () => {
     res.status(200).end()
@@ -216,16 +216,16 @@ app.get('/health', async (req: Request, res: Response) => {
   try {
     // Test database connection
     await prisma.$queryRaw`SELECT 1`
-    res.status(200).json({ 
-      status: 'OK', 
+    res.status(200).json({
+      status: 'OK',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       database: 'Connected',
       environment: process.env.NODE_ENV || 'development'
     })
   } catch (error) {
-    res.status(503).json({ 
-      status: 'ERROR', 
+    res.status(503).json({
+      status: 'ERROR',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       database: 'Disconnected',
@@ -239,10 +239,10 @@ app.get('/health', async (req: Request, res: Response) => {
 app.post('/debug/database-setup', async (req: Request, res: Response): Promise<void> => {
   const results: any[] = []
   const { execSync } = require('child_process')
-  
+
   try {
     console.log('🚀 Kapsamlı database setup başlatılıyor...')
-    
+
     // 1. Veritabanı bağlantısını test et
     results.push({ step: '1. Veritabanı Bağlantısı', status: 'checking' })
     try {
@@ -253,14 +253,14 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
       res.status(500).json({ success: false, results, error: 'Veritabanı bağlantısı başarısız' })
       return
     }
-    
+
     // 2. Başarısız migration'ları resolve et
     results.push({ step: '2. Başarısız Migration\'ları Çözme', status: 'checking' })
     const failedMigrations = [
       '20250106210000_add_super_admin_role',
       '20250106220000_add_user_permissions'
     ]
-    
+
     for (const migration of failedMigrations) {
       try {
         execSync(`npx prisma migrate resolve --applied ${migration}`, {
@@ -276,7 +276,7 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
       }
     }
     results[results.length - 1] = { step: '2. Başarısız Migration\'ları Çözme', status: 'success', message: 'Başarısız migration\'lar kontrol edildi' }
-    
+
     // 3. Migration'ları çalıştır
     results.push({ step: '3. Migration\'ları Çalıştırma', status: 'checking' })
     try {
@@ -294,30 +294,30 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
       const stderr = migrateError.stderr || ''
       const errorMessage = migrateError.message || ''
       const fullErrorOutput = `${stdout}\n${stderr}\n${errorMessage}`.trim()
-      
+
       console.error('❌ Migration hatası detayları:')
       console.error('  - stdout:', stdout)
       console.error('  - stderr:', stderr)
       console.error('  - message:', errorMessage)
       console.error('  - code:', migrateError.code)
       console.error('  - signal:', migrateError.signal)
-      
+
       // Eğer "already applied" veya "No pending migrations" ise başarılı say
-      if (fullErrorOutput.includes('already applied') || 
-          fullErrorOutput.includes('No pending migrations') ||
-          fullErrorOutput.includes('All migrations have already been applied')) {
-        results[results.length - 1] = { 
-          step: '3. Migration\'ları Çalıştırma', 
-          status: 'success', 
-          message: 'Migration\'lar zaten uygulanmış', 
-          output: fullErrorOutput 
+      if (fullErrorOutput.includes('already applied') ||
+        fullErrorOutput.includes('No pending migrations') ||
+        fullErrorOutput.includes('All migrations have already been applied')) {
+        results[results.length - 1] = {
+          step: '3. Migration\'ları Çalıştırma',
+          status: 'success',
+          message: 'Migration\'lar zaten uygulanmış',
+          output: fullErrorOutput
         }
       } else {
         // Migration hatası var - alternatif yöntem dene
-        results[results.length - 1] = { 
-          step: '3. Migration\'ları Çalıştırma', 
-          status: 'error', 
-          message: 'Migration hatası - alternatif yöntem deneniyor', 
+        results[results.length - 1] = {
+          step: '3. Migration\'ları Çalıştırma',
+          status: 'error',
+          message: 'Migration hatası - alternatif yöntem deneniyor',
           output: fullErrorOutput,
           errorDetails: {
             code: migrateError.code,
@@ -326,7 +326,7 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
             stderr: stderr.substring(0, 500)
           }
         }
-        
+
         // Alternatif: Prisma db push dene (development için)
         console.log('🔄 Alternatif yöntem deneniyor: prisma db push')
         try {
@@ -337,26 +337,26 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
             timeout: 120000
           })
           console.log('✅ DB push başarılı:', pushOutput)
-          results.push({ 
-            step: '3b. Alternatif: DB Push', 
-            status: 'success', 
-            message: 'Schema başarıyla push edildi', 
-            output: pushOutput.substring(0, 1000) 
+          results.push({
+            step: '3b. Alternatif: DB Push',
+            status: 'success',
+            message: 'Schema başarıyla push edildi',
+            output: pushOutput.substring(0, 1000)
           })
         } catch (pushError: any) {
           const pushStdout = pushError.stdout || ''
           const pushStderr = pushError.stderr || ''
           console.error('❌ DB push hatası:', pushStdout, pushStderr)
-          results.push({ 
-            step: '3b. Alternatif: DB Push', 
-            status: 'error', 
-            message: 'DB push başarısız', 
+          results.push({
+            step: '3b. Alternatif: DB Push',
+            status: 'error',
+            message: 'DB push başarısız',
             output: `${pushStdout}\n${pushStderr}`.substring(0, 500)
           })
         }
       }
     }
-    
+
     // 4. Veritabanı durumunu kontrol et
     results.push({ step: '4. Veritabanı Durumu Kontrolü', status: 'checking' })
     try {
@@ -366,7 +366,7 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
         WHERE table_schema = 'public' AND table_name = 'tenants'
       `
       const hasTenantsTable = (tenantCount[0]?.count ?? BigInt(0)) > 0
-      
+
       let tenantDataCount = 0
       if (hasTenantsTable) {
         try {
@@ -375,11 +375,11 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
           // Tablo var ama boş olabilir
         }
       }
-      
+
       results[results.length - 1] = {
         step: '4. Veritabanı Durumu Kontrolü',
         status: hasTenantsTable ? 'success' : 'warning',
-        message: hasTenantsTable 
+        message: hasTenantsTable
           ? `Tenants tablosu mevcut (${tenantDataCount} kayıt)`
           : 'Tenants tablosu bulunamadı',
         details: {
@@ -390,14 +390,14 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
     } catch (error: any) {
       results[results.length - 1] = { step: '4. Veritabanı Durumu Kontrolü', status: 'error', message: error.message }
     }
-    
+
     // 5. System-admin tenant'ını oluştur (eğer yoksa)
     results.push({ step: '5. System-Admin Tenant Oluşturma', status: 'checking' })
     try {
       let systemAdminTenant = await prisma.tenant.findUnique({
         where: { slug: 'system-admin' }
       })
-      
+
       if (!systemAdminTenant) {
         systemAdminTenant = await prisma.tenant.create({
           data: {
@@ -415,28 +415,28 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
     } catch (error: any) {
       results[results.length - 1] = { step: '5. System-Admin Tenant Oluşturma', status: 'error', message: error.message }
     }
-    
+
     // 6. Super admin kullanıcısını oluştur (eğer yoksa)
     results.push({ step: '6. Super Admin Kullanıcı Oluşturma', status: 'checking' })
     try {
       const systemAdminTenant = await prisma.tenant.findUnique({
         where: { slug: 'system-admin' }
       })
-      
+
       if (systemAdminTenant) {
         const adminEmail = 'roomxqr-admin@roomxqr.com'
         let adminUser = await prisma.user.findUnique({
           where: { email: adminEmail }
         })
-        
+
         if (!adminUser) {
           const hashedPassword = await bcrypt.hash('01528797Mb##', 10)
-          
+
           // Önce bir hotel oluştur (user için gerekli)
           let hotel = await prisma.hotel.findFirst({
             where: { tenantId: systemAdminTenant.id }
           })
-          
+
           if (!hotel) {
             hotel = await prisma.hotel.create({
               data: {
@@ -449,7 +449,7 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
               }
             })
           }
-          
+
           adminUser = await prisma.user.create({
             data: {
               email: adminEmail,
@@ -472,17 +472,17 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
     } catch (error: any) {
       results[results.length - 1] = { step: '6. Super Admin Kullanıcı Oluşturma', status: 'error', message: error.message }
     }
-    
+
     // Sonuçları özetle
     const successCount = results.filter(r => r.status === 'success').length
     const errorCount = results.filter(r => r.status === 'error').length
     const warningCount = results.filter(r => r.status === 'warning').length
-    
+
     const overallSuccess = errorCount === 0
-    
+
     res.status(overallSuccess ? 200 : 500).json({
       success: overallSuccess,
-      message: overallSuccess 
+      message: overallSuccess
         ? 'Database setup başarıyla tamamlandı'
         : 'Database setup tamamlandı ancak bazı hatalar var',
       summary: {
@@ -494,7 +494,7 @@ app.post('/debug/database-setup', async (req: Request, res: Response): Promise<v
       results
     })
     return
-    
+
   } catch (error: any) {
     console.error('❌ Database setup hatası:', error)
     res.status(500).json({
@@ -536,13 +536,13 @@ app.post('/debug/migrate', async (req: Request, res: Response) => {
   try {
     console.log('🔄 Manual migration baslatiliyor...')
     const { execSync } = require('child_process')
-    
+
     // Önce başarısız migration'ları resolve et
     const failedMigrations = [
       '20250106210000_add_super_admin_role',
       '20250106220000_add_user_permissions'
     ]
-    
+
     for (const migration of failedMigrations) {
       try {
         execSync(`npx prisma migrate resolve --applied ${migration}`, {
@@ -556,20 +556,20 @@ app.post('/debug/migrate', async (req: Request, res: Response) => {
         console.log(`ℹ️ Migration resolve skipped: ${migration}`)
       }
     }
-    
+
     // Prisma migrate deploy komutunu çalıştır
     let output = ''
     let errorOutput = ''
-    
+
     try {
-      output = execSync('npx prisma migrate deploy', { 
+      output = execSync('npx prisma migrate deploy', {
         encoding: 'utf8',
         cwd: process.cwd(),
         stdio: ['pipe', 'pipe', 'pipe'],
         timeout: 60000 // 60 saniye timeout
       })
       console.log('✅ Migration ciktisi:', output)
-      
+
       res.status(200).json({
         success: true,
         message: 'Migrations basariyla calistirildi',
@@ -580,7 +580,7 @@ app.post('/debug/migrate', async (req: Request, res: Response) => {
       console.error('❌ Migration exec hatası:', execError)
       console.error('❌ stdout:', execError.stdout)
       console.error('❌ stderr:', execError.stderr)
-      
+
       // Hata olsa bile, eğer migration'lar zaten uygulanmışsa başarılı sayılabilir
       if (errorOutput.includes('already applied') || errorOutput.includes('No pending migrations')) {
         res.status(200).json({
@@ -615,7 +615,7 @@ app.post('/debug/migrate', async (req: Request, res: Response) => {
 async function cleanupDemoData() {
   try {
     console.log('🧹 Demo verileri temizleniyor...')
-    
+
     // Demo tenant'ı bul
     const demoTenant = await prisma.tenant.findUnique({
       where: { slug: 'demo' },
@@ -641,7 +641,7 @@ async function cleanupDemoData() {
     const orders = await prisma.order.findMany({
       where: { tenantId: demoTenant.id }
     })
-    
+
     for (const order of orders) {
       await prisma.orderItem.deleteMany({
         where: { orderId: order.id }
@@ -706,7 +706,7 @@ app.post('/api/cleanup-demo-data', tenantMiddleware, authMiddleware, async (req:
 async function cleanupUserTestData(userEmail: string) {
   try {
     console.log(`🧹 ${userEmail} kullanıcısına ait test verileri temizleniyor...`)
-    
+
     // Kullanıcıyı bul
     const user = await prisma.user.findUnique({
       where: { email: userEmail },
@@ -738,7 +738,7 @@ async function cleanupUserTestData(userEmail: string) {
       where: { tenantId }
     })
     deletedData.orders = orders.length
-    
+
     for (const order of orders) {
       await prisma.orderItem.deleteMany({
         where: { orderId: order.id }
@@ -945,11 +945,11 @@ app.get('/debug/tenants', async (req: Request, res: Response) => {
 app.options('/api/auth/login', (req: Request, res: Response) => {
   const origin = req.headers.origin
   console.log('🔍 OPTIONS /api/auth/login:', { origin, headers: req.headers })
-  
+
   if (origin) {
     const normalizedOrigin = origin.replace(/\/$/, '')
     const allowedDomains = ['roomxqr.com', 'roomxr.com', 'onrender.com', 'netlify.app', 'localhost']
-    
+
     for (const domain of allowedDomains) {
       if (normalizedOrigin.includes(domain)) {
         res.setHeader('Access-Control-Allow-Origin', origin)
@@ -963,7 +963,7 @@ app.options('/api/auth/login', (req: Request, res: Response) => {
       }
     }
   }
-  
+
   // Fallback: CORS middleware'i uygula
   console.log('⚠️ Using fallback CORS for:', origin)
   cors(corsOptions)(req, res, () => {
@@ -988,14 +988,14 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
     step = 'getTenantId';
     const tenantId = getTenantId(req)
     console.log('GET /api/menu - Tenant ID:', tenantId);
-    
+
     step = 'prismaQuery';
     // Önce translations kolonunun var olup olmadığını kontrol et
     let menuItems;
     try {
       // Tüm field'ları seçmeyi dene (translations dahil)
       menuItems = await prisma.menuItem.findMany({
-        where: { 
+        where: {
           tenantId,
           isActive: true
           // isAvailable filtresi kaldırıldı - tüm ürünler gösterilsin (mevcut olmayanlar da dahil)
@@ -1007,7 +1007,7 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
       if (error.message && error.message.includes('translations')) {
         console.log('⚠️ Translations kolonu bulunamadı, mevcut kolonlar seçiliyor...');
         menuItems = await prisma.menuItem.findMany({
-          where: { 
+          where: {
             tenantId,
             isActive: true
           },
@@ -1034,9 +1034,9 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
         throw error; // Başka bir hata ise fırlat
       }
     }
-    
+
     console.log('GET /api/menu - Found items:', menuItems.length);
-    
+
     step = 'formatMenu';
     // Translations'ı parse et (JSON olarak saklanıyor olabilir)
     const formattedMenu = menuItems.map((item: any, index: number) => {
@@ -1055,7 +1055,7 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
           console.warn(`Translation parse error for item ${item.id}:`, parseError);
           translations = {};
         }
-        
+
         // Price field'ı güvenli şekilde parse et
         let price = 0;
         try {
@@ -1072,7 +1072,7 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
           console.warn(`Price parse error for item ${item.id}:`, priceError);
           price = 0;
         }
-        
+
         return {
           id: item.id,
           name: item.name,
@@ -1093,20 +1093,20 @@ app.get('/api/menu', tenantMiddleware, async (req: Request, res: Response) => {
         return null;
       }
     }).filter(item => item !== null); // null item'ları filtrele
-    
+
     step = 'sendResponse';
     // Hem menuItems hem de menu formatında döndür (uyumluluk için)
-    res.json({ 
+    res.json({
       menuItems: formattedMenu,
-      menu: formattedMenu 
+      menu: formattedMenu
     }); return;
   } catch (error) {
     console.error('Menu error at step:', step);
     console.error('Menu error:', error);
     console.error('Menu error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    
+
     // Production'da da error mesajını döndür (debug için)
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: error instanceof Error ? error.message : String(error),
       step: step,
@@ -1121,9 +1121,9 @@ app.get('/api/rooms', tenantMiddleware, async (req: Request, res: Response) => {
   try {
     const tenantId = getTenantId(req)
     const rooms = await prisma.room.findMany({
-      where: { 
+      where: {
         tenantId,
-        isActive: true 
+        isActive: true
       },
       include: {
         guests: {
@@ -1142,7 +1142,7 @@ app.get('/api/rooms', tenantMiddleware, async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Rooms error:', error)
     const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV !== 'production'
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: isDevelopment ? (error instanceof Error ? error.message : String(error)) : undefined
     })
@@ -1154,9 +1154,9 @@ app.get('/api/guests', tenantMiddleware, async (req: Request, res: Response) => 
   try {
     const tenantId = getTenantId(req)
     const guests = await prisma.guest.findMany({
-      where: { 
+      where: {
         tenantId,
-        isActive: true 
+        isActive: true
       },
       include: {
         room: {
@@ -1172,7 +1172,7 @@ app.get('/api/guests', tenantMiddleware, async (req: Request, res: Response) => 
   } catch (error) {
     console.error('Guests error:', error)
     const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV !== 'production'
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: isDevelopment ? (error instanceof Error ? error.message : String(error)) : undefined
     })
@@ -1184,9 +1184,9 @@ app.get('/api/orders', tenantMiddleware, async (req: Request, res: Response) => 
   try {
     const tenantId = getTenantId(req)
     const { limit } = req.query
-    
+
     const orders = await prisma.order.findMany({
-      where: { 
+      where: {
         tenantId
       },
       include: {
@@ -1199,7 +1199,7 @@ app.get('/api/orders', tenantMiddleware, async (req: Request, res: Response) => 
       orderBy: { createdAt: 'desc' },
       take: limit ? parseInt(limit as string) : undefined
     })
-    
+
     res.json(orders); return;
   } catch (error) {
     console.error('Orders error:', error)
@@ -1228,10 +1228,10 @@ app.post('/api/orders', tenantMiddleware, async (req: Request, res: Response) =>
 
     // Extract room number from roomId (e.g., "room-101" -> "101")
     const roomNumber = roomId.replace('room-', '');
-    
+
     // Check if room exists by number or id
     let room = await prisma.room.findFirst({
-      where: { 
+      where: {
         OR: [
           { id: roomId },
           { number: roomNumber }
@@ -1263,7 +1263,7 @@ app.post('/api/orders', tenantMiddleware, async (req: Request, res: Response) =>
         console.error('Room creation error:', roomError);
         // If room creation fails (e.g., unique constraint), try to find by number again
         room = await prisma.room.findFirst({
-          where: { 
+          where: {
             number: roomNumber,
             tenantId
           }
@@ -1282,7 +1282,7 @@ app.post('/api/orders', tenantMiddleware, async (req: Request, res: Response) =>
 
     // Check if guest exists, if not create it
     let guest = await prisma.guest.findFirst({
-      where: { 
+      where: {
         id: guestId,
         tenantId
       }
@@ -1310,7 +1310,7 @@ app.post('/api/orders', tenantMiddleware, async (req: Request, res: Response) =>
         console.error('Guest creation error:', guestError);
         // If guest creation fails, try to find by id again (might have been created concurrently)
         guest = await prisma.guest.findFirst({
-          where: { 
+          where: {
             id: guestId,
             tenantId
           }
@@ -1377,7 +1377,7 @@ app.post('/api/orders', tenantMiddleware, async (req: Request, res: Response) =>
       code: error?.code,
       meta: error?.meta
     })
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: process.env.NODE_ENV === 'development' ? errorMessage : undefined
     })
@@ -1403,17 +1403,17 @@ app.put('/api/orders/:id', tenantMiddleware, authMiddleware, async (req: Request
     const updateData: any = {
       updatedAt: new Date()
     }
-    
+
     if (orderStatus) {
       updateData.status = orderStatus
     }
-    
+
     if (notes !== undefined) {
       updateData.notes = notes
     }
 
     const order = await prisma.order.updateMany({
-      where: { 
+      where: {
         id,
         tenantId
       },
@@ -1459,38 +1459,38 @@ app.put('/api/orders/:id', tenantMiddleware, authMiddleware, async (req: Request
 app.get('/api/statistics', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
     const tenantId = getTenantId(req)
-    
+
     // Toplam misafir sayısı
     const totalGuests = await prisma.guest.count({
-      where: { 
+      where: {
         tenantId,
-        isActive: true 
+        isActive: true
       }
     })
-    
+
     // Aktif sipariş sayısı
     const activeOrders = await prisma.order.count({
-      where: { 
+      where: {
         tenantId,
         status: { in: ['PENDING', 'PREPARING', 'READY'] }
       }
     })
-    
+
     // Bekleyen talep sayısı
     const pendingRequests = await prisma.guestRequest.count({
-      where: { 
+      where: {
         tenantId,
         status: { in: ['PENDING', 'IN_PROGRESS'] },
-        isActive: true 
+        isActive: true
       }
     })
-    
+
     // Bugünkü gelir
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const tomorrow = new Date(today)
     tomorrow.setDate(tomorrow.getDate() + 1)
-    
+
     const todayOrders = await prisma.order.findMany({
       where: {
         tenantId,
@@ -1504,9 +1504,9 @@ app.get('/api/statistics', tenantMiddleware, authMiddleware, async (req: Request
         totalAmount: true
       }
     })
-    
+
     const dailyRevenue = todayOrders.reduce((sum, order) => sum + Number(order.totalAmount || 0), 0)
-    
+
     res.json({
       totalGuests,
       activeOrders,
@@ -1526,22 +1526,22 @@ app.get('/api/requests', tenantMiddleware, async (req: Request, res: Response) =
     const tenantId = getTenantId(req)
     const { roomId, limit } = req.query
     const where = roomId ? { roomId: `room-${roomId}` } : {}
-    
+
     const requests = await prisma.guestRequest.findMany({
-      where: { 
+      where: {
         tenantId,
-        ...where, 
-        isActive: true 
+        ...where,
+        isActive: true
       },
       orderBy: { createdAt: 'desc' },
       take: limit ? parseInt(limit as string) : undefined
     })
-    
+
     res.json(requests); return;
   } catch (error) {
     console.error('Requests error:', error)
     const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV !== 'production'
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: isDevelopment ? (error instanceof Error ? error.message : String(error)) : undefined
     })
@@ -1607,7 +1607,7 @@ app.post('/api/guests/checkin', tenantMiddleware, async (req: Request, res: Resp
 
     // Check if room exists
     const room = await prisma.room.findFirst({
-      where: { 
+      where: {
         id: roomId,
         tenantId,
         isActive: true
@@ -1636,7 +1636,7 @@ app.post('/api/guests/checkin', tenantMiddleware, async (req: Request, res: Resp
     // Update room status
     await prisma.room.update({
       where: { id: room.id },
-      data: { 
+      data: {
         isOccupied: true,
         qrCode: `room-${room.number}-${firstName.toLowerCase()}-${lastName.toLowerCase()}`
       }
@@ -1645,10 +1645,10 @@ app.post('/api/guests/checkin', tenantMiddleware, async (req: Request, res: Resp
     // Generate QR code with guest name
     const qrCode = `room-${room.number}-${firstName.toLowerCase()}-${lastName.toLowerCase()}`
 
-    res.status(201).json({ 
-      message: 'Guest checked in successfully', 
+    res.status(201).json({
+      message: 'Guest checked in successfully',
       guest,
-      qrCode 
+      qrCode
     })
     return
   } catch (error) {
@@ -1677,7 +1677,7 @@ app.post('/api/guests/checkout', tenantMiddleware, async (req: Request, res: Res
       // Update guest check-out
       await prisma.guest.update({
         where: { id: guest.id },
-        data: { 
+        data: {
           checkOut: new Date(),
           isActive: false
         }
@@ -1686,7 +1686,7 @@ app.post('/api/guests/checkout', tenantMiddleware, async (req: Request, res: Res
 
     // Update room status and reset QR code
     const room = await prisma.room.findFirst({
-      where: { 
+      where: {
         id: roomId,
         tenantId,
         isActive: true
@@ -1696,14 +1696,14 @@ app.post('/api/guests/checkout', tenantMiddleware, async (req: Request, res: Res
     if (room) {
       await prisma.room.update({
         where: { id: room.id },
-        data: { 
+        data: {
           isOccupied: false,
           qrCode: `room-${room.number}`
         }
       })
     }
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Guest checked out successfully',
       qrCode: `room-${room?.number || 'unknown'}`
     })
@@ -1722,7 +1722,7 @@ app.post('/api/rooms/:roomId/generate-guest-qr', tenantMiddleware, async (req: R
     const { guestName } = req.body
 
     const room = await prisma.room.findFirst({
-      where: { 
+      where: {
         id: roomId,
         tenantId,
         isActive: true
@@ -1733,7 +1733,7 @@ app.post('/api/rooms/:roomId/generate-guest-qr', tenantMiddleware, async (req: R
       return res.status(404).json({ message: 'Room not found' })
     }
 
-    const qrCode = guestName 
+    const qrCode = guestName
       ? `room-${room.number}-${guestName.replace(/\s+/g, '-').toLowerCase()}`
       : `room-${room.number}`
 
@@ -1802,15 +1802,15 @@ app.get('/api/notifications', tenantMiddleware, authMiddleware, async (req: Requ
   try {
     const tenantId = getTenantId(req)
     const { limit } = req.query
-    
+
     const notifications = await prisma.notification.findMany({
-      where: { 
+      where: {
         tenantId
       },
       orderBy: { createdAt: 'desc' },
       take: limit ? parseInt(limit as string) : undefined
     })
-    
+
     res.json(notifications); return;
   } catch (error) {
     console.error('Notifications error:', error)
@@ -1881,12 +1881,12 @@ app.post('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res
         tenantId,
         hotelId: hotel.id
       };
-      
+
       // Translations kolonu varsa ekle
       if (translations !== undefined) {
         createData.translations = translations;
       }
-      
+
       menuItem = await prisma.menuItem.create({
         data: createData
       })
@@ -1918,7 +1918,7 @@ app.post('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res
   } catch (error) {
     console.error('Menu create error at step:', step);
     console.error('Menu create error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: error instanceof Error ? error.message : String(error),
       step: step
@@ -1946,7 +1946,7 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
     if (allergens !== undefined) updateData.allergens = allergens;
     if (calories !== undefined) updateData.calories = calories ? parseInt(calories) : null;
     if (isAvailable !== undefined) updateData.isAvailable = isAvailable;
-    
+
     // Translations kolonu varsa ekle, yoksa ekleme
     if (translations !== undefined) {
       updateData.translations = translations;
@@ -1955,7 +1955,7 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
     let menuItem;
     try {
       menuItem = await prisma.menuItem.updateMany({
-        where: { 
+        where: {
           id,
           tenantId
         },
@@ -1967,9 +1967,9 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
         console.log('⚠️ Translations kolonu bulunamadı, translations olmadan güncelleniyor...');
         const updateDataWithoutTranslations = { ...updateData };
         delete updateDataWithoutTranslations.translations;
-        
+
         menuItem = await prisma.menuItem.updateMany({
-          where: { 
+          where: {
             id,
             tenantId
           },
@@ -2007,7 +2007,7 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
   } catch (error) {
     console.error('Menu update error at step:', step);
     console.error('Menu update error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: error instanceof Error ? error.message : String(error),
       step: step
@@ -2022,12 +2022,12 @@ app.delete('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, r
     const tenantId = getTenantId(req)
 
     const result = await prisma.menuItem.deleteMany({
-      where: { 
+      where: {
         tenantId
       }
     })
 
-    res.json({ 
+    res.json({
       message: 'Tüm menu item\'lar başarıyla silindi',
       deletedCount: result.count
     }); return;
@@ -2077,7 +2077,7 @@ app.delete('/api/menu/delete-all-global', async (req: Request, res: Response) =>
 
     console.log(`🎉 Toplam ${totalDeleted} ürün silindi!`);
 
-    res.json({ 
+    res.json({
       success: true,
       message: 'Tüm menu item\'lar başarıyla silindi',
       totalDeleted,
@@ -2085,7 +2085,7 @@ app.delete('/api/menu/delete-all-global', async (req: Request, res: Response) =>
     }); return;
   } catch (error) {
     console.error('Menu delete all global error:', error)
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: error instanceof Error ? error.message : String(error)
     })
@@ -2093,13 +2093,73 @@ app.delete('/api/menu/delete-all-global', async (req: Request, res: Response) =>
   }
 })
 
+// Public endpoint to delete menu items by name pattern (for demo cleanup)
+app.delete('/api/menu/public/delete-by-name', async (req: Request, res: Response) => {
+  try {
+    const { namePattern, tenantSlug } = req.body;
+
+    if (!namePattern || !tenantSlug) {
+      res.status(400).json({ message: 'namePattern and tenantSlug are required' });
+      return;
+    }
+
+    // Find tenant
+    const tenant = await prisma.tenant.findUnique({
+      where: { slug: tenantSlug }
+    });
+
+    if (!tenant) {
+      res.status(404).json({ message: 'Tenant not found' });
+      return;
+    }
+
+    // Find matching items
+    const matchingItems = await prisma.menuItem.findMany({
+      where: {
+        tenantId: tenant.id,
+        name: {
+          contains: namePattern,
+          mode: 'insensitive'
+        }
+      }
+    });
+
+    if (matchingItems.length === 0) {
+      res.json({ message: 'No matching items found', deletedCount: 0, items: [] });
+      return;
+    }
+
+    // Delete matching items
+    const deleteResult = await prisma.menuItem.deleteMany({
+      where: {
+        tenantId: tenant.id,
+        name: {
+          contains: namePattern,
+          mode: 'insensitive'
+        }
+      }
+    });
+
+    res.json({
+      message: `Deleted ${deleteResult.count} items`,
+      deletedCount: deleteResult.count,
+      items: matchingItems.map(i => ({ id: i.id, name: i.name }))
+    });
+    return;
+  } catch (error) {
+    console.error('Public menu delete error:', error);
+    res.status(500).json({ message: 'Database error' });
+    return;
+  }
+});
+
 app.delete('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
     const tenantId = getTenantId(req)
     const { id } = req.params
 
     const menuItem = await prisma.menuItem.deleteMany({
-      where: { 
+      where: {
         id,
         tenantId
       }
@@ -2171,12 +2231,12 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
           tenantId,
           hotelId: hotel.id
         };
-        
+
         // Translations kolonu varsa ekle
         if (item.translations !== undefined) {
           createData.translations = item.translations;
         }
-        
+
         const menuItem = await prisma.menuItem.create({
           data: createData
         })
@@ -2229,7 +2289,7 @@ app.post('/api/menu/save', tenantMiddleware, authMiddleware, async (req: Request
   } catch (error) {
     console.error('Menu save error at step:', step);
     console.error('Menu save error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database error',
       error: error instanceof Error ? error.message : String(error),
       step: step
@@ -2243,17 +2303,17 @@ app.get('/api/announcements', tenantMiddleware, async (req: Request, res: Respon
   try {
     const tenantId = getTenantId(req)
     const { limit } = req.query
-    
+
     // Announcements are stored as notifications with type 'SYSTEM'
     const announcements = await prisma.notification.findMany({
-      where: { 
+      where: {
         tenantId,
         type: 'SYSTEM'
       },
       orderBy: { createdAt: 'desc' },
       take: limit ? parseInt(limit as string) : undefined
     })
-    
+
     res.json(announcements); return;
   } catch (error) {
     console.error('Announcements error:', error)
@@ -2317,7 +2377,7 @@ app.put('/api/announcements/:id', tenantMiddleware, authMiddleware, async (req: 
 
     // Get existing announcement to preserve metadata
     const existing = await prisma.notification.findFirst({
-      where: { 
+      where: {
         id,
         tenantId,
         type: 'SYSTEM'
@@ -2343,7 +2403,7 @@ app.put('/api/announcements/:id', tenantMiddleware, authMiddleware, async (req: 
     }
 
     const announcement = await prisma.notification.updateMany({
-      where: { 
+      where: {
         id,
         tenantId,
         type: 'SYSTEM'
@@ -2377,7 +2437,7 @@ app.delete('/api/announcements/:id', tenantMiddleware, authMiddleware, async (re
     const { id } = req.params
 
     const announcement = await prisma.notification.deleteMany({
-      where: { 
+      where: {
         id,
         tenantId,
         type: 'SYSTEM'
@@ -2400,10 +2460,10 @@ app.delete('/api/announcements/:id', tenantMiddleware, authMiddleware, async (re
 app.post('/api/admin/tenants', adminAuthMiddleware, async (req: Request, res: Response) => {
   try {
     console.log('🔍 POST /api/admin/tenants - Request body:', JSON.stringify(req.body, null, 2))
-    
-    const { 
-      name, 
-      slug, 
+
+    const {
+      name,
+      slug,
       domain,
       // Sahip Bilgileri
       ownerName,
@@ -2459,7 +2519,7 @@ app.post('/api/admin/tenants', adminAuthMiddleware, async (req: Request, res: Re
 
     // Slug'ı temizle ve kontrol et
     const cleanSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
-    
+
     // Tenant'ın zaten var olup olmadığını kontrol et
     const existingTenant = await prisma.tenant.findUnique({
       where: { slug: cleanSlug }
@@ -2660,7 +2720,7 @@ app.post('/api/admin/tenants', adminAuthMiddleware, async (req: Request, res: Re
     console.error('Tenant creation error:', error)
     console.error('Error details:', error instanceof Error ? error.message : String(error))
     console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace')
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Veritabanı hatası',
       error: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
     })
@@ -2834,10 +2894,10 @@ app.put('/api/admin/tenants/:id/admin-user/password', adminAuthMiddleware, async
 app.put('/api/admin/tenants/:id', adminAuthMiddleware, async (req: Request, res: Response) => {
   try {
     const { id } = req.params
-    const { 
-      name, 
-      slug, 
-      domain, 
+    const {
+      name,
+      slug,
+      domain,
       isActive,
       // Sahip Bilgileri
       ownerName,
@@ -2894,7 +2954,7 @@ app.put('/api/admin/tenants/:id', adminAuthMiddleware, async (req: Request, res:
 
     // Mevcut settings'i al
     const currentSettings = (tenant.settings as any) || {}
-    
+
     // Settings'i güncelle
     const updatedSettings = {
       ...currentSettings,
@@ -2981,7 +3041,7 @@ app.delete('/api/admin/tenants/:id', adminAuthMiddleware, async (req: Request, r
 app.get('/api/admin/tenants/:id/features', adminAuthMiddleware, async (req: Request, res: Response) => {
   try {
     const { id } = req.params
-    
+
     const features = await prisma.tenantFeature.findMany({
       where: { tenantId: id },
       select: {
@@ -3046,9 +3106,9 @@ app.post('/api/admin/tenants/:id/features', adminAuthMiddleware, async (req: Req
       }
     })
 
-    res.json({ 
+    res.json({
       message: 'Özellik başarıyla güncellendi',
-      feature 
+      feature
     }); return;
   } catch (error) {
     console.error('Update tenant feature error:', error); res.status(500).json({ message: 'Database error' }); return;
@@ -3073,9 +3133,9 @@ app.put('/api/admin/tenants/:id/features/:featureKey', adminAuthMiddleware, asyn
       }
     })
 
-    res.json({ 
+    res.json({
       message: 'Özellik başarıyla güncellendi',
-      feature 
+      feature
     }); return;
   } catch (error) {
     console.error('Update tenant feature error:', error); res.status(500).json({ message: 'Database error' }); return;
@@ -3111,7 +3171,7 @@ app.post('/api/admin/features/bulk-update', adminAuthMiddleware, async (req: Req
     }
 
     const results = []
-    
+
     for (const tenantId of tenantIds) {
       try {
         const feature = await prisma.tenantFeature.upsert({
@@ -3132,16 +3192,16 @@ app.post('/api/admin/features/bulk-update', adminAuthMiddleware, async (req: Req
             config: config || null
           }
         })
-        
+
         results.push({ tenantId, success: true, feature })
       } catch (error) {
         results.push({ tenantId, success: false, error: (error as Error).message })
       }
     }
 
-    res.json({ 
+    res.json({
       message: 'Toplu güncelleme tamamlandı',
-      results 
+      results
     }); return;
   } catch (error) {
     console.error('Bulk update features error:', error); res.status(500).json({ message: 'Database error' }); return;
@@ -3152,27 +3212,27 @@ app.post('/api/admin/features/bulk-update', adminAuthMiddleware, async (req: Req
 app.get('/api/hotel/info', tenantMiddleware, async (req: Request, res: Response) => {
   try {
     const tenantId = getTenantId(req)
-    
+
     // Get tenant to get hotel name
     const tenant = await prisma.tenant.findUnique({
       where: { id: tenantId },
       select: { name: true }
     })
-    
+
     // Get hotel from tenant
     const hotel = await prisma.hotel.findFirst({
       where: { tenantId }
     })
-    
+
     if (!hotel) {
       res.status(404).json({ message: 'Hotel not found' }); return;
     }
-    
+
     // Get hotel info from settings or return empty defaults
     const settings = hotel.settings as any || {}
-    
+
     console.log('GET /api/hotel/info - Hotel settings:', JSON.stringify(settings, null, 2));
-    
+
     const hotelInfo = {
       name: tenant?.name || '', // Tenant name'i otel adı olarak kullan
       wifi: settings.wifi || {
@@ -3202,9 +3262,9 @@ app.get('/api/hotel/info', tenantMiddleware, async (req: Request, res: Response)
         concierge: ''
       }
     }
-    
+
     console.log('GET /api/hotel/info - Returning hotelInfo:', JSON.stringify(hotelInfo, null, 2));
-    
+
     res.json(hotelInfo); return;
   } catch (error) {
     console.error('Get hotel info error:', error);
@@ -3216,24 +3276,24 @@ app.put('/api/hotel/info', tenantMiddleware, authMiddleware, async (req: Request
   try {
     const tenantId = getTenantId(req)
     const { wifi, hours, dining, amenities, contacts } = req.body
-    
+
     console.log('PUT /api/hotel/info - Request body:', JSON.stringify(req.body, null, 2));
-    
+
     // Get hotel from tenant
     const hotel = await prisma.hotel.findFirst({
       where: { tenantId }
     })
-    
+
     if (!hotel) {
       res.status(404).json({ message: 'Hotel not found' }); return;
     }
-    
+
     // Update hotel settings - frontend'den gelen veriyi direkt kaydet
     const currentSettings = (hotel.settings as any) || {}
     const updatedSettings: any = {
       ...currentSettings
     }
-    
+
     // Frontend'den gelen verileri kaydet (undefined değilse)
     if (wifi !== undefined) {
       updatedSettings.wifi = wifi
@@ -3250,23 +3310,23 @@ app.put('/api/hotel/info', tenantMiddleware, authMiddleware, async (req: Request
     if (contacts !== undefined) {
       updatedSettings.contacts = contacts
     }
-    
+
     console.log('PUT /api/hotel/info - Updated settings:', JSON.stringify(updatedSettings, null, 2));
-    
+
     await prisma.hotel.update({
       where: { id: hotel.id },
       data: {
         settings: updatedSettings
       }
     })
-    
+
     // Güncellenmiş hotel'i tekrar oku
     const updatedHotel = await prisma.hotel.findFirst({
       where: { id: hotel.id }
     })
-    
+
     console.log('PUT /api/hotel/info - Saved settings:', JSON.stringify(updatedHotel?.settings, null, 2));
-    
+
     res.json({ message: 'Hotel info updated successfully', hotelInfo: updatedSettings }); return;
   } catch (error) {
     console.error('Update hotel info error:', error);
@@ -3312,7 +3372,7 @@ app.post('/api/admin/database/upload-backup', adminAuthMiddleware, async (req: R
     return
   } catch (error) {
     console.error('Backup upload error:', error)
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Backup dosyası yüklenirken hata oluştu',
       error: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
     })
@@ -3340,13 +3400,13 @@ app.post('/api/admin/database/restore', adminAuthMiddleware, async (req: Request
     // Render.com'da pg_restore komutunu çalıştırmak zor olabilir
     // Bu yüzden kullanıcıya restore talimatlarını göster
     const fileStats = fs.statSync(filePath)
-    
+
     console.log(`🔄 Database restore isteği: ${filePath} (${fileStats.size} bytes)`)
 
     // Not: Render.com'da pg_restore komutunu çalıştırmak için
     // ya lokal bir script kullanılmalı ya da backup SQL formatına çevrilmeli
     // Şimdilik kullanıcıya talimatları göster
-    
+
     res.json({
       success: true,
       message: 'Backup dosyası hazır. Restore işlemi için manuel komut gerekli.',
@@ -3360,7 +3420,7 @@ app.post('/api/admin/database/restore', adminAuthMiddleware, async (req: Request
     return
   } catch (error) {
     console.error('Database restore error:', error)
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Database restore işlemi sırasında hata oluştu',
       error: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
     })
@@ -3442,7 +3502,7 @@ app.get('/api/admin/features/available', adminAuthMiddleware, async (req: Reques
 // Socket.IO
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id)
-  
+
   socket.on('join-room', (roomId: string) => {
     socket.join(`room-${roomId}`)
     console.log(`Socket ${socket.id} joined room ${roomId}`)
@@ -3591,7 +3651,7 @@ async function createDemoTenant() {
 async function ensureTranslationsColumn() {
   try {
     console.log('🔍 Translations kolonu kontrol ediliyor...')
-    
+
     // Önce kolonun var olup olmadığını kontrol et
     try {
       await prisma.$queryRaw`
@@ -3632,7 +3692,7 @@ async function runMigrations() {
     // Prisma migration'larını programatik olarak çalıştır
     const { execSync } = require('child_process')
     try {
-      execSync('npx prisma migrate deploy', { 
+      execSync('npx prisma migrate deploy', {
         stdio: 'inherit',
         cwd: process.cwd()
       })
@@ -3641,7 +3701,7 @@ async function runMigrations() {
       console.error('⚠️ Migration calistirma hatasi (devam ediliyor):', migrateError)
       // Migration hatası olsa bile devam et - belki zaten çalıştırılmış
     }
-    
+
     // Translations kolonunu kontrol et ve yoksa ekle
     await ensureTranslationsColumn()
   } catch (error) {
@@ -3656,7 +3716,7 @@ async function runMigrations() {
 app.post('/api/translate', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
     const { text, targetLang, sourceLang } = req.body;
-    
+
     if (!text || !targetLang) {
       res.status(400).json({ message: 'Text and targetLang are required' });
       return;
@@ -3669,7 +3729,7 @@ app.post('/api/translate', tenantMiddleware, authMiddleware, async (req: Request
     }
 
     // DeepL API endpoint (free tier)
-    const deeplEndpoint = DEEPL_API_KEY.includes('free') 
+    const deeplEndpoint = DEEPL_API_KEY.includes('free')
       ? 'https://api-free.deepl.com/v2/translate'
       : 'https://api.deepl.com/v2/translate';
 
@@ -3705,39 +3765,39 @@ app.post('/api/translate', tenantMiddleware, authMiddleware, async (req: Request
     if (!response.ok) {
       const errorText = await response.text();
       console.error('DeepL API error:', response.status, errorText);
-      res.status(response.status).json({ 
-        message: 'Translation failed', 
+      res.status(response.status).json({
+        message: 'Translation failed',
         error: errorText,
-        translatedText: null 
+        translatedText: null
       });
       return;
     }
 
     const data = await response.json() as any;
     const translations = (data?.translations || []) as Array<{ text: string }>;
-    
-    console.log('DeepL API response:', { 
-      targetLang: deeplTargetLang, 
+
+    console.log('DeepL API response:', {
+      targetLang: deeplTargetLang,
       sourceLang: deeplSourceLang,
       translationsCount: translations.length,
-      firstTranslation: translations[0]?.text 
+      firstTranslation: translations[0]?.text
     });
-    
+
     // Eğer tek bir metin gönderildiyse, tek bir çeviri döndür
     if (!Array.isArray(text)) {
       const translatedText = translations[0]?.text || null;
       if (!translatedText) {
         console.error('DeepL API returned no translation');
-        res.status(500).json({ 
+        res.status(500).json({
           message: 'No translation received from DeepL API',
-          translatedText: null 
+          translatedText: null
         });
         return;
       }
       res.json({ translatedText });
       return;
     }
-    
+
     // Birden fazla metin gönderildiyse, tüm çevirileri döndür
     res.json({ translations: translations.map((t: any) => t.text) });
     return;
@@ -3753,14 +3813,14 @@ server.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`)
   console.log(`📱 Frontend URL: ${process.env.FRONTEND_URL}`)
   console.log(`🗄️ Database: ${process.env.DATABASE_URL?.split('@')[1]}`)
-  
+
   // Migration'ları çalıştır (eğer çalıştırılmamışsa)
   try {
     await runMigrations()
   } catch (error) {
     console.error('❌ Migration çalıştırma hatası:', error)
   }
-  
+
   // Super admin oluştur
   try {
     await createSuperAdmin()
