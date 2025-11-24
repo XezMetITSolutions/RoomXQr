@@ -34,6 +34,12 @@ export async function GET(request: Request) {
       }
     }
 
+    // Demo tenant'ı için doğrudan fallback menüyü döndür
+    if (tenantSlug === 'demo') {
+      const fallbackMenu = await loadFallbackMenu();
+      return NextResponse.json({ menu: fallbackMenu }, { status: 200 });
+    }
+
     // Önce backend'den menüyü yüklemeyi dene
     try {
       const backendHeaders: Record<string, string> = {
