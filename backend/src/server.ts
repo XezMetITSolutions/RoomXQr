@@ -2098,30 +2098,38 @@ app.delete('/api/menu/public/delete-by-name', async (req: Request, res: Response
   try {
     const { namePattern, tenantSlug } = req.body;
 
-    if (!namePattern || !tenantSlug) {
-      res.status(400).json({ message: 'namePattern and tenantSlug are required' });
+    if (!namePattern) {
+      res.status(400).json({ message: 'namePattern is required' });
       return;
     }
 
-    // Find tenant
-    const tenant = await prisma.tenant.findUnique({
-      where: { slug: tenantSlug }
-    });
+    let tenantId: string | undefined;
 
-    if (!tenant) {
-      res.status(404).json({ message: 'Tenant not found' });
-      return;
-    }
-
-    // Find matching items
-    const matchingItems = await prisma.menuItem.findMany({
-      where: {
-        tenantId: tenant.id,
-        name: {
-          contains: namePattern,
-          mode: 'insensitive'
-        }
+    // If tenantSlug provided, try to find that tenant
+    if (tenantSlug) {
+      const tenant = await prisma.tenant.findUnique({
+        where: { slug: tenantSlug }
+      });
+      if (tenant) {
+        tenantId = tenant.id;
       }
+    }
+
+    // Find matching items (across all tenants if no specific tenant found)
+    const whereClause: any = {
+      name: {
+        contains: namePattern,
+        mode: 'insensitive'
+      }
+    };
+
+    // Only filter by tenant if we found one
+    if (tenantId) {
+      whereClause.tenantId = tenantId;
+    }
+
+    const matchingItems = await prisma.menuItem.findMany({
+      where: whereClause
     });
 
     if (matchingItems.length === 0) {
@@ -2131,13 +2139,7 @@ app.delete('/api/menu/public/delete-by-name', async (req: Request, res: Response
 
     // Delete matching items
     const deleteResult = await prisma.menuItem.deleteMany({
-      where: {
-        tenantId: tenant.id,
-        name: {
-          contains: namePattern,
-          mode: 'insensitive'
-        }
-      }
+      where: whereClause
     });
 
     res.json({
@@ -2152,6 +2154,7 @@ app.delete('/api/menu/public/delete-by-name', async (req: Request, res: Response
     return;
   }
 });
+
 
 app.delete('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
