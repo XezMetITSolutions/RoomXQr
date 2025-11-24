@@ -180,90 +180,71 @@ export default function QRMenuPage() {
         const response = await fetch('/api/menu');
         if (response.ok) {
           const data = await response.json();
-
-          // Demo ürünleri filtreleme fonksiyonu
-          const isDemoProduct = (name: string): boolean => {
-            const normalizedName = name.toLowerCase().trim();
-            const demoProducts = [
-              'karniyarik',
-              'karnıyarık',
-              'cheeseburger',
-              'cheese burger',
-              'caesar salad',
-              'caesar salata',
-              'sezar salata',
-              'sezar salatası'
-            ];
-            return demoProducts.some(demo => normalizedName === demo || normalizedName.includes(demo));
-          };
-
           // API'den gelen veriyi QR menü formatına çevir
-          const formattedMenu = data.menu
-            .filter((item: any) => !isDemoProduct(item.name)) // Demo ürünleri filtrele
-            .map((item: any, index: number) => {
-              console.log('API Item:', item); // Debug için
+          const formattedMenu = data.menu.map((item: any, index: number) => {
+            console.log('API Item:', item); // Debug için
 
-              // Varsayılan görselleri kontrol et
-              let defaultImage = '';
-              const itemName = item.name.toLowerCase();
-              if (itemName.includes('burger') || itemName.includes('cheeseburger')) {
-                defaultImage = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80';
-              } else if (itemName.includes('pizza') || itemName.includes('margherita')) {
-                defaultImage = 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80';
-              } else if (itemName.includes('salad') || itemName.includes('caesar')) {
-                defaultImage = 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80';
-              } else if (itemName.includes('tiramisu') || itemName.includes('dessert')) {
-                defaultImage = 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80';
-              } else if (itemName.includes('coffee') || itemName.includes('cappuccino')) {
-                defaultImage = 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80';
-              }
+            // Varsayılan görselleri kontrol et
+            let defaultImage = '';
+            const itemName = item.name.toLowerCase();
+            if (itemName.includes('burger') || itemName.includes('cheeseburger')) {
+              defaultImage = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80';
+            } else if (itemName.includes('pizza') || itemName.includes('margherita')) {
+              defaultImage = 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80';
+            } else if (itemName.includes('salad') || itemName.includes('caesar')) {
+              defaultImage = 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80';
+            } else if (itemName.includes('tiramisu') || itemName.includes('dessert')) {
+              defaultImage = 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80';
+            } else if (itemName.includes('coffee') || itemName.includes('cappuccino')) {
+              defaultImage = 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80';
+            }
 
-              // Dil seçimine göre çeviriyi al
-              let translations = {};
-              try {
-                if (item.translations) {
-                  if (typeof item.translations === 'string') {
-                    translations = JSON.parse(item.translations);
-                  } else if (typeof item.translations === 'object') {
-                    translations = item.translations;
-                  }
+            // Dil seçimine göre çeviriyi al
+            let translations = {};
+            try {
+              if (item.translations) {
+                if (typeof item.translations === 'string') {
+                  translations = JSON.parse(item.translations);
+                } else if (typeof item.translations === 'object') {
+                  translations = item.translations;
                 }
-              } catch (parseError) {
-                console.warn(`Translation parse error for item ${item.id}:`, parseError);
-                translations = {};
               }
-              const currentLang = currentLanguage || 'tr';
-              const translation = translations[currentLang];
+            } catch (parseError) {
+              console.warn(`Translation parse error for item ${item.id}:`, parseError);
+              translations = {};
+            }
+            const currentLang = currentLanguage || 'tr';
+            const translation = translations[currentLang];
 
-              // Debug log
-              if (index === 0) {
-                console.log('Menu translation debug:', {
-                  itemId: item.id,
-                  itemName: item.name,
-                  currentLang,
-                  translations,
-                  translation,
-                  finalName: translation?.name || item.name
-                });
-              }
+            // Debug log
+            if (index === 0) {
+              console.log('Menu translation debug:', {
+                itemId: item.id,
+                itemName: item.name,
+                currentLang,
+                translations,
+                translation,
+                finalName: translation?.name || item.name
+              });
+            }
 
-              return {
-                id: item.id || `api-${index}`,
-                name: translation?.name || item.name,
-                description: translation?.description || item.description || '',
-                price: item.price,
-                preparationTime: item.preparationTime || 15, // API'den gelen veya varsayılan hazırlık süresi
-                rating: item.rating || 4, // API'den gelen rating veya varsayılan 4
-                category: item.category || 'Diğer', // Backend'den gelen kategori adını direkt kullan
-                originalCategory: item.category || 'Diğer', // Orijinal kategori adını sakla
-                subCategory: 'general',
-                image: item.image || defaultImage, // API görseli yoksa varsayılan görseli kullan
-                allergens: item.allergens || [],
-                service: '',
-                available: item.available !== false,
-                translations: translations, // Çevirileri de sakla
-              };
-            });
+            return {
+              id: item.id || `api-${index}`,
+              name: translation?.name || item.name,
+              description: translation?.description || item.description || '',
+              price: item.price,
+              preparationTime: item.preparationTime || 15, // API'den gelen veya varsayılan hazırlık süresi
+              rating: item.rating || 4, // API'den gelen rating veya varsayılan 4
+              category: item.category || 'Diğer', // Backend'den gelen kategori adını direkt kullan
+              originalCategory: item.category || 'Diğer', // Orijinal kategori adını sakla
+              subCategory: 'general',
+              image: item.image || defaultImage, // API görseli yoksa varsayılan görseli kullan
+              allergens: item.allergens || [],
+              service: '',
+              available: item.available !== false,
+              translations: translations, // Çevirileri de sakla
+            };
+          });
           // Sadece API'den gelen gerçek ürünleri kullan, demo ürünleri ekleme
           setMenuData(formattedMenu);
 
@@ -820,16 +801,16 @@ export default function QRMenuPage() {
           <div
             key={notification.id}
             className={`w-full bg-white rounded-xl shadow-2xl border-l-4 p-4 sm:p-5 transform transition-all duration-500 notification-slide-in notification-gentle-pulse ${notification.type === 'success' ? 'border-green-500 bg-green-50' :
-                notification.type === 'info' ? 'border-blue-500 bg-blue-50' :
-                  'border-yellow-500 bg-yellow-50'
+              notification.type === 'info' ? 'border-blue-500 bg-blue-50' :
+                'border-yellow-500 bg-yellow-50'
               }`}
           >
             <div className="flex items-start justify-between">
               <div className="flex-1 pr-2">
                 <div className="flex items-center gap-2 mb-1">
                   <FaBell className={`w-4 h-4 ${notification.type === 'success' ? 'text-green-600' :
-                      notification.type === 'info' ? 'text-blue-600' :
-                        'text-yellow-600'
+                    notification.type === 'info' ? 'text-blue-600' :
+                      'text-yellow-600'
                     }`} />
                   <h4 className="font-bold text-gray-900 text-sm sm:text-base">{notification.title}</h4>
                 </div>
@@ -984,8 +965,8 @@ export default function QRMenuPage() {
                   setSelectedSubCategory('');
                 }}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap text-sm ${selectedCategory === category.id
-                    ? 'text-white shadow-lg'
-                    : ''
+                  ? 'text-white shadow-lg'
+                  : ''
                   }`}
                 style={selectedCategory === category.id
                   ? { background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[0]} 0%, ${theme.gradientColors[1]} 100%)` : theme.primaryColor }
@@ -1017,8 +998,8 @@ export default function QRMenuPage() {
               <button
                 onClick={() => setSelectedSubCategory('')}
                 className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md ${selectedSubCategory === ''
-                    ? 'bg-gray-800 text-white shadow-lg scale-105'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-lg border border-gray-200'
+                  ? 'bg-gray-800 text-white shadow-lg scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-lg border border-gray-200'
                   }`}
               >
                 {getTranslation('category.all')}
@@ -1028,8 +1009,8 @@ export default function QRMenuPage() {
                   key={sub.id}
                   onClick={() => setSelectedSubCategory(sub.id)}
                   className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md ${selectedSubCategory === sub.id
-                      ? 'bg-gray-800 text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-lg border border-gray-200'
+                    ? 'bg-gray-800 text-white shadow-lg scale-105'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-lg border border-gray-200'
                     }`}
                 >
                   {getTranslation(sub.nameKey)}
@@ -1618,8 +1599,8 @@ function PaymentModal({ items, note, total, roomId, onPaymentSuccess, onBack, ge
                 <button
                   onClick={() => setSelectedPayment('card')}
                   className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPayment === 'card'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   style={selectedPayment === 'card'
                     ? { borderColor: theme.secondaryColor, background: `${theme.secondaryColor}20` }
@@ -1640,8 +1621,8 @@ function PaymentModal({ items, note, total, roomId, onPaymentSuccess, onBack, ge
                 <button
                   onClick={() => setSelectedPayment('cash')}
                   className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPayment === 'cash'
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   style={selectedPayment === 'cash'
                     ? { borderColor: theme.accentColor, background: `${theme.accentColor}20` }
@@ -1662,8 +1643,8 @@ function PaymentModal({ items, note, total, roomId, onPaymentSuccess, onBack, ge
                 <button
                   onClick={() => setSelectedPayment('room')}
                   className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPayment === 'room'
-                      ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-purple-500 bg-purple-50'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   style={selectedPayment === 'room'
                     ? { borderColor: theme.primaryColor, background: `${theme.primaryColor}20` }
