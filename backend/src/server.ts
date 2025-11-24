@@ -2016,7 +2016,7 @@ app.put('/api/menu/:id', tenantMiddleware, authMiddleware, async (req: Request, 
   }
 })
 
-// Tüm menu item'ları sil
+// Tüm menu item'ları sil (tenant bazlı)
 app.delete('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
     const tenantId = getTenantId(req)
@@ -2034,6 +2034,61 @@ app.delete('/api/menu', tenantMiddleware, authMiddleware, async (req: Request, r
   } catch (error) {
     console.error('Menu delete all error:', error)
     res.status(500).json({ message: 'Database error' })
+    return;
+  }
+})
+
+// TÜM tenant'lar için tüm menu item'ları sil (geçici endpoint - sadece temizlik için)
+app.delete('/api/menu/delete-all-global', async (req: Request, res: Response) => {
+  try {
+    console.log('🗑️  Tüm tenant\'lar için menu item\'lar siliniyor...');
+
+    // Tüm tenant'ları bul
+    const tenants = await prisma.tenant.findMany({
+      select: {
+        id: true,
+        slug: true,
+        name: true
+      }
+    });
+
+    console.log(`📋 Bulunan tenant sayısı: ${tenants.length}`);
+
+    let totalDeleted = 0;
+    const deletedByTenant: { [key: string]: number } = {};
+
+    for (const tenant of tenants) {
+      // Her tenant için menu item'ları say
+      const count = await prisma.menuItem.count({
+        where: { tenantId: tenant.id }
+      });
+
+      if (count > 0) {
+        // Tüm menu item'ları sil
+        const result = await prisma.menuItem.deleteMany({
+          where: { tenantId: tenant.id }
+        });
+
+        deletedByTenant[tenant.slug] = result.count;
+        totalDeleted += result.count;
+        console.log(`✅ Tenant: ${tenant.name} (${tenant.slug}) - ${result.count} ürün silindi`);
+      }
+    }
+
+    console.log(`🎉 Toplam ${totalDeleted} ürün silindi!`);
+
+    res.json({ 
+      success: true,
+      message: 'Tüm menu item\'lar başarıyla silindi',
+      totalDeleted,
+      deletedByTenant
+    }); return;
+  } catch (error) {
+    console.error('Menu delete all global error:', error)
+    res.status(500).json({ 
+      message: 'Database error',
+      error: error instanceof Error ? error.message : String(error)
+    })
     return;
   }
 })
