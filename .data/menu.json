@@ -6,7 +6,11 @@
     "price": 260,
     "category": "breakfast",
     "image": "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy", "gluten", "nuts"],
+    "allergens": [
+      "dairy",
+      "gluten",
+      "nuts"
+    ],
     "calories": 520,
     "preparationTime": 15,
     "rating": 4.9,
@@ -37,7 +41,9 @@
     "price": 210,
     "category": "breakfast",
     "image": "https://images.unsplash.com/photo-1464347744102-11db6282f854?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["nuts"],
+    "allergens": [
+      "nuts"
+    ],
     "calories": 380,
     "preparationTime": 10,
     "rating": 4.7,
@@ -68,7 +74,9 @@
     "price": 185,
     "category": "appetizer",
     "image": "https://images.unsplash.com/photo-1484980972926-edee96e0960d?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy"],
+    "allergens": [
+      "dairy"
+    ],
     "calories": 410,
     "preparationTime": 12,
     "rating": 4.8,
@@ -99,7 +107,9 @@
     "price": 170,
     "category": "appetizer",
     "image": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["legume"],
+    "allergens": [
+      "legume"
+    ],
     "calories": 360,
     "preparationTime": 9,
     "rating": 4.6,
@@ -130,7 +140,9 @@
     "price": 420,
     "category": "main",
     "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy"],
+    "allergens": [
+      "dairy"
+    ],
     "calories": 780,
     "preparationTime": 20,
     "rating": 4.9,
@@ -161,7 +173,10 @@
     "price": 395,
     "category": "main",
     "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["fish", "nuts"],
+    "allergens": [
+      "fish",
+      "nuts"
+    ],
     "calories": 610,
     "preparationTime": 18,
     "rating": 4.8,
@@ -223,7 +238,11 @@
     "price": 190,
     "category": "dessert",
     "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476f?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy", "gluten", "egg"],
+    "allergens": [
+      "dairy",
+      "gluten",
+      "egg"
+    ],
     "calories": 540,
     "preparationTime": 12,
     "rating": 4.9,
@@ -254,7 +273,10 @@
     "price": 175,
     "category": "dessert",
     "image": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["nuts", "gluten"],
+    "allergens": [
+      "nuts",
+      "gluten"
+    ],
     "calories": 480,
     "preparationTime": 8,
     "rating": 4.8,
@@ -316,7 +338,9 @@
     "price": 140,
     "category": "beverage",
     "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["nuts"],
+    "allergens": [
+      "nuts"
+    ],
     "calories": 90,
     "preparationTime": 5,
     "rating": 4.6,
@@ -347,7 +371,10 @@
     "price": 195,
     "category": "breakfast",
     "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["egg", "dairy"],
+    "allergens": [
+      "egg",
+      "dairy"
+    ],
     "calories": 430,
     "preparationTime": 9,
     "rating": 4.8,
@@ -378,7 +405,10 @@
     "price": 210,
     "category": "appetizer",
     "image": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["nuts", "sesame"],
+    "allergens": [
+      "nuts",
+      "sesame"
+    ],
     "calories": 520,
     "preparationTime": 11,
     "rating": 4.7,
@@ -440,7 +470,10 @@
     "price": 285,
     "category": "main",
     "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["soy", "sesame"],
+    "allergens": [
+      "soy",
+      "sesame"
+    ],
     "calories": 540,
     "preparationTime": 13,
     "rating": 4.6,
@@ -471,7 +504,9 @@
     "price": 330,
     "category": "main",
     "image": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy"],
+    "allergens": [
+      "dairy"
+    ],
     "calories": 690,
     "preparationTime": 17,
     "rating": 4.9,
@@ -502,7 +537,10 @@
     "price": 165,
     "category": "dessert",
     "image": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy", "nuts"],
+    "allergens": [
+      "dairy",
+      "nuts"
+    ],
     "calories": 420,
     "preparationTime": 10,
     "rating": 4.7,
@@ -533,7 +571,11 @@
     "price": 185,
     "category": "dessert",
     "image": "https://images.unsplash.com/photo-1505250469679-203ad9ced0cb?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["dairy", "gluten", "nuts"],
+    "allergens": [
+      "dairy",
+      "gluten",
+      "nuts"
+    ],
     "calories": 560,
     "preparationTime": 9,
     "rating": 4.8,
@@ -564,7 +606,9 @@
     "price": 150,
     "category": "beverage",
     "image": "https://images.unsplash.com/photo-1481391032119-d89fee407e44?auto=format&fit=crop&w=900&q=80",
-    "allergens": ["nuts"],
+    "allergens": [
+      "nuts"
+    ],
     "calories": 210,
     "preparationTime": 4,
     "rating": 4.6,
@@ -618,6 +662,403 @@
         "description": "Mélange d’ananas, mangue, eau de coco, citron vert et gingembre."
       }
     }
+  },
+  {
+    "id": "static-new-1",
+    "name": "Pizza Quattro Formaggi",
+    "description": "Mozzarella, gorgonzola, parmesan ve emmental peynirleri ile.",
+    "price": 380,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy",
+      "gluten"
+    ],
+    "calories": 850,
+    "preparationTime": 20,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Dört Peynirli Pizza",
+        "description": "Mozzarella, gorgonzola, parmesan ve emmental peynirleri ile."
+      },
+      "en": {
+        "name": "Four Cheese Pizza",
+        "description": "With mozzarella, gorgonzola, parmesan and emmental cheeses."
+      },
+      "de": {
+        "name": "Vier-Käse-Pizza",
+        "description": "Mit Mozzarella, Gorgonzola, Parmesan und Emmentaler."
+      },
+      "fr": {
+        "name": "Pizza Quatre Fromages",
+        "description": "Avec mozzarella, gorgonzola, parmesan et emmental."
+      }
+    }
+  },
+  {
+    "id": "static-new-2",
+    "name": "Spaghetti Carbonara",
+    "description": "Krema, parmesan, yumurta sarısı ve dana bacon ile.",
+    "price": 340,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1612874742237-98280d8d991b?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy",
+      "gluten",
+      "egg"
+    ],
+    "calories": 720,
+    "preparationTime": 18,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Spagetti Carbonara",
+        "description": "Krema, parmesan, yumurta sarısı ve dana bacon ile."
+      },
+      "en": {
+        "name": "Spaghetti Carbonara",
+        "description": "With cream, parmesan, egg yolk and beef bacon."
+      },
+      "de": {
+        "name": "Spaghetti Carbonara",
+        "description": "Mit Sahne, Parmesan, Eigelb und Rinderspeck."
+      },
+      "fr": {
+        "name": "Spaghetti Carbonara",
+        "description": "À la crème, parmesan, jaune d'œuf et bacon de bœuf."
+      }
+    }
+  },
+  {
+    "id": "static-new-3",
+    "name": "Chicken Curry",
+    "description": "Köri soslu tavuk parçaları, basmati pilavı ile servis edilir.",
+    "price": 320,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy"
+    ],
+    "calories": 650,
+    "preparationTime": 22,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Tavuk Köri",
+        "description": "Köri soslu tavuk parçaları, basmati pilavı ile servis edilir."
+      },
+      "en": {
+        "name": "Chicken Curry",
+        "description": "Chicken pieces in curry sauce, served with basmati rice."
+      },
+      "de": {
+        "name": "Hähnchen-Curry",
+        "description": "Hähnchenstücke in Currysauce, serviert mit Basmatireis."
+      },
+      "fr": {
+        "name": "Poulet au Curry",
+        "description": "Morceaux de poulet sauce curry, servis avec riz basmati."
+      }
+    }
+  },
+  {
+    "id": "static-new-4",
+    "name": "Hummus & Pita",
+    "description": "Ev yapımı humus, zeytinyağı ve sıcak pita ekmeği.",
+    "price": 160,
+    "category": "appetizer",
+    "image": "https://images.unsplash.com/photo-1637949385162-e416fb15b2ce?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "sesame",
+      "gluten"
+    ],
+    "calories": 320,
+    "preparationTime": 10,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Humus & Pita",
+        "description": "Ev yapımı humus, zeytinyağı ve sıcak pita ekmeği."
+      },
+      "en": {
+        "name": "Hummus & Pita",
+        "description": "Homemade hummus, olive oil and warm pita bread."
+      },
+      "de": {
+        "name": "Hummus & Pita",
+        "description": "Hausgemachter Hummus, Olivenöl und warmes Fladenbrot."
+      },
+      "fr": {
+        "name": "Houmous & Pita",
+        "description": "Houmous maison, huile d'olive et pain pita chaud."
+      }
+    }
+  },
+  {
+    "id": "static-new-5",
+    "name": "Caprese Salad",
+    "description": "Taze mozzarella, domates, fesleğen ve balzamik sos.",
+    "price": 240,
+    "category": "appetizer",
+    "image": "https://images.unsplash.com/photo-1529312266912-b33cf6227e2f?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy"
+    ],
+    "calories": 280,
+    "preparationTime": 8,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Caprese Salatası",
+        "description": "Taze mozzarella, domates, fesleğen ve balzamik sos."
+      },
+      "en": {
+        "name": "Caprese Salad",
+        "description": "Fresh mozzarella, tomatoes, basil and balsamic glaze."
+      },
+      "de": {
+        "name": "Caprese-Salat",
+        "description": "Frischer Mozzarella, Tomaten, Basilikum und Balsamico-Glasur."
+      },
+      "fr": {
+        "name": "Salade Caprese",
+        "description": "Mozzarella fraîche, tomates, basilic et glaçage balsamique."
+      }
+    }
+  },
+  {
+    "id": "static-new-6",
+    "name": "Spring Rolls",
+    "description": "Mevsim sebzeleri ile doldurulmuş, tatlı ekşi sos ile.",
+    "price": 190,
+    "category": "appetizer",
+    "image": "https://images.unsplash.com/photo-1544510802-4429c728246b?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "gluten",
+      "soy"
+    ],
+    "calories": 220,
+    "preparationTime": 12,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Sebzeli Çin Böreği",
+        "description": "Mevsim sebzeleri ile doldurulmuş, tatlı ekşi sos ile."
+      },
+      "en": {
+        "name": "Vegetable Spring Rolls",
+        "description": "Stuffed with seasonal vegetables, with sweet and sour sauce."
+      },
+      "de": {
+        "name": "Frühlingsrollen",
+        "description": "Gefüllt mit saisonalem Gemüse, mit Süß-Sauer-Sauce."
+      },
+      "fr": {
+        "name": "Rouleaux de Printemps",
+        "description": "Farcis aux légumes de saison, avec sauce aigre-douce."
+      }
+    }
+  },
+  {
+    "id": "static-new-7",
+    "name": "Brownie",
+    "description": "Sıcak çikolatalı brownie, vanilyalı dondurma ile.",
+    "price": 180,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476f?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy",
+      "gluten",
+      "egg",
+      "nuts"
+    ],
+    "calories": 450,
+    "preparationTime": 10,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Cevizli Brownie",
+        "description": "Sıcak çikolatalı brownie, vanilyalı dondurma ile."
+      },
+      "en": {
+        "name": "Walnut Brownie",
+        "description": "Warm chocolate brownie with vanilla ice cream."
+      },
+      "de": {
+        "name": "Walnuss-Brownie",
+        "description": "Warmer Schokoladen-Brownie mit Vanilleeis."
+      },
+      "fr": {
+        "name": "Brownie aux Noix",
+        "description": "Brownie chaud au chocolat avec glace vanille."
+      }
+    }
+  },
+  {
+    "id": "static-new-8",
+    "name": "Fruit Salad",
+    "description": "Taze dilimlenmiş mevsim meyveleri.",
+    "price": 150,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1519996529931-28324d1a2924?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 120,
+    "preparationTime": 8,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Mevsim Meyve Tabağı",
+        "description": "Taze dilimlenmiş mevsim meyveleri."
+      },
+      "en": {
+        "name": "Seasonal Fruit Platter",
+        "description": "Freshly sliced seasonal fruits."
+      },
+      "de": {
+        "name": "Obstteller der Saison",
+        "description": "Frisch geschnittenes Obst der Saison."
+      },
+      "fr": {
+        "name": "Plateau de Fruits de Saison",
+        "description": "Fruits de saison fraîchement tranchés."
+      }
+    }
+  },
+  {
+    "id": "static-new-9",
+    "name": "Ice Cream Trio",
+    "description": "Vanilya, çikolata ve çilek topları.",
+    "price": 140,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy"
+    ],
+    "calories": 280,
+    "preparationTime": 5,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Dondurma Üçlüsü",
+        "description": "Vanilya, çikolata ve çilek topları."
+      },
+      "en": {
+        "name": "Ice Cream Trio",
+        "description": "Vanilla, chocolate and strawberry scoops."
+      },
+      "de": {
+        "name": "Eis-Trio",
+        "description": "Vanille-, Schokoladen- und Erdbeerkugeln."
+      },
+      "fr": {
+        "name": "Trio de Glaces",
+        "description": "Boules vanille, chocolat et fraise."
+      }
+    }
+  },
+  {
+    "id": "static-new-10",
+    "name": "Iced Latte",
+    "description": "Espresso, soğuk süt ve buz.",
+    "price": 130,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=900&q=80",
+    "allergens": [
+      "dairy"
+    ],
+    "calories": 110,
+    "preparationTime": 4,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Buzlu Latte",
+        "description": "Espresso, soğuk süt ve buz."
+      },
+      "en": {
+        "name": "Iced Latte",
+        "description": "Espresso, cold milk and ice."
+      },
+      "de": {
+        "name": "Eislatte",
+        "description": "Espresso, kalte Milch und Eis."
+      },
+      "fr": {
+        "name": "Latte Glacé",
+        "description": "Espresso, lait froid et glace."
+      }
+    }
+  },
+  {
+    "id": "static-new-11",
+    "name": "Green Tea",
+    "description": "Yasemin aromalı yaprak yeşil çay.",
+    "price": 90,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1627435601361-ec25f5b1d0e5?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 0,
+    "preparationTime": 5,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Yeşil Çay",
+        "description": "Yasemin aromalı yaprak yeşil çay."
+      },
+      "en": {
+        "name": "Green Tea",
+        "description": "Jasmine flavored loose leaf green tea."
+      },
+      "de": {
+        "name": "Grüner Tee",
+        "description": "Loser grüner Tee mit Jasminaroma."
+      },
+      "fr": {
+        "name": "Thé Vert",
+        "description": "Thé vert en feuilles au jasmin."
+      }
+    }
+  },
+  {
+    "id": "static-new-12",
+    "name": "Mojito (Non-alcoholic)",
+    "description": "Taze nane, lime, esmer şeker ve soda.",
+    "price": 160,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 140,
+    "preparationTime": 6,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Alkolsüz Mojito",
+        "description": "Taze nane, lime, esmer şeker ve soda."
+      },
+      "en": {
+        "name": "Virgin Mojito",
+        "description": "Fresh mint, lime, brown sugar and soda water."
+      },
+      "de": {
+        "name": "Alkoholfreier Mojito",
+        "description": "Frische Minze, Limette, brauner Zucker und Sodawasser."
+      },
+      "fr": {
+        "name": "Mojito Sans Alcool",
+        "description": "Menthe fraîche, citron vert, sucre roux et eau gazeuse."
+      }
+    }
   }
 ]
-
