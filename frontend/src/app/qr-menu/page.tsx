@@ -138,17 +138,17 @@ export default function QRMenuPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [cartNote, setCartNote] = useState('');
   const [orderStatus, setOrderStatus] = useState<'idle' | 'payment' | 'finalized'>('idle');
-  
+
   // Menü verileri için state
   const [menuData, setMenuData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   // Backend'den gelen kategoriler için state
   const [dynamicCategories, setDynamicCategories] = useState<{ id: string; name: string; translations?: { [lang: string]: string } }[]>([]);
-  
+
   // Dil store'u
   const { getTranslation, currentLanguage } = useLanguageStore();
   const [isHydrated, setIsHydrated] = useState(false);
-  
+
   // Oda numarası state
   const [roomId, setRoomId] = useState<string>('');
 
@@ -160,7 +160,7 @@ export default function QRMenuPage() {
       const urlParams = new URLSearchParams(window.location.search);
       const roomIdParam = urlParams.get('roomId') || '';
       const storedRoomId = localStorage.getItem('currentRoomId') || '';
-      
+
       // Önce URL'den, yoksa localStorage'dan al
       if (roomIdParam) {
         setRoomId(roomIdParam);
@@ -180,74 +180,93 @@ export default function QRMenuPage() {
         const response = await fetch('/api/menu');
         if (response.ok) {
           const data = await response.json();
+
+          // Demo ürünleri filtreleme fonksiyonu
+          const isDemoProduct = (name: string): boolean => {
+            const normalizedName = name.toLowerCase().trim();
+            const demoProducts = [
+              'karniyarik',
+              'karnıyarık',
+              'cheeseburger',
+              'cheese burger',
+              'caesar salad',
+              'caesar salata',
+              'sezar salata',
+              'sezar salatası'
+            ];
+            return demoProducts.some(demo => normalizedName === demo || normalizedName.includes(demo));
+          };
+
           // API'den gelen veriyi QR menü formatına çevir
-          const formattedMenu = data.menu.map((item: any, index: number) => {
-            console.log('API Item:', item); // Debug için
-            
-            // Varsayılan görselleri kontrol et
-            let defaultImage = '';
-            const itemName = item.name.toLowerCase();
-            if (itemName.includes('burger') || itemName.includes('cheeseburger')) {
-              defaultImage = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('pizza') || itemName.includes('margherita')) {
-              defaultImage = 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('salad') || itemName.includes('caesar')) {
-              defaultImage = 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('tiramisu') || itemName.includes('dessert')) {
-              defaultImage = 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('coffee') || itemName.includes('cappuccino')) {
-              defaultImage = 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80';
-            }
-            
-            // Dil seçimine göre çeviriyi al
-            let translations = {};
-            try {
-              if (item.translations) {
-                if (typeof item.translations === 'string') {
-                  translations = JSON.parse(item.translations);
-                } else if (typeof item.translations === 'object') {
-                  translations = item.translations;
-                }
+          const formattedMenu = data.menu
+            .filter((item: any) => !isDemoProduct(item.name)) // Demo ürünleri filtrele
+            .map((item: any, index: number) => {
+              console.log('API Item:', item); // Debug için
+
+              // Varsayılan görselleri kontrol et
+              let defaultImage = '';
+              const itemName = item.name.toLowerCase();
+              if (itemName.includes('burger') || itemName.includes('cheeseburger')) {
+                defaultImage = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80';
+              } else if (itemName.includes('pizza') || itemName.includes('margherita')) {
+                defaultImage = 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80';
+              } else if (itemName.includes('salad') || itemName.includes('caesar')) {
+                defaultImage = 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80';
+              } else if (itemName.includes('tiramisu') || itemName.includes('dessert')) {
+                defaultImage = 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80';
+              } else if (itemName.includes('coffee') || itemName.includes('cappuccino')) {
+                defaultImage = 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80';
               }
-            } catch (parseError) {
-              console.warn(`Translation parse error for item ${item.id}:`, parseError);
-              translations = {};
-            }
-            const currentLang = currentLanguage || 'tr';
-            const translation = translations[currentLang];
-            
-            // Debug log
-            if (index === 0) {
-              console.log('Menu translation debug:', {
-                itemId: item.id,
-                itemName: item.name,
-                currentLang,
-                translations,
-                translation,
-                finalName: translation?.name || item.name
-              });
-            }
-            
-            return {
-              id: item.id || `api-${index}`,
-              name: translation?.name || item.name,
-              description: translation?.description || item.description || '',
-              price: item.price,
-              preparationTime: item.preparationTime || 15, // API'den gelen veya varsayılan hazırlık süresi
-              rating: item.rating || 4, // API'den gelen rating veya varsayılan 4
-              category: item.category || 'Diğer', // Backend'den gelen kategori adını direkt kullan
-              originalCategory: item.category || 'Diğer', // Orijinal kategori adını sakla
-              subCategory: 'general',
-              image: item.image || defaultImage, // API görseli yoksa varsayılan görseli kullan
-              allergens: item.allergens || [],
-              service: '',
-              available: item.available !== false,
-              translations: translations, // Çevirileri de sakla
-            };
-          });
+
+              // Dil seçimine göre çeviriyi al
+              let translations = {};
+              try {
+                if (item.translations) {
+                  if (typeof item.translations === 'string') {
+                    translations = JSON.parse(item.translations);
+                  } else if (typeof item.translations === 'object') {
+                    translations = item.translations;
+                  }
+                }
+              } catch (parseError) {
+                console.warn(`Translation parse error for item ${item.id}:`, parseError);
+                translations = {};
+              }
+              const currentLang = currentLanguage || 'tr';
+              const translation = translations[currentLang];
+
+              // Debug log
+              if (index === 0) {
+                console.log('Menu translation debug:', {
+                  itemId: item.id,
+                  itemName: item.name,
+                  currentLang,
+                  translations,
+                  translation,
+                  finalName: translation?.name || item.name
+                });
+              }
+
+              return {
+                id: item.id || `api-${index}`,
+                name: translation?.name || item.name,
+                description: translation?.description || item.description || '',
+                price: item.price,
+                preparationTime: item.preparationTime || 15, // API'den gelen veya varsayılan hazırlık süresi
+                rating: item.rating || 4, // API'den gelen rating veya varsayılan 4
+                category: item.category || 'Diğer', // Backend'den gelen kategori adını direkt kullan
+                originalCategory: item.category || 'Diğer', // Orijinal kategori adını sakla
+                subCategory: 'general',
+                image: item.image || defaultImage, // API görseli yoksa varsayılan görseli kullan
+                allergens: item.allergens || [],
+                service: '',
+                available: item.available !== false,
+                translations: translations, // Çevirileri de sakla
+              };
+            });
           // Sadece API'den gelen gerçek ürünleri kullan, demo ürünleri ekleme
           setMenuData(formattedMenu);
-          
+
           // Backend'den gelen kategorileri çıkar ve dinamik kategoriler oluştur
           const uniqueCategories = new Set<string>();
           formattedMenu.forEach((item: any) => {
@@ -255,7 +274,7 @@ export default function QRMenuPage() {
               uniqueCategories.add(item.category);
             }
           });
-          
+
           // Kategorileri localStorage'dan yükle (isletme/menu sayfasından kaydedilen kategoriler)
           let categoriesFromStorage: { id: string; name: string; description?: string }[] = [];
           try {
@@ -267,7 +286,7 @@ export default function QRMenuPage() {
               if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
                 tenantSlug = subdomain;
               }
-              
+
               const storageKey = `menuCategories_${tenantSlug}`;
               const storedCategories = localStorage.getItem(storageKey);
               if (storedCategories) {
@@ -277,10 +296,10 @@ export default function QRMenuPage() {
           } catch (error) {
             console.warn('Kategoriler localStorage\'dan yüklenemedi:', error);
           }
-          
+
           // Kategorileri birleştir: Önce localStorage'dan, sonra menüden çıkarılanlar
           const categoryMap = new Map<string, { id: string; name: string; translations?: { [lang: string]: string } }>();
-          
+
           // localStorage'dan gelen kategorileri ekle
           categoriesFromStorage.forEach(cat => {
             let translations: { [lang: string]: string } = {};
@@ -301,7 +320,7 @@ export default function QRMenuPage() {
               translations: translations
             });
           });
-          
+
           // Menüden çıkarılan kategorileri ekle (eğer yoksa)
           Array.from(uniqueCategories).forEach(catName => {
             if (!categoryMap.has(catName)) {
@@ -311,7 +330,7 @@ export default function QRMenuPage() {
               });
             }
           });
-          
+
           setDynamicCategories(Array.from(categoryMap.values()));
         } else {
           // API hatası durumunda boş menü göster
@@ -328,7 +347,7 @@ export default function QRMenuPage() {
 
     loadMenuData();
   }, [currentLanguage]); // currentLanguage değiştiğinde menüyü yeniden yükle
-  
+
   // Dil değiştiğinde menu item'larının çevirilerini güncelle
   useEffect(() => {
     if (menuData.length > 0 && currentLanguage) {
@@ -347,7 +366,7 @@ export default function QRMenuPage() {
           translations = {};
         }
         const translation = translations[currentLanguage];
-        
+
         return {
           ...item,
           name: translation?.name || item.name,
@@ -357,18 +376,18 @@ export default function QRMenuPage() {
       setMenuData(updatedMenu);
     }
   }, [currentLanguage]);
-  
+
   // Duyurular state
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
 
-  
+
   // Duyuruları API'den yükle (sadece menü kategorisindeki)
   useEffect(() => {
     const loadAnnouncements = async () => {
       try {
         const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-        
+
         // URL'den tenant slug'ını al
         let tenantSlug = 'demo';
         if (typeof window !== 'undefined') {
@@ -388,9 +407,9 @@ export default function QRMenuPage() {
         if (response.ok) {
           const data = await response.json();
           const announcementsData = Array.isArray(data) ? data : [];
-          
+
           console.log('API\'den gelen duyurular:', announcementsData); // Debug için
-          
+
           // API'den gelen veriyi formatla ve aktif duyuruları filtrele
           const formattedAnnouncements = announcementsData
             .map((a: any) => {
@@ -398,26 +417,26 @@ export default function QRMenuPage() {
               const category = metadata.category || 'general';
               // isActive undefined veya null ise true kabul et (default aktif)
               const isActive = metadata.isActive === undefined || metadata.isActive === null ? true : metadata.isActive;
-              
-              console.log('Duyuru kontrolü:', { 
-                id: a.id, 
-                title: a.title, 
-                category, 
-                isActive, 
-                metadata: JSON.stringify(metadata) 
+
+              console.log('Duyuru kontrolü:', {
+                id: a.id,
+                title: a.title,
+                category,
+                isActive,
+                metadata: JSON.stringify(metadata)
               }); // Debug için
-              
+
               // Sadece aktif duyuruları göster (tüm kategoriler)
               if (isActive === false) {
                 console.log('Duyuru aktif değil:', a.id);
                 return null;
               }
-              
+
               // Tarih kontrolü (opsiyonel - eğer tarih yoksa göster)
               const now = new Date().toISOString().split('T')[0];
               const startDate = metadata.startDate || (a.createdAt ? new Date(a.createdAt).toISOString().split('T')[0] : null);
               const endDate = metadata.endDate;
-              
+
               // StartDate varsa ve gelecekteyse gösterme
               if (startDate && startDate > now) {
                 console.log('Başlangıç tarihi gelecekte:', startDate, '>', now);
@@ -428,9 +447,9 @@ export default function QRMenuPage() {
                 console.log('Bitiş tarihi geçmiş:', endDate, '<', now);
                 return null;
               }
-              
+
               console.log('Duyuru eklendi:', a.title);
-              
+
               // Translations'ı parse et
               let translations = {};
               try {
@@ -446,7 +465,7 @@ export default function QRMenuPage() {
                 console.warn(`Announcement translation parse error for ${a.id}:`, parseError);
                 translations = {};
               }
-              
+
               return {
                 id: a.id,
                 title: a.title || 'Duyuru',
@@ -463,7 +482,7 @@ export default function QRMenuPage() {
               };
             })
             .filter((a: any) => a !== null);
-          
+
           console.log('Filtrelenmiş duyurular:', formattedAnnouncements);
           setAnnouncements(formattedAnnouncements);
         } else {
@@ -475,9 +494,9 @@ export default function QRMenuPage() {
         setAnnouncements([]);
       }
     };
-    
+
     loadAnnouncements();
-    
+
     // Her 30 saniyede bir güncelle
     const interval = setInterval(loadAnnouncements, 30000);
     return () => clearInterval(interval);
@@ -487,21 +506,21 @@ export default function QRMenuPage() {
   useEffect(() => {
     if (announcements.length > 1) {
       const rotationInterval = setInterval(() => {
-        setCurrentAnnouncementIndex((prevIndex) => 
+        setCurrentAnnouncementIndex((prevIndex) =>
           (prevIndex + 1) % announcements.length
         );
       }, 4000); // 4 saniyede bir değiştir
-      
+
       return () => clearInterval(rotationInterval);
     }
   }, [announcements.length]);
-  
+
   // Sepetteki ürünleri getir
   const getCartItems = useCallback(() => cart.map(ci => {
     const product = menuData.find(m => m.id === ci.id);
     return product ? { ...product, quantity: ci.quantity } : null;
   }).filter(Boolean) as (typeof menuData[0] & { quantity: number })[], [cart, menuData]);
-  
+
   // Finalized modal'ını 3 saniye sonra otomatik kapat
   useEffect(() => {
     if (orderStatus === 'finalized') {
@@ -512,17 +531,17 @@ export default function QRMenuPage() {
         // Hazırlık süresini hesapla
         const cartItems = getCartItems();
         const maxPreparationTime = Math.max(...cartItems.map(item => item.preparationTime || 15));
-        const preparationMessage = cartItems.length === 1 
+        const preparationMessage = cartItems.length === 1
           ? `Hazırlanma süresi yaklaşık ${maxPreparationTime} dakikadır.`
           : `Hazırlanma süresi yaklaşık ${maxPreparationTime} dakikadır. (En uzun süreye göre)`;
-        
+
         addNotification('success', 'Sipariş Tamamlandı', `Siparişiniz başarıyla mutfağa iletildi. ${preparationMessage}`);
       }, 3000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [orderStatus, getCartItems]);
-  
+
   // Bildirim sistemi
   const [notifications, setNotifications] = useState<Array<{
     id: string;
@@ -542,7 +561,7 @@ export default function QRMenuPage() {
       timestamp: new Date()
     };
     setNotifications(prev => [notification, ...prev.slice(0, 4)]); // Max 5 bildirim
-    
+
     // 8 saniye sonra otomatik kapat
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== notification.id));
@@ -559,10 +578,10 @@ export default function QRMenuPage() {
     // URL'den oda numarasını al (örnek: /qr-menu?roomId=101)
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get('roomId') || '101';
-    
+
     const ws = ApiService.connectWebSocket(roomId, (data) => {
       console.log('QR Menü bildirimi alındı:', data);
-      
+
       if (data.type === 'guest_notification') {
         addNotification('info', 'Resepsiyon Yanıtı', data.message);
       }
@@ -583,12 +602,12 @@ export default function QRMenuPage() {
       const translatedCategories = dynamicCategories.map(cat => {
         const currentLang = currentLanguage || 'tr';
         let displayName = cat.name;
-        
+
         // Eğer çeviri varsa kullan
         if (cat.translations && cat.translations[currentLang]) {
           displayName = cat.translations[currentLang];
         }
-        
+
         return {
           id: cat.name, // ID orijinal kategori adı olmalı (filtreleme için)
           name: displayName, // Gösterim adı çevrilmiş olabilir
@@ -596,36 +615,36 @@ export default function QRMenuPage() {
           nameKey: undefined // nameKey yok, direkt name kullanılacak
         };
       });
-      
+
       return [
         { id: 'all', name: getTranslation('category.all') || 'Tümü', nameKey: 'category.all' },
         ...translatedCategories
       ];
     }
-    
+
     // Fallback: Eğer dinamik kategoriler yoksa, menüden çıkar
     if (menuData.length === 0) {
       return [{ id: 'all', name: getTranslation('category.all') || 'Tümü', nameKey: 'category.all' }];
     }
-    
+
     const categoriesWithProducts = new Set<string>();
     categoriesWithProducts.add('all'); // "Tümü" her zaman göster
-    
+
     menuData.forEach(item => {
       if (item.available && item.category) {
         categoriesWithProducts.add(item.category);
       }
     });
-    
+
     const menuCategories = Array.from(categoriesWithProducts)
       .filter(cat => cat !== 'all')
-      .map(catName => ({ 
-        id: catName, 
+      .map(catName => ({
+        id: catName,
         name: catName,
         originalName: catName,
         nameKey: undefined
       }));
-    
+
     return [
       { id: 'all', name: getTranslation('category.all') || 'Tümü', nameKey: 'category.all' },
       ...menuCategories
@@ -649,10 +668,10 @@ export default function QRMenuPage() {
         matchesCategory = item.category === selectedCategory;
       }
     }
-    
+
     const matchesSubCategory = !selectedSubCategory || item.subCategory === selectedSubCategory;
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
+      item.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSubCategory && matchesSearch && item.available;
   });
 
@@ -756,7 +775,7 @@ export default function QRMenuPage() {
               <span className="font-medium">Geri Dön</span>
             </button>
           </div>
-          
+
           <div className="mb-8">
             <div className="mb-4">
               <h1 className="text-3xl font-extrabold text-[#223] tracking-tight text-center">
@@ -764,7 +783,7 @@ export default function QRMenuPage() {
               </h1>
             </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
             <div className="flex space-x-2 overflow-x-auto w-full md:w-auto">
               {['Tümü', 'Kahvaltı', 'Ana Yemekler', 'Mezeler', 'Tatlılar', 'İçecekler'].map((category) => (
@@ -782,7 +801,7 @@ export default function QRMenuPage() {
               className="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#222] text-base min-w-[180px]"
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-white rounded-3xl shadow-lg p-6 text-center">
               <div className="text-gray-500">Yükleniyor...</div>
@@ -800,20 +819,18 @@ export default function QRMenuPage() {
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className={`w-full bg-white rounded-xl shadow-2xl border-l-4 p-4 sm:p-5 transform transition-all duration-500 notification-slide-in notification-gentle-pulse ${
-              notification.type === 'success' ? 'border-green-500 bg-green-50' :
-              notification.type === 'info' ? 'border-blue-500 bg-blue-50' :
-              'border-yellow-500 bg-yellow-50'
-            }`}
+            className={`w-full bg-white rounded-xl shadow-2xl border-l-4 p-4 sm:p-5 transform transition-all duration-500 notification-slide-in notification-gentle-pulse ${notification.type === 'success' ? 'border-green-500 bg-green-50' :
+                notification.type === 'info' ? 'border-blue-500 bg-blue-50' :
+                  'border-yellow-500 bg-yellow-50'
+              }`}
           >
             <div className="flex items-start justify-between">
               <div className="flex-1 pr-2">
                 <div className="flex items-center gap-2 mb-1">
-                  <FaBell className={`w-4 h-4 ${
-                    notification.type === 'success' ? 'text-green-600' :
-                    notification.type === 'info' ? 'text-blue-600' :
-                    'text-yellow-600'
-                  }`} />
+                  <FaBell className={`w-4 h-4 ${notification.type === 'success' ? 'text-green-600' :
+                      notification.type === 'info' ? 'text-blue-600' :
+                        'text-yellow-600'
+                    }`} />
                   <h4 className="font-bold text-gray-900 text-sm sm:text-base">{notification.title}</h4>
                 </div>
                 <p className="text-gray-700 text-sm sm:text-base mt-1 leading-relaxed font-medium">{notification.message}</p>
@@ -848,7 +865,7 @@ export default function QRMenuPage() {
             <span className="font-medium">Geri Dön</span>
           </button>
         </div>
-        
+
         <div className="mb-8">
           {/* Başlık */}
           <div className="mb-4">
@@ -869,7 +886,7 @@ export default function QRMenuPage() {
               }
               // Başta kalan tireleri temizle
               cleanRoomNumber = cleanRoomNumber.replace(/^-+/, '');
-              
+
               return (
                 <p className="text-center mt-2 text-sm" style={{ color: theme.textColor, opacity: 0.7 }}>
                   {cleanRoomNumber} numaralı oda
@@ -877,7 +894,7 @@ export default function QRMenuPage() {
               );
             })()}
           </div>
-          
+
           {/* Duyurular */}
           {announcements.length > 0 ? (
             <div className="max-w-sm mx-auto mb-4">
@@ -890,14 +907,13 @@ export default function QRMenuPage() {
                         e.preventDefault();
                         setCurrentAnnouncementIndex(index);
                       }}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                        index === currentAnnouncementIndex ? 'bg-blue-500' : 'bg-gray-300'
-                      }`}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${index === currentAnnouncementIndex ? 'bg-blue-500' : 'bg-gray-300'
+                        }`}
                     />
                   ))}
                 </div>
               )}
-              
+
               <div className={`border rounded-lg p-3 shadow-sm ${getTypeColor(announcements[currentAnnouncementIndex]?.type || 'info')} transition-all duration-500`}>
                 <div className="flex items-center space-x-2">
                   <div className="flex-shrink-0">
@@ -909,7 +925,7 @@ export default function QRMenuPage() {
                         {(() => {
                           const announcement = announcements[currentAnnouncementIndex];
                           if (!announcement) return '';
-                          
+
                           // Çeviri varsa kullan, yoksa Türkçe fallback
                           return announcement.translations?.[currentLanguage]?.title || announcement.title;
                         })()}
@@ -919,11 +935,11 @@ export default function QRMenuPage() {
                         {formatDate(announcements[currentAnnouncementIndex]?.startDate || '')}
                       </span>
                     </div>
-                    <p className="text-xs opacity-90 leading-tight mb-2 overflow-hidden" style={{display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical'}}>
+                    <p className="text-xs opacity-90 leading-tight mb-2 overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                       {(() => {
                         const announcement = announcements[currentAnnouncementIndex];
                         if (!announcement) return '';
-                        
+
                         // Çeviri varsa kullan, yoksa Türkçe fallback
                         return announcement.translations?.[currentLanguage]?.content || announcement.content;
                       })()}
@@ -940,7 +956,7 @@ export default function QRMenuPage() {
                             {(() => {
                               const announcement = announcements[currentAnnouncementIndex];
                               if (!announcement) return '';
-                              
+
                               // Link metni çevirisi varsa kullan, yoksa Türkçe fallback
                               return announcement.translations?.[currentLanguage]?.linkText || announcement.linkText;
                             })()}
@@ -967,11 +983,10 @@ export default function QRMenuPage() {
                   setSelectedCategory(category.id);
                   setSelectedSubCategory('');
                 }}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap text-sm ${
-                  selectedCategory === category.id
+                className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap text-sm ${selectedCategory === category.id
                     ? 'text-white shadow-lg'
                     : ''
-                }`}
+                  }`}
                 style={selectedCategory === category.id
                   ? { background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[0]} 0%, ${theme.gradientColors[1]} 100%)` : theme.primaryColor }
                   : { background: theme.cardBackground, color: theme.textColor, border: `1px solid ${theme.borderColor}` }}
@@ -980,11 +995,11 @@ export default function QRMenuPage() {
               </button>
             ))}
           </div>
-                <input
-                  type="text"
-                  placeholder={getTranslation('menu.search')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+          <input
+            type="text"
+            placeholder={getTranslation('menu.search')}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1 px-4 py-2 rounded-lg focus:outline-none text-base min-w-[180px]"
             style={{
               background: theme.cardBackground,
@@ -992,8 +1007,8 @@ export default function QRMenuPage() {
               border: `1px solid ${theme.borderColor}`,
               boxShadow: 'none'
             }}
-                />
-              </div>
+          />
+        </div>
         {/* Alt Kategoriler - Daha belirgin tasarım */}
         {showSubCategories && (
           <div className="mb-8">
@@ -1001,11 +1016,10 @@ export default function QRMenuPage() {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setSelectedSubCategory('')}
-                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md ${
-                  selectedSubCategory === ''
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md ${selectedSubCategory === ''
                     ? 'bg-gray-800 text-white shadow-lg scale-105'
                     : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-lg border border-gray-200'
-                }`}
+                  }`}
               >
                 {getTranslation('category.all')}
               </button>
@@ -1013,11 +1027,10 @@ export default function QRMenuPage() {
                 <button
                   key={sub.id}
                   onClick={() => setSelectedSubCategory(sub.id)}
-                  className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md ${
-                    selectedSubCategory === sub.id
+                  className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md ${selectedSubCategory === sub.id
                       ? 'bg-gray-800 text-white shadow-lg scale-105'
                       : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-lg border border-gray-200'
-                  }`}
+                    }`}
                 >
                   {getTranslation(sub.nameKey)}
                 </button>
@@ -1107,7 +1120,7 @@ export default function QRMenuPage() {
             getTranslation={getTranslation}
           />
         )}
-        
+
         {/* Sipariş Finalize */}
         {orderStatus === 'finalized' && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -1144,12 +1157,12 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
       {/* Görsel - Responsive ve optimize edilmiş */}
       <div className="relative w-full h-48 sm:h-56 md:h-52 lg:h-56">
         {image ? (
-          <NextImage 
-            src={image} 
-            alt={name} 
+          <NextImage
+            src={image}
+            alt={name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover object-center" 
+            className="object-cover object-center"
           />
         ) : (
           <div className="w-full h-48 sm:h-56 md:h-52 lg:h-56 bg-gradient-to-br from-orange-100 to-red-100 flex flex-col items-center justify-center">
@@ -1163,7 +1176,7 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
           <h3 className="font-bold text-xl leading-tight flex-1" style={{ color: theme.textColor }}>{name}</h3>
           <div className="text-2xl font-extrabold ml-3" style={{ color: theme.primaryColor }}>{price}₺</div>
         </div>
-        
+
         <div className="mb-3">
           <p className="text-sm leading-relaxed" style={{ color: theme.textColor }}>
             {showDetails ? description : (isLongDescription ? description.substring(0, 80) + '...' : description)}
@@ -1177,13 +1190,13 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
             </button>
           )}
         </div>
-        
+
         {service && (
           <p className="text-xs mb-4 italic px-3 py-2 rounded-lg" style={{ color: theme.secondaryColor, background: `${theme.secondaryColor}20` }}>
             {service}
           </p>
         )}
-        
+
         <div className="flex items-center space-x-4 text-sm mb-4" style={{ color: theme.textColor }}>
           <div className="flex items-center space-x-2">
             <Clock className="w-4 h-4" />
@@ -1197,7 +1210,7 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
             </div>
           )}
         </div>
-        
+
         {allergens && allergens.length > 0 && (
           <div className="text-xs mb-4 px-3 py-2 rounded-lg" style={{ color: '#b91c1c', background: '#fee2e2' }}>
             {getTranslation('product.allergens')}: {showDetails ? allergens.join(', ') : (isLongAllergens ? allergens.slice(0, 2).join(', ') + '...' : allergens.join(', '))}
@@ -1212,7 +1225,7 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
             )}
           </div>
         )}
-        
+
         <button
           onClick={onAdd}
           className="mt-auto px-6 py-3 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
@@ -1237,21 +1250,21 @@ function CartModal({ items, note, setNote, onClose, onOrder, setCartQuantity, re
   getTranslation: (key: string) => string;
 }) {
   const theme = useThemeStore();
-  
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="rounded-3xl max-w-lg w-full shadow-2xl max-h-[95vh] overflow-hidden mx-2 sm:mx-0" style={{ background: theme.cardBackground }}>
         <div className="flex justify-between items-center p-6" style={{ borderBottom: `1px solid ${theme.borderColor}` }}>
           <h2 className="text-2xl font-bold" style={{ color: theme.textColor }}>{getTranslation('cart.title')}</h2>
-                <button
-            onClick={onClose} 
+          <button
+            onClick={onClose}
             className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
             style={{ background: theme.borderColor }}
-                >
+          >
             <X className="w-5 h-5" style={{ color: theme.textColor }} />
-                </button>
+          </button>
         </div>
-        
+
         <div className="overflow-y-auto max-h-[60vh]">
           {items.length === 0 ? (
             <div className="text-center py-12" style={{ color: theme.textColor }}>
@@ -1260,9 +1273,9 @@ function CartModal({ items, note, setNote, onClose, onOrder, setCartQuantity, re
               </div>
               <p className="text-lg font-medium">{getTranslation('cart.empty')}</p>
               <p className="text-sm">{getTranslation('cart.add_products')}</p>
-                </div>
-              ) : (
-                <>
+            </div>
+          ) : (
+            <>
               <div className="p-4 space-y-3">
                 {items.map(item => (
                   <div key={item.id} className="flex items-center space-x-3 p-3 rounded-xl" style={{ background: theme.borderColor }}>
@@ -1276,40 +1289,40 @@ function CartModal({ items, note, setNote, onClose, onOrder, setCartQuantity, re
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-sm truncate" style={{ color: theme.textColor }}>{item.name}</div>
                       <div className="text-xs" style={{ color: theme.textColor }}>{item.price}₺</div>
-                      </div>
-                    
-                      <div className="flex items-center space-x-2">
-                        <button
-                        onClick={() => setCartQuantity(item.id, item.quantity - 1)} 
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setCartQuantity(item.id, item.quantity - 1)}
                         className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
                         style={{ background: `${theme.primaryColor}20`, color: theme.primaryColor }}
                       >
                         <Minus className="w-3 h-3" />
                       </button>
                       <span className="w-6 text-center font-semibold text-sm" style={{ color: theme.textColor }}>{item.quantity}</span>
-                      <button 
-                        onClick={() => setCartQuantity(item.id, item.quantity + 1)} 
+                      <button
+                        onClick={() => setCartQuantity(item.id, item.quantity + 1)}
                         className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
                         style={{ background: `${theme.primaryColor}20`, color: theme.primaryColor }}
                       >
                         <Plus className="w-3 h-3" />
-                        </button>
-                        <button
-                        onClick={() => removeFromCart(item.id)} 
+                      </button>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
                         className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
                         style={{ background: '#fee2e2', color: '#b91c1c' }}
-                        >
+                      >
                         <X className="w-3 h-3" />
-                        </button>
-                      </div>
+                      </button>
                     </div>
-                  ))}
+                  </div>
+                ))}
               </div>
-              
+
               <div className="p-4 sm:p-6" style={{ borderTop: `1px solid ${theme.borderColor}` }}>
                 <div className="mb-4">
                   <label className="block text-sm font-semibold mb-2" style={{ color: theme.textColor }}>Ekstra İstekleriniz</label>
@@ -1326,26 +1339,26 @@ function CartModal({ items, note, setNote, onClose, onOrder, setCartQuantity, re
                     }}
                     rows={2}
                   />
-                    </div>
-                
+                </div>
+
                 <div className="flex justify-between items-center mb-4 sm:mb-6">
                   <span className="text-base sm:text-lg font-semibold" style={{ color: theme.textColor }}>Toplam</span>
                   <span className="text-xl sm:text-2xl font-bold" style={{ color: theme.primaryColor }}>{total}₺</span>
-                  </div>
-                  
-                  <button
+                </div>
+
+                <button
                   onClick={onOrder}
                   className="w-full py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                   style={{ background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[2]} 0%, ${theme.gradientColors[3]} 100%)` : theme.secondaryColor, color: 'white' }}
-                  >
+                >
                   Siparişi Onayla
-                  </button>
+                </button>
               </div>
-                </>
-              )}
-            </div>
-          </div>
+            </>
+          )}
         </div>
+      </div>
+    </div>
   );
 }
 
@@ -1358,9 +1371,9 @@ function ConfirmationModal({ items, note, total, onProceed, onBack, getTranslati
   getTranslation: (key: string) => string;
 }) {
   const theme = useThemeStore();
-  
+
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
@@ -1372,89 +1385,89 @@ function ConfirmationModal({ items, note, total, onProceed, onBack, getTranslati
         <div className="flex justify-between items-center p-6" style={{ borderBottom: `1px solid ${theme.borderColor}` }}>
           <h2 className="text-2xl font-bold" style={{ color: theme.textColor }}>Siparişinizi Onaylayın</h2>
           <button
-            onClick={onBack} 
+            onClick={onBack}
             className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
             style={{ background: theme.borderColor }}
           >
             <X className="w-5 h-5" style={{ color: theme.textColor }} />
           </button>
         </div>
-        
+
         <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
           <div className="p-6">
-          {/* Uyarı Mesajı */}
-          <div className="rounded-xl p-4 mb-6" style={{ background: `${theme.accentColor}20`, border: `1px solid ${theme.accentColor}40` }}>
-            <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: theme.accentColor }}>
-                <span className="text-white text-sm font-bold">!</span>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1" style={{ color: theme.textColor }}>Önemli Uyarı</h3>
-                <p className="text-sm" style={{ color: theme.textColor }}>
-                  Siparişinizden emin misiniz? Ödeme yaptıktan sonra değişiklik yapamazsınız.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Sipariş Özeti */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-3" style={{ color: theme.textColor }}>Sipariş Özeti</h3>
-            <div className="space-y-2">
-              {items.map(item => (
-                <div key={item.id} className="flex justify-between items-center">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative w-10 h-10 rounded-lg overflow-hidden">
-                      {item.image ? (
-                        <NextImage src={item.image} alt={item.name} fill sizes="40px" className="object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center" style={{ background: `${theme.primaryColor}20` }}>
-                          <span className="text-xs font-bold" style={{ color: theme.primaryColor }}>{item.name.charAt(0)}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <div className="font-medium" style={{ color: theme.textColor }}>{item.name}</div>
-                      <div className="text-sm" style={{ color: theme.textColor }}>x {item.quantity}</div>
-                    </div>
-                  </div>
-                  <div className="text-sm font-semibold" style={{ color: theme.textColor }}>{item.price * item.quantity}₺</div>
+            {/* Uyarı Mesajı */}
+            <div className="rounded-xl p-4 mb-6" style={{ background: `${theme.accentColor}20`, border: `1px solid ${theme.accentColor}40` }}>
+              <div className="flex items-start space-x-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: theme.accentColor }}>
+                  <span className="text-white text-sm font-bold">!</span>
                 </div>
-              ))}
-            </div>
-            {note && (
-              <div className="mt-3 p-3 rounded-lg" style={{ background: theme.borderColor }}>
-                <div className="text-sm font-medium mb-1" style={{ color: theme.textColor }}>Özel İstek:</div>
-                <div className="text-sm" style={{ color: theme.textColor }}>{note}</div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: theme.textColor }}>Önemli Uyarı</h3>
+                  <p className="text-sm" style={{ color: theme.textColor }}>
+                    Siparişinizden emin misiniz? Ödeme yaptıktan sonra değişiklik yapamazsınız.
+                  </p>
+                </div>
               </div>
-            )}
-          </div>
-          
-          {/* Toplam */}
-          <div className="pt-4 mb-6" style={{ borderTop: `1px solid ${theme.borderColor}` }}>
-            <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold" style={{ color: theme.textColor }}>Toplam</span>
-              <span className="text-2xl font-bold" style={{ color: theme.primaryColor }}>{total}₺</span>
             </div>
-          </div>
-          
-          {/* Butonlar */}
-          <div className="flex gap-3">
-            <button
-              onClick={onBack}
-              className="flex-1 py-3 rounded-xl font-semibold transition-colors"
-              style={{ background: theme.borderColor, color: theme.textColor }}
-            >
-              Değiştir
-            </button>
-            <button
-              onClick={onProceed}
-              className="flex-1 py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
-              style={{ background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[2]} 0%, ${theme.gradientColors[3]} 100%)` : theme.secondaryColor, color: 'white' }}
-            >
-              Ödemeye Geç
-            </button>
-          </div>
+
+            {/* Sipariş Özeti */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3" style={{ color: theme.textColor }}>Sipariş Özeti</h3>
+              <div className="space-y-2">
+                {items.map(item => (
+                  <div key={item.id} className="flex justify-between items-center">
+                    <div className="flex items-center space-x-3">
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                        {item.image ? (
+                          <NextImage src={item.image} alt={item.name} fill sizes="40px" className="object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center" style={{ background: `${theme.primaryColor}20` }}>
+                            <span className="text-xs font-bold" style={{ color: theme.primaryColor }}>{item.name.charAt(0)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="font-medium" style={{ color: theme.textColor }}>{item.name}</div>
+                        <div className="text-sm" style={{ color: theme.textColor }}>x {item.quantity}</div>
+                      </div>
+                    </div>
+                    <div className="text-sm font-semibold" style={{ color: theme.textColor }}>{item.price * item.quantity}₺</div>
+                  </div>
+                ))}
+              </div>
+              {note && (
+                <div className="mt-3 p-3 rounded-lg" style={{ background: theme.borderColor }}>
+                  <div className="text-sm font-medium mb-1" style={{ color: theme.textColor }}>Özel İstek:</div>
+                  <div className="text-sm" style={{ color: theme.textColor }}>{note}</div>
+                </div>
+              )}
+            </div>
+
+            {/* Toplam */}
+            <div className="pt-4 mb-6" style={{ borderTop: `1px solid ${theme.borderColor}` }}>
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-semibold" style={{ color: theme.textColor }}>Toplam</span>
+                <span className="text-2xl font-bold" style={{ color: theme.primaryColor }}>{total}₺</span>
+              </div>
+            </div>
+
+            {/* Butonlar */}
+            <div className="flex gap-3">
+              <button
+                onClick={onBack}
+                className="flex-1 py-3 rounded-xl font-semibold transition-colors"
+                style={{ background: theme.borderColor, color: theme.textColor }}
+              >
+                Değiştir
+              </button>
+              <button
+                onClick={onProceed}
+                className="flex-1 py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                style={{ background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[2]} 0%, ${theme.gradientColors[3]} 100%)` : theme.secondaryColor, color: 'white' }}
+              >
+                Ödemeye Geç
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1474,18 +1487,18 @@ function PaymentModal({ items, note, total, roomId, onPaymentSuccess, onBack, ge
   const [selectedPayment, setSelectedPayment] = useState<'card' | 'cash' | 'room'>('card');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const theme = useThemeStore();
-  
+
   // Sipariş oluşturma fonksiyonu
   const handlePayment = async () => {
     if (!roomId) {
       alert('Oda numarası bulunamadı. Lütfen sayfayı yenileyin.');
       return;
     }
-    
+
     setIsSubmitting(true);
     try {
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-      
+
       // URL'den tenant slug'ını al
       let tenantSlug = 'demo';
       if (typeof window !== 'undefined') {
@@ -1530,7 +1543,7 @@ function PaymentModal({ items, note, total, roomId, onPaymentSuccess, onBack, ge
 
       const orderData = await response.json();
       console.log('Sipariş oluşturuldu:', orderData);
-      
+
       // Başarılı olduğunda callback'i çağır
       onPaymentSuccess();
     } catch (error: any) {
@@ -1546,148 +1559,145 @@ function PaymentModal({ items, note, total, roomId, onPaymentSuccess, onBack, ge
       <div className="rounded-3xl max-w-lg w-full shadow-2xl max-h-[95vh] overflow-hidden" style={{ background: theme.cardBackground }}>
         <div className="flex justify-between items-center p-4 sm:p-6" style={{ borderBottom: `1px solid ${theme.borderColor}` }}>
           <h2 className="text-xl sm:text-2xl font-bold" style={{ color: theme.textColor }}>Ödeme</h2>
-          <button 
-            onClick={onBack} 
+          <button
+            onClick={onBack}
             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors"
             style={{ background: theme.borderColor }}
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: theme.textColor }} />
           </button>
-              </div>
-              
+        </div>
+
         <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-          {/* Sipariş Özeti */}
-              <div>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: theme.textColor }}>Sipariş Özeti</h3>
-                <div className="space-y-2">
-              {items.map(item => (
-                <div key={item.id} className="flex justify-between items-center">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative w-10 h-10 rounded-lg overflow-hidden">
-                      {item.image ? (
-                        <NextImage src={item.image} alt={item.name} fill sizes="40px" className="object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center" style={{ background: `${theme.primaryColor}20` }}>
-                          <span className="text-xs font-bold" style={{ color: theme.primaryColor }}>{item.name.charAt(0)}</span>
-                        </div>
-                      )}
+            {/* Sipariş Özeti */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: theme.textColor }}>Sipariş Özeti</h3>
+              <div className="space-y-2">
+                {items.map(item => (
+                  <div key={item.id} className="flex justify-between items-center">
+                    <div className="flex items-center space-x-3">
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                        {item.image ? (
+                          <NextImage src={item.image} alt={item.name} fill sizes="40px" className="object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center" style={{ background: `${theme.primaryColor}20` }}>
+                            <span className="text-xs font-bold" style={{ color: theme.primaryColor }}>{item.name.charAt(0)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="font-medium" style={{ color: theme.textColor }}>{item.name}</div>
+                        <div className="text-sm" style={{ color: theme.textColor }}>x {item.quantity}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-medium" style={{ color: theme.textColor }}>{item.name}</div>
-                      <div className="text-sm" style={{ color: theme.textColor }}>x {item.quantity}</div>
-                    </div>
+                    <div className="text-sm font-semibold" style={{ color: theme.textColor }}>{item.price * item.quantity}₺</div>
                   </div>
-                  <div className="text-sm font-semibold" style={{ color: theme.textColor }}>{item.price * item.quantity}₺</div>
+                ))}
+              </div>
+              {note && (
+                <div className="mt-3 p-3 rounded-lg" style={{ background: theme.borderColor }}>
+                  <div className="text-sm font-medium mb-1" style={{ color: theme.textColor }}>Özel İstek:</div>
+                  <div className="text-sm" style={{ color: theme.textColor }}>{note}</div>
                 </div>
-              ))}
+              )}
             </div>
-            {note && (
-              <div className="mt-3 p-3 rounded-lg" style={{ background: theme.borderColor }}>
-                <div className="text-sm font-medium mb-1" style={{ color: theme.textColor }}>Özel İstek:</div>
-                <div className="text-sm" style={{ color: theme.textColor }}>{note}</div>
+
+            {/* Toplam */}
+            <div className="pt-4" style={{ borderTop: `1px solid ${theme.borderColor}` }}>
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-semibold" style={{ color: theme.textColor }}>Toplam</span>
+                <span className="text-2xl font-bold" style={{ color: theme.primaryColor }}>{total}₺</span>
               </div>
-            )}
-              </div>
-              
-          {/* Toplam */}
-          <div className="pt-4" style={{ borderTop: `1px solid ${theme.borderColor}` }}>
-            <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold" style={{ color: theme.textColor }}>Toplam</span>
-              <span className="text-2xl font-bold" style={{ color: theme.primaryColor }}>{total}₺</span>
-                </div>
-              </div>
-              
-          {/* Ödeme Yöntemleri */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4" style={{ color: theme.textColor }}>Ödeme Yöntemi</h3>
+            </div>
+
+            {/* Ödeme Yöntemleri */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4" style={{ color: theme.textColor }}>Ödeme Yöntemi</h3>
               <div className="space-y-3">
-              <button
-                onClick={() => setSelectedPayment('card')}
-                className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${
-                  selectedPayment === 'card'
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-                style={selectedPayment === 'card' 
-                  ? { borderColor: theme.secondaryColor, background: `${theme.secondaryColor}20` }
-                  : { borderColor: theme.borderColor }
-                }
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: theme.secondaryColor }}>
-                    <span className="text-white text-sm font-bold">💳</span>
+                <button
+                  onClick={() => setSelectedPayment('card')}
+                  className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPayment === 'card'
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  style={selectedPayment === 'card'
+                    ? { borderColor: theme.secondaryColor, background: `${theme.secondaryColor}20` }
+                    : { borderColor: theme.borderColor }
+                  }
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: theme.secondaryColor }}>
+                      <span className="text-white text-sm font-bold">💳</span>
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold" style={{ color: theme.textColor }}>Kredi/Banka Kartı</div>
+                      <div className="text-sm" style={{ color: theme.textColor }}>Online ödeme</div>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <div className="font-semibold" style={{ color: theme.textColor }}>Kredi/Banka Kartı</div>
-                    <div className="text-sm" style={{ color: theme.textColor }}>Online ödeme</div>
+                </button>
+
+                <button
+                  onClick={() => setSelectedPayment('cash')}
+                  className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPayment === 'cash'
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  style={selectedPayment === 'cash'
+                    ? { borderColor: theme.accentColor, background: `${theme.accentColor}20` }
+                    : { borderColor: theme.borderColor }
+                  }
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: theme.accentColor }}>
+                      <span className="text-white text-sm font-bold">💰</span>
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold" style={{ color: theme.textColor }}>Nakit Ödeme</div>
+                      <div className="text-sm" style={{ color: theme.textColor }}>Teslimatta öde</div>
+                    </div>
                   </div>
-                </div>
-              </button>
-            
-              <button
-                onClick={() => setSelectedPayment('cash')}
-                className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${
-                  selectedPayment === 'cash'
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-                style={selectedPayment === 'cash' 
-                  ? { borderColor: theme.accentColor, background: `${theme.accentColor}20` }
-                  : { borderColor: theme.borderColor }
-                }
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: theme.accentColor }}>
-                    <span className="text-white text-sm font-bold">💰</span>
+                </button>
+
+                <button
+                  onClick={() => setSelectedPayment('room')}
+                  className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPayment === 'room'
+                      ? 'border-purple-500 bg-purple-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  style={selectedPayment === 'room'
+                    ? { borderColor: theme.primaryColor, background: `${theme.primaryColor}20` }
+                    : { borderColor: theme.borderColor }
+                  }
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: theme.primaryColor }}>
+                      <span className="text-white text-sm font-bold">🏨</span>
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold" style={{ color: theme.textColor }}>Oda Hesabına</div>
+                      <div className="text-sm" style={{ color: theme.textColor }}>Çıkışta öde</div>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <div className="font-semibold" style={{ color: theme.textColor }}>Nakit Ödeme</div>
-                    <div className="text-sm" style={{ color: theme.textColor }}>Teslimatta öde</div>
-                  </div>
-                </div>
-              </button>
-              
-              <button
-                onClick={() => setSelectedPayment('room')}
-                className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all ${
-                  selectedPayment === 'room'
-                    ? 'border-purple-500 bg-purple-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-                style={selectedPayment === 'room' 
-                  ? { borderColor: theme.primaryColor, background: `${theme.primaryColor}20` }
-                  : { borderColor: theme.borderColor }
-                }
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: theme.primaryColor }}>
-                    <span className="text-white text-sm font-bold">🏨</span>
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold" style={{ color: theme.textColor }}>Oda Hesabına</div>
-                    <div className="text-sm" style={{ color: theme.textColor }}>Çıkışta öde</div>
-                  </div>
-                </div>
-              </button>
+                </button>
+              </div>
             </div>
-          </div>
-          
-          {/* Ödeme Butonu */}
-          <button
-            onClick={handlePayment}
-            disabled={isSubmitting}
-            className="w-full py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[0]} 0%, ${theme.gradientColors[1]} 100%)` : theme.primaryColor, color: 'white' }}
-          >
-            {isSubmitting ? 'Gönderiliyor...' : (
-              <>
-                {selectedPayment === 'card' && '💳 Kart ile Öde'}
-                {selectedPayment === 'cash' && '💰 Nakit ile Öde'}
-                {selectedPayment === 'room' && '🏨 Oda Hesabına Ekle'}
-              </>
-            )}
-          </button>
+
+            {/* Ödeme Butonu */}
+            <button
+              onClick={handlePayment}
+              disabled={isSubmitting}
+              className="w-full py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[0]} 0%, ${theme.gradientColors[1]} 100%)` : theme.primaryColor, color: 'white' }}
+            >
+              {isSubmitting ? 'Gönderiliyor...' : (
+                <>
+                  {selectedPayment === 'card' && '💳 Kart ile Öde'}
+                  {selectedPayment === 'cash' && '💰 Nakit ile Öde'}
+                  {selectedPayment === 'room' && '🏨 Oda Hesabına Ekle'}
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>

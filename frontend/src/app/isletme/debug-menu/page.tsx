@@ -50,11 +50,14 @@ export default function DebugMenuPage() {
   const isDemoProduct = (name: string): boolean => {
     const normalizedName = name.toLowerCase().trim();
     const demoProducts = [
-
+      'karniyarik',
+      'karnıyarık',
       'cheeseburger',
       'cheese burger',
       'caesar salad',
-      'caesar salata'
+      'caesar salata',
+      'sezar salata',
+      'sezar salatası'
     ];
     return demoProducts.some(demo => normalizedName === demo || normalizedName.includes(demo));
   };

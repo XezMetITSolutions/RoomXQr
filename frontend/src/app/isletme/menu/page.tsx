@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  EyeOff, 
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  EyeOff,
   Search,
   Filter,
   Upload,
@@ -76,16 +76,16 @@ export default function MenuManagement() {
   // Menü verileri state'i
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  
+
   // Toast notification state'i
-  const [toast, setToast] = useState<{show: boolean, message: string, type: 'success' | 'error'}>({
+  const [toast, setToast] = useState<{ show: boolean, message: string, type: 'success' | 'error' }>({
     show: false,
     message: '',
     type: 'success'
   });
 
   // Confirmation modal state'i
-  const [confirmModal, setConfirmModal] = useState<{show: boolean, itemId: string | null, itemName: string, type: 'item' | 'category'}>({
+  const [confirmModal, setConfirmModal] = useState<{ show: boolean, itemId: string | null, itemName: string, type: 'item' | 'category' }>({
     show: false,
     itemId: null,
     itemName: '',
@@ -130,7 +130,7 @@ export default function MenuManagement() {
   // Settings'ten desteklenen dilleri al (Türkçe hariç - çeviri için)
   const getSupportedLanguagesForTranslation = (): string[] => {
     if (typeof window === 'undefined') return [];
-    
+
     try {
       const savedSettings = localStorage.getItem('hotel-settings');
       if (savedSettings) {
@@ -143,7 +143,7 @@ export default function MenuManagement() {
     } catch (error) {
       console.error('Settings yüklenirken hata:', error);
     }
-    
+
     // Varsayılan diller (Türkçe hariç)
     return ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'];
   };
@@ -152,36 +152,36 @@ export default function MenuManagement() {
   const autoTranslate = async (name: string, description: string): Promise<{ [lang: string]: { name: string; description: string } }> => {
     const translations: { [lang: string]: { name: string; description: string } } = {};
     const supportedLanguages = getSupportedLanguagesForTranslation();
-    
+
     // Türkçe'yi de ekle (orijinal metin)
     translations['tr'] = {
       name: name,
       description: description
     };
-    
+
     // Eğer desteklenen dil yoksa, sadece Türkçe'yi döndür
     if (supportedLanguages.length === 0) {
       return translations;
     }
-    
+
     // Her dil için çeviri yap (timeout ile)
     for (const lang of supportedLanguages) {
       if (lang === 'tr') continue;
-      
+
       try {
         // Timeout ile çeviri yap (5 saniye)
         const translateWithTimeout = (text: string, targetLang: string, timeout: number = 5000): Promise<string> => {
           return Promise.race([
             translateText(text, targetLang),
-            new Promise<string>((_, reject) => 
+            new Promise<string>((_, reject) =>
               setTimeout(() => reject(new Error('Translation timeout')), timeout)
             )
           ]);
         };
-        
+
         const translatedName = await translateWithTimeout(name, lang).catch(() => null);
         const translatedDesc = await translateWithTimeout(description, lang).catch(() => null);
-        
+
         // Çeviri başarılı olduysa kaydet (orijinal metinle aynı değilse ve boş değilse)
         // Not: Bazı kelimeler (özellikle özel isimler, markalar) birçok dilde aynı kalabilir
         // Bu durumda çeviri yapılmaz, sadece farklı olanlar kaydedilir
@@ -199,7 +199,7 @@ export default function MenuManagement() {
         // Hata durumunda o dil için çeviri yapmadan devam et
       }
     }
-    
+
     return translations;
   };
 
@@ -226,11 +226,14 @@ export default function MenuManagement() {
   const isDemoProduct = (name: string): boolean => {
     const normalizedName = name.toLowerCase().trim();
     const demoProducts = [
-
+      'karniyarik',
+      'karnıyarık',
       'cheeseburger',
       'cheese burger',
       'caesar salad',
-      'caesar salata'
+      'caesar salata',
+      'sezar salata',
+      'sezar salatası'
     ];
     return demoProducts.some(demo => normalizedName === demo || normalizedName.includes(demo));
   };
@@ -242,7 +245,7 @@ export default function MenuManagement() {
         setLoading(true);
       }
       await loadCategories();
-      
+
       const tenantSlug = getTenantSlug();
       const response = await fetch('/api/menu', {
         headers: {
@@ -269,7 +272,7 @@ export default function MenuManagement() {
               console.warn(`Translation parse error for item ${item.id}:`, parseError);
               translations = {};
             }
-            
+
             return {
               id: item.id || `api-${index}`,
               name: item.name,
@@ -285,7 +288,7 @@ export default function MenuManagement() {
               translations: translations,
             };
           });
-        
+
         console.log('Filtrelenmiş menü item sayısı:', formattedItems.length);
         setMenuItems(formattedItems);
         return formattedItems;
@@ -329,7 +332,7 @@ export default function MenuManagement() {
       return false;
     }
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
+      item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -373,13 +376,13 @@ export default function MenuManagement() {
       if (!item) return;
 
       const newAvailability = !item.isAvailable;
-      
+
       const response = await fetch('/api/menu/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           items: [{
             name: item.name,
             description: item.description,
@@ -396,8 +399,8 @@ export default function MenuManagement() {
       });
 
       if (response.ok) {
-        setMenuItems(items => 
-          items.map(item => 
+        setMenuItems(items =>
+          items.map(item =>
             item.id === id ? { ...item, isAvailable: newAvailability } : item
           )
         );
@@ -432,7 +435,7 @@ export default function MenuManagement() {
         showErrorToast(`Bu kategori ${itemsInCategory.length} üründe kullanılıyor. Önce ürünleri başka kategoriye taşıyın.`);
         return;
       }
-      
+
       setConfirmModal({
         show: true,
         itemId: id,
@@ -445,14 +448,14 @@ export default function MenuManagement() {
   const confirmDelete = async () => {
     if (confirmModal.itemId) {
       let itemToDelete: MenuItem | null = null;
-      
+
       try {
         if (confirmModal.type === 'item') {
           itemToDelete = menuItems.find(item => item.id === confirmModal.itemId) || null;
           if (itemToDelete) {
             // Önce UI'dan kaldır (optimistic update)
             setMenuItems(items => items.filter(item => item.id !== confirmModal.itemId));
-            
+
             // Backend'de sil
             const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
             const headers: Record<string, string> = {
@@ -514,7 +517,7 @@ export default function MenuManagement() {
   const editCategory = (category: Category) => {
     setSelectedCategoryForEdit(category);
     setNewCategoryName(category.name);
-    
+
     // Çevirileri parse et
     let translations: { [lang: string]: string } = {};
     try {
@@ -555,32 +558,32 @@ export default function MenuManagement() {
 
     // Mevcut çevirileri state'ten al (kullanıcı düzenlemiş olabilir)
     const existingTranslations = { ...categoryTranslations };
-    
+
     // Otomatik çeviri yap (timeout ile, hata olsa bile devam et)
     // Sadece kategori adı değiştiyse veya yeni kategori ekleniyorsa çeviri yap
     let newAutoTranslations: { [lang: string]: string } = {};
     try {
       const supportedLanguages = getSupportedLanguagesForTranslation();
-      
+
       // Timeout ile çeviri yap (3 saniye - kategori için daha kısa)
       const translateWithTimeout = (text: string, targetLang: string, timeout: number = 3000): Promise<string> => {
         return Promise.race([
           translateText(text, targetLang),
-          new Promise<string>((_, reject) => 
+          new Promise<string>((_, reject) =>
             setTimeout(() => reject(new Error('Translation timeout')), timeout)
           )
         ]);
       };
-      
+
       // Sadece kategori adı değiştiyse veya yeni kategori ekleniyorsa çeviri yap
       const shouldTranslate = !selectedCategoryForEdit || (selectedCategoryForEdit.name !== newCategoryName.trim());
-      
+
       if (shouldTranslate) {
         for (const lang of supportedLanguages) {
           if (lang === 'tr') continue;
           // Eğer mevcut çeviri varsa ve kullanıcı düzenlemişse, otomatik çeviri yapma
           if (existingTranslations[lang]) continue;
-          
+
           try {
             const translatedName = await translateWithTimeout(newCategoryName.trim(), lang).catch(() => null);
             if (translatedName && translatedName !== newCategoryName.trim() && translatedName.trim() !== '') {
@@ -604,21 +607,21 @@ export default function MenuManagement() {
     if (selectedCategoryForEdit) {
       // Kategori güncelle
       const oldName = selectedCategoryForEdit.name;
-      
+
       // Mevcut çevirileri (kullanıcı düzenlemiş olabilir) ve yeni otomatik çevirileri birleştir
-      const finalTranslations = { 
+      const finalTranslations = {
         ...existingTranslations, // Mevcut çeviriler (state'ten, kullanıcı düzenlemiş olabilir)
         ...newAutoTranslations  // Yeni otomatik çeviriler (eğer varsa, üzerine yazar)
       };
-      
-      setCategories(cats => 
-        cats.map(cat => 
-          cat.id === selectedCategoryForEdit.id 
+
+      setCategories(cats =>
+        cats.map(cat =>
+          cat.id === selectedCategoryForEdit.id
             ? { ...cat, name: newCategoryName.trim(), description: JSON.stringify(finalTranslations) }
             : cat
         )
       );
-      
+
       // Menü öğelerindeki kategori adını da güncelle
       setMenuItems(items =>
         items.map(item =>
@@ -627,15 +630,15 @@ export default function MenuManagement() {
             : item
         )
       );
-      
+
       showSuccessToast('Kategori başarıyla güncellendi!');
     } else {
       // Yeni kategori ekle
-      const finalTranslations = { 
+      const finalTranslations = {
         ...existingTranslations, // Mevcut çeviriler (varsa)
         ...newAutoTranslations  // Yeni otomatik çeviriler
       };
-      
+
       const newCategory: Category = {
         id: Date.now().toString(),
         name: newCategoryName.trim(),
@@ -644,7 +647,7 @@ export default function MenuManagement() {
       setCategories(cats => [...cats, newCategory]);
       showSuccessToast('Kategori başarıyla eklendi!');
     }
-    
+
     setShowAddCategoryModal(false);
     setNewCategoryName('');
     setCategoryTranslations({});
@@ -654,7 +657,7 @@ export default function MenuManagement() {
   const saveItem = async (itemData: Partial<MenuItem>) => {
     try {
       let imageUrl = itemData.image || '';
-      
+
       // Eğer yeni resim yüklendiyse base64'e çevir
       if (imageFile) {
         imageUrl = await convertImageToBase64(imageFile);
@@ -667,7 +670,7 @@ export default function MenuManagement() {
       let translations = itemData.translations || selectedItem?.translations || {};
       const name = itemData.name || '';
       const description = itemData.description || '';
-      
+
       // Yeni ürün ekleniyorsa veya isim/açıklama değiştiyse çeviri yap
       if (!selectedItem || (name && name !== selectedItem.name) || (description && description !== selectedItem.description)) {
         if (name && description) {
@@ -737,8 +740,8 @@ export default function MenuManagement() {
         }
 
         const responseData = await response.json();
-        setMenuItems(items => 
-          items.map(item => 
+        setMenuItems(items =>
+          items.map(item =>
             item.id === selectedItem.id ? { ...item, ...itemData, image: imageUrl, translations } : item
           )
         );
@@ -772,17 +775,17 @@ export default function MenuManagement() {
 
         const responseData = await response.json();
         console.log('Menu save response:', responseData);
-        
+
         // Backend'den dönen ID'yi kullan
         // Backend formatı: { success: true, items: [{ id, name, ... }] }
         const savedItem = responseData.items?.[0] || responseData.item || null;
         const itemId = savedItem?.id || responseData.items?.[0]?.id;
-        
+
         if (!itemId) {
           console.error('Backend\'den ID dönmedi, response:', responseData);
           throw new Error('Backend\'den ürün ID\'si alınamadı');
         }
-        
+
         // Backend'den dönen item'ı kullan veya yeni oluştur
         const newItem: MenuItem = savedItem ? {
           id: savedItem.id,
@@ -811,9 +814,9 @@ export default function MenuManagement() {
           rating: itemData.rating || 4,
           translations: translations,
         };
-        
+
         console.log('Yeni ürün eklendi (ID:', newItem.id, '):', newItem);
-        
+
         // State'e ekle
         setMenuItems(items => {
           // Aynı ID'ye sahip item varsa güncelle, yoksa ekle
@@ -825,9 +828,9 @@ export default function MenuManagement() {
           }
           return [...items, newItem];
         });
-        
+
         setShowAddModal(false);
-        
+
         // Menüyü backend'den yeniden yükle (güncel veriyi al)
         setTimeout(() => {
           loadMenuData(false); // Loading gösterme, sadece veriyi güncelle
@@ -836,7 +839,7 @@ export default function MenuManagement() {
       setSelectedItem(null);
       setImagePreview(null);
       setImageFile(null);
-      
+
       showSuccessToast('Ürün başarıyla kaydedildi!');
     } catch (error) {
       console.error('Ürün kaydetme hatası:', error);
@@ -847,14 +850,14 @@ export default function MenuManagement() {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     let imageUrl = selectedItem?.image || '';
     if (imageFile) {
       imageUrl = await convertImageToBase64(imageFile);
     } else if (imagePreview && imagePreview.startsWith('data:')) {
       imageUrl = imagePreview;
     }
-    
+
     const itemData = {
       name: formData.get('name') as string,
       description: formData.get('description') as string,
@@ -897,7 +900,7 @@ export default function MenuManagement() {
 
     const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
     const requiredHeaders = ['name', 'price', 'category'];
-    
+
     for (const header of requiredHeaders) {
       if (!headers.includes(header)) {
         errors.push(`Gerekli sütun bulunamadı: ${header}`);
@@ -913,7 +916,7 @@ export default function MenuManagement() {
 
     for (let i = 1; i < lines.length; i++) {
       const values = lines[i].split(',').map(v => v.trim());
-      
+
       if (values.length < headers.length) {
         errors.push(`Satır ${i + 1}: Eksik veri`);
         continue;
@@ -927,7 +930,7 @@ export default function MenuManagement() {
       if (!rowData.name || rowData.name.length < 2) {
         errors.push(`Satır ${i + 1}: Ürün adı en az 2 karakter olmalı`);
       }
-      
+
       if (!rowData.price || isNaN(parseFloat(rowData.price))) {
         errors.push(`Satır ${i + 1}: Geçerli fiyat giriniz`);
       }
@@ -949,11 +952,11 @@ export default function MenuManagement() {
       });
     }
 
-    setBulkUploadData(prev => ({ 
-      ...prev, 
-      parsedData, 
-      errors, 
-      isValid: errors.length === 0 
+    setBulkUploadData(prev => ({
+      ...prev,
+      parsedData,
+      errors,
+      isValid: errors.length === 0
     }));
   };
 
@@ -965,7 +968,7 @@ export default function MenuManagement() {
 
     try {
       setLoading(true);
-      
+
       const response = await fetch('/api/menu/save', {
         method: 'POST',
         headers: {
@@ -986,7 +989,7 @@ export default function MenuManagement() {
       setMenuItems(prev => [...prev, ...newItems]);
       setShowBulkUploadModal(false);
       setBulkUploadData({ file: null, parsedData: [], errors: [], isValid: false });
-      
+
       showSuccessToast(`${bulkUploadData.parsedData.length} ürün başarıyla yüklendi!`);
     } catch (error) {
       console.error('Toplu yükleme hatası:', error);
@@ -1002,7 +1005,7 @@ export default function MenuManagement() {
       ['Margherita Pizza', 'Domates sosu, mozzarella, fesleğen', '45', 'Pizza', 'Gluten,Süt', '280', '20', '4.5', 'true'],
       ['Cheeseburger', 'Dana eti, cheddar peyniri, marul', '35', 'Burger', 'Gluten,Süt,Yumurta', '520', '15', '4.0', 'true']
     ];
-    
+
     const csvContent = [headers, ...sampleData].map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -1073,11 +1076,10 @@ export default function MenuManagement() {
         <nav className="-mb-px flex space-x-8">
           <button
             onClick={() => setActiveTab('menu')}
-            className={`py-4 px-6 border-b-2 font-semibold text-base transition-colors ${
-              activeTab === 'menu'
+            className={`py-4 px-6 border-b-2 font-semibold text-base transition-colors ${activeTab === 'menu'
                 ? 'border-hotel-gold text-hotel-gold bg-hotel-cream'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
-            }`}
+              }`}
           >
             <div className="flex items-center space-x-2">
               <MenuIcon className="w-5 h-5" />
@@ -1086,11 +1088,10 @@ export default function MenuManagement() {
           </button>
           <button
             onClick={() => setActiveTab('categories')}
-            className={`py-4 px-6 border-b-2 font-semibold text-base transition-colors ${
-              activeTab === 'categories'
+            className={`py-4 px-6 border-b-2 font-semibold text-base transition-colors ${activeTab === 'categories'
                 ? 'border-hotel-gold text-hotel-gold bg-hotel-cream'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
-            }`}
+              }`}
           >
             <div className="flex items-center space-x-2">
               <Tag className="w-5 h-5" />
@@ -1156,8 +1157,8 @@ export default function MenuManagement() {
                 <div key={item.id} className="hotel-card p-6">
                   {item.image && (
                     <div className="mb-4 rounded-lg overflow-hidden">
-                      <img 
-                        src={item.image} 
+                      <img
+                        src={item.image}
                         alt={item.name}
                         className="w-full h-48 object-cover"
                       />
@@ -1171,11 +1172,10 @@ export default function MenuManagement() {
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => toggleAvailability(item.id)}
-                        className={`p-1 rounded ${
-                          item.isAvailable 
-                            ? 'text-green-600 hover:bg-green-50' 
+                        className={`p-1 rounded ${item.isAvailable
+                            ? 'text-green-600 hover:bg-green-50'
                             : 'text-red-600 hover:bg-red-50'
-                        }`}
+                          }`}
                       >
                         {item.isAvailable ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </button>
@@ -1211,11 +1211,10 @@ export default function MenuManagement() {
                     )}
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">Durum:</span>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        item.isAvailable 
-                          ? 'bg-green-100 text-green-800' 
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isAvailable
+                          ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}>
+                        }`}>
                         {item.isAvailable ? 'Mevcut' : 'Mevcut Değil'}
                       </span>
                     </div>
@@ -1258,7 +1257,7 @@ export default function MenuManagement() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => {
             const itemCount = menuItems.filter(item => item.category === category.name).length;
-            
+
             // Çevirileri parse et
             let translations: { [lang: string]: string } = {};
             try {
@@ -1272,7 +1271,7 @@ export default function MenuManagement() {
             } catch (error) {
               // JSON parse hatası, çeviri yok demektir
             }
-            
+
             const langNames: { [key: string]: string } = {
               en: 'EN',
               de: 'DE',
@@ -1283,7 +1282,7 @@ export default function MenuManagement() {
               ar: 'AR',
               zh: 'ZH'
             };
-            
+
             return (
               <div key={category.id} className="hotel-card p-6 dark:bg-gray-800 dark:border-gray-700">
                 <div className="flex items-start justify-between mb-4">
@@ -1344,7 +1343,7 @@ export default function MenuManagement() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               {showAddModal ? 'Yeni Ürün Ekle' : 'Ürün Düzenle'}
             </h3>
-            
+
             <form onSubmit={handleFormSubmit} className="space-y-4">
               {/* Image Upload */}
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300">
@@ -1409,7 +1408,7 @@ export default function MenuManagement() {
                     placeholder="Ürün adı"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Kategori *
@@ -1446,7 +1445,7 @@ export default function MenuManagement() {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Açıklama
@@ -1459,7 +1458,7 @@ export default function MenuManagement() {
                   placeholder="Ürün açıklaması"
                 />
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -1476,7 +1475,7 @@ export default function MenuManagement() {
                     placeholder="0.00"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Hazırlık Süresi (dk)
@@ -1491,7 +1490,7 @@ export default function MenuManagement() {
                     placeholder="15"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Kalori
@@ -1505,7 +1504,7 @@ export default function MenuManagement() {
                     placeholder="Kalori"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Kalite Puanı (1-5) *
@@ -1527,7 +1526,7 @@ export default function MenuManagement() {
                     <option value="1.0">1.0 ⭐ (Temel)</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Alerjenler
@@ -1541,7 +1540,7 @@ export default function MenuManagement() {
                   />
                 </div>
               </div>
-              
+
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -1553,7 +1552,7 @@ export default function MenuManagement() {
                   Ürün mevcut
                 </label>
               </div>
-              
+
               <div className="flex justify-end space-x-3 mt-6">
                 <button
                   type="button"
@@ -1568,7 +1567,7 @@ export default function MenuManagement() {
                 >
                   İptal
                 </button>
-                <button 
+                <button
                   type="submit"
                   className="px-4 py-2 bg-hotel-gold text-white rounded-lg hover:bg-hotel-navy"
                 >
@@ -1587,7 +1586,7 @@ export default function MenuManagement() {
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
               {selectedCategoryForEdit ? 'Kategori Düzenle' : 'Yeni Kategori Ekle'}
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -1640,7 +1639,7 @@ export default function MenuManagement() {
                   </div>
                 </div>
               )}
-              
+
               <div className="flex justify-end space-x-3 mt-6">
                 <button
                   type="button"
@@ -1654,7 +1653,7 @@ export default function MenuManagement() {
                 >
                   İptal
                 </button>
-                <button 
+                <button
                   onClick={saveCategory}
                   className="px-4 py-2 bg-hotel-gold text-white rounded-lg hover:bg-hotel-navy"
                 >
@@ -1673,7 +1672,7 @@ export default function MenuManagement() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Yeni Kategori Ekle
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -1688,7 +1687,7 @@ export default function MenuManagement() {
                   autoFocus
                 />
               </div>
-              
+
               <div className="flex justify-end space-x-3 mt-6">
                 <button
                   type="button"
@@ -1700,7 +1699,7 @@ export default function MenuManagement() {
                 >
                   İptal
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     if (newCategoryName.trim()) {
                       const newCategory: Category = {
@@ -1780,7 +1779,7 @@ export default function MenuManagement() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              
+
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {menuItems.map((item) => (
@@ -1791,26 +1790,26 @@ export default function MenuManagement() {
                         menuItem={item}
                         onTranslated={async (translations) => {
                           // Menu item'ı güncelle
-                          setMenuItems(items => 
-                            items.map(menuItem => 
-                              menuItem.id === item.id 
+                          setMenuItems(items =>
+                            items.map(menuItem =>
+                              menuItem.id === item.id
                                 ? { ...menuItem, translations }
                                 : menuItem
                             )
                           );
-                          
+
                           // Frontend API route üzerinden backend'e kaydet
                           try {
                             const token = localStorage.getItem('auth_token');
-                            
+
                             if (!token) {
                               console.error('❌ Token bulunamadı. Lütfen tekrar giriş yapın.');
                               alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
                               return;
                             }
-                            
+
                             const tenantSlug = getTenantSlug();
-                            
+
                             // Frontend API route'unu kullan (proxy yapar)
                             const response = await fetch(`/api/menu/${item.id}`, {
                               method: 'PUT',
@@ -1823,14 +1822,14 @@ export default function MenuManagement() {
                                 translations: translations
                               })
                             });
-                            
+
                             if (response.ok) {
                               console.log('✅ Çeviriler başarıyla kaydedildi');
                               showSuccessToast('Çeviriler başarıyla kaydedildi!');
                             } else {
                               const errorData = await response.json().catch(() => ({ error: 'Bilinmeyen hata' }));
                               console.error('❌ Çeviriler kaydedilirken hata:', errorData);
-                              
+
                               if (response.status === 401) {
                                 alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
                                 // İsteğe bağlı: login sayfasına yönlendir
@@ -1851,7 +1850,7 @@ export default function MenuManagement() {
                     </div>
                   ))}
                 </div>
-                
+
                 {menuItems.length === 0 && (
                   <div className="text-center py-12">
                     <Languages className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -1885,7 +1884,7 @@ export default function MenuManagement() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              
+
               <div className="space-y-6">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-center justify-between">
@@ -1976,9 +1975,8 @@ export default function MenuManagement() {
                               <td className="px-3 py-2 text-sm text-gray-900">{item.category}</td>
                               <td className="px-3 py-2 text-sm text-gray-900">₺{item.price}</td>
                               <td className="px-3 py-2 text-sm text-gray-900">
-                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                  item.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                }`}>
+                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${item.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                  }`}>
                                   {item.isAvailable ? 'Aktif' : 'Pasif'}
                                 </span>
                               </td>
@@ -2022,11 +2020,10 @@ export default function MenuManagement() {
       {/* Toast Notification */}
       {toast.show && (
         <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50">
-          <div className={`px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-lg flex items-center space-x-2 sm:space-x-3 transform transition-all duration-300 ${
-            toast.type === 'success' 
-              ? 'bg-green-500 text-white' 
+          <div className={`px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-lg flex items-center space-x-2 sm:space-x-3 transform transition-all duration-300 ${toast.type === 'success'
+              ? 'bg-green-500 text-white'
               : 'bg-red-500 text-white'
-          }`}>
+            }`}>
             <div className="flex-shrink-0">
               {toast.type === 'success' ? (
                 <CheckCircle className="w-5 h-5" />
