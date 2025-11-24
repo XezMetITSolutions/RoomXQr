@@ -339,6 +339,285 @@
         "description": "Café infusé pendant 12 heures avec sirop de sucre brun et lait d'amande."
       }
     }
+  },
+  {
+    "id": "static-breakfast-3",
+    "name": "Köy Usulü Otlu Omlet",
+    "description": "Serbest gezen yumurtalar, Erzincan tulum peyniri, taze kekik ve tereyağında hafifçe pişirilmiş.",
+    "price": 195,
+    "category": "breakfast",
+    "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["egg", "dairy"],
+    "calories": 430,
+    "preparationTime": 9,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Köy Usulü Otlu Omlet",
+        "description": "Serbest gezen yumurtalar, Erzincan tulum peyniri, taze kekik ve tereyağında hafifçe pişirilmiş."
+      },
+      "en": {
+        "name": "Herbed Farmhouse Omelette",
+        "description": "Free-range eggs with tulum cheese, fresh thyme and butter."
+      },
+      "de": {
+        "name": "Rustik Kräuter-Omelett",
+        "description": "Freiland-Eier mit Tulum-Käse, frischem Thymian und Butter."
+      },
+      "fr": {
+        "name": "Omelette Campagnarde aux Herbes",
+        "description": "Œufs fermiers, fromage tulum, thym frais et beurre."
+      }
+    }
+  },
+  {
+    "id": "static-appetizer-3",
+    "name": "İstanbul Meze Degüstasyon",
+    "description": "Humus, köz patlıcan, muhammara ve zeytin tapenade’dan oluşan paylaşmalık tabak.",
+    "price": 210,
+    "category": "appetizer",
+    "image": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["nuts", "sesame"],
+    "calories": 520,
+    "preparationTime": 11,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "İstanbul Meze Degüstasyon",
+        "description": "Humus, köz patlıcan, muhammara ve zeytin tapenade’dan oluşan paylaşmalık tabak."
+      },
+      "en": {
+        "name": "Istanbul Mezze Tasting",
+        "description": "Sharing platter with hummus, roasted eggplant, muhammara and olive tapenade."
+      },
+      "de": {
+        "name": "Istanbul Mezze Degustation",
+        "description": "Gemeinsame Platte mit Hummus, gerösteter Aubergine, Muhammara und Oliven-Tapenade."
+      },
+      "fr": {
+        "name": "Dégustation de Mezzés d’Istanbul",
+        "description": "Plateau à partager avec houmous, aubergine rôtie, muhammara et tapenade d’olives."
+      }
+    }
+  },
+  {
+    "id": "static-main-4",
+    "name": "Fırınlanmış Kuzu İncik",
+    "description": "12 saat düşük ısıda pişen kuzu incik, rezene aromalı sebzeler ve demi-glace sos.",
+    "price": 450,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 820,
+    "preparationTime": 22,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Fırınlanmış Kuzu İncik",
+        "description": "12 saat düşük ısıda pişen kuzu incik, rezene aromalı sebzeler ve demi-glace sos."
+      },
+      "en": {
+        "name": "Slow-Roasted Lamb Shank",
+        "description": "12-hour low-temp lamb shank with fennel vegetables and demi-glace."
+      },
+      "de": {
+        "name": "Geschmorte Lammhaxe",
+        "description": "12 Stunden bei niedriger Temperatur gegarte Lammhaxe mit Fenchelgemüse und Demi-Glace."
+      },
+      "fr": {
+        "name": "Souris d’Agneau Confite",
+        "description": "Agneau cuit 12 h à basse température, légumes au fenouil et sauce demi-glace."
+      }
+    }
+  },
+  {
+    "id": "static-main-5",
+    "name": "Miso Soba Bowl",
+    "description": "Miso bazlı sebze suyu, karabuğday soba eriştesi, shiitake mantarı ve sezam yağı.",
+    "price": 285,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["soy", "sesame"],
+    "calories": 540,
+    "preparationTime": 13,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Miso Soba Bowl",
+        "description": "Miso bazlı sebze suyu, karabuğday soba eriştesi, shiitake mantarı ve sezam yağı."
+      },
+      "en": {
+        "name": "Miso Soba Bowl",
+        "description": "Buckwheat soba in miso broth with shiitake mushrooms and toasted sesame oil."
+      },
+      "de": {
+        "name": "Miso-Soba-Schale",
+        "description": "Buchweizen-Soba in Misobrühe mit Shiitake-Pilzen und Sesamöl."
+      },
+      "fr": {
+        "name": "Bol Soba au Miso",
+        "description": "Nouilles soba au sarrasin, bouillon miso, shiitakés et huile de sésame grillé."
+      }
+    }
+  },
+  {
+    "id": "static-main-6",
+    "name": "Trüflü Mantarlı Risotto",
+    "description": "Arborio pirinç, porcini mantarı, parmesan tekerinde servis edilen trüf yağıyla tamamlanmış.",
+    "price": 330,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy"],
+    "calories": 690,
+    "preparationTime": 17,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Trüflü Mantarlı Risotto",
+        "description": "Arborio pirinç, porcini mantarı, parmesan tekerinde servis edilen trüf yağıyla tamamlanmış."
+      },
+      "en": {
+        "name": "Porcini Truffle Risotto",
+        "description": "Arborio rice, porcini mushrooms and truffle oil finished in a parmesan wheel."
+      },
+      "de": {
+        "name": "Trüffel-Risotto mit Pilzen",
+        "description": "Arborio-Reis mit Porcini-Pilzen, serviert im Parmesanlaib und Trüffelöl."
+      },
+      "fr": {
+        "name": "Risotto aux Cèpes et Truffe",
+        "description": "Riz Arborio, cèpes et huile de truffe, fini dans une meule de parmesan."
+      }
+    }
+  },
+  {
+    "id": "static-dessert-3",
+    "name": "Safranlı Fırın Sütlaç",
+    "description": "Kastamonu safranı ile tatlandırılmış klasik fırın sütlaç, kavrulmuş badem ile.",
+    "price": 165,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy", "nuts"],
+    "calories": 420,
+    "preparationTime": 10,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Safranlı Fırın Sütlaç",
+        "description": "Kastamonu safranı ile tatlandırılmış klasik fırın sütlaç, kavrulmuş badem ile."
+      },
+      "en": {
+        "name": "Saffron Baked Rice Pudding",
+        "description": "Traditional baked rice pudding infused with saffron and toasted almonds."
+      },
+      "de": {
+        "name": "Safran-Ofenreis",
+        "description": "Klassischer Ofenmilchreis mit Safran und gerösteten Mandeln."
+      },
+      "fr": {
+        "name": "Riz au Lait Gratiné au Safran",
+        "description": "Riz au lait gratiné parfumé au safran et amandes grillées."
+      }
+    }
+  },
+  {
+    "id": "static-dessert-4",
+    "name": "Vişneli Beyaz Çikolatalı Cheesecake",
+    "description": "Kıtır badem taban, beyaz çikolata kreması ve ekşi vişne sosu ile denge.",
+    "price": 185,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1505250469679-203ad9ced0cb?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy", "gluten", "nuts"],
+    "calories": 560,
+    "preparationTime": 9,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Vişneli Beyaz Çikolatalı Cheesecake",
+        "description": "Kıtır badem taban, beyaz çikolata kreması ve ekşi vişne sosu ile denge."
+      },
+      "en": {
+        "name": "Cherry White Chocolate Cheesecake",
+        "description": "Crunchy almond crust with white chocolate cream and tart cherry compote."
+      },
+      "de": {
+        "name": "Weißschokoladen-Kirsch-Cheesecake",
+        "description": "Knuspriger Mandelboden, weiße Schokoladencreme und Sauerkirschsauce."
+      },
+      "fr": {
+        "name": "Cheesecake Cerise & Chocolat Blanc",
+        "description": "Base d’amandes croustillantes, crème au chocolat blanc et coulis de griottes."
+      }
+    }
+  },
+  {
+    "id": "static-beverage-3",
+    "name": "Matcha Badem Latte",
+    "description": "Serinletilmiş matcha, badem sütü, vanilya şurubu ve buz ile kremsi içecek.",
+    "price": 150,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1481391032119-d89fee407e44?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["nuts"],
+    "calories": 210,
+    "preparationTime": 4,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Matcha Badem Latte",
+        "description": "Serinletilmiş matcha, badem sütü, vanilya şurubu ve buz ile kremsi içecek."
+      },
+      "en": {
+        "name": "Iced Matcha Almond Latte",
+        "description": "Chilled matcha whisked with almond milk, vanilla syrup and ice."
+      },
+      "de": {
+        "name": "Eis-Matcha Mandel Latte",
+        "description": "Gekühlter Matcha mit Mandeldrink, Vanillesirup und Eis."
+      },
+      "fr": {
+        "name": "Matcha Latte Amande Glacé",
+        "description": "Matcha fouetté, lait d’amande, sirop de vanille et glaçons."
+      }
+    }
+  },
+  {
+    "id": "static-beverage-4",
+    "name": "Tropik Detox Smoothie",
+    "description": "Ananas, mango, hindistan cevizi suyu, lime ve zencefil ile canlandırıcı karışım.",
+    "price": 155,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 260,
+    "preparationTime": 5,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Tropik Detox Smoothie",
+        "description": "Ananas, mango, hindistan cevizi suyu, lime ve zencefil ile canlandırıcı karışım."
+      },
+      "en": {
+        "name": "Tropical Detox Smoothie",
+        "description": "Blend of pineapple, mango, coconut water, lime and ginger."
+      },
+      "de": {
+        "name": "Tropischer Detox-Smoothie",
+        "description": "Mix aus Ananas, Mango, Kokoswasser, Limette und Ingwer."
+      },
+      "fr": {
+        "name": "Smoothie Détox Tropical",
+        "description": "Mélange d’ananas, mangue, eau de coco, citron vert et gingembre."
+      }
+    }
   }
 ]
 
