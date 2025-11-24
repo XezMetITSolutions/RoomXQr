@@ -21,7 +21,7 @@ export async function GET(request: Request) {
   try {
     // Tenant bilgisini al
     let tenantSlug = request.headers.get('x-tenant') || '';
-    
+
     // Eğer header'da yoksa, host header'ından subdomain'i çıkar
     if (!tenantSlug) {
       const host = request.headers.get('host') || '';
@@ -32,12 +32,6 @@ export async function GET(request: Request) {
         // Varsayılan tenant
         tenantSlug = 'demo';
       }
-    }
-
-    // Demo tenant'ı için doğrudan fallback menüyü döndür
-    if (tenantSlug === 'demo') {
-      const fallbackMenu = await loadFallbackMenu();
-      return NextResponse.json({ menu: fallbackMenu }, { status: 200 });
     }
 
     // Önce backend'den menüyü yüklemeyi dene
@@ -79,7 +73,7 @@ export async function GET(request: Request) {
             console.warn(`Translation parse error for item ${item.id}:`, parseError);
             translations = {};
           }
-          
+
           return {
             id: item.id,
             name: item.name,
@@ -95,7 +89,7 @@ export async function GET(request: Request) {
             translations: translations,
           };
         });
-        
+
         console.log('Frontend\'e döndürülen menu sayısı:', menu.length);
 
         if (menu.length > 0) {
