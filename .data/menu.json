@@ -1,0 +1,344 @@
+[
+  {
+    "id": "static-breakfast-1",
+    "name": "Akdeniz Kahvaltı Tabağı",
+    "description": "Zeytinyağlı peynirler, taze domates, salatalık, ev yapımı reçeller ve sıcak bazlama ile dengeli kahvaltı tabağı.",
+    "price": 260,
+    "category": "breakfast",
+    "image": "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy", "gluten", "nuts"],
+    "calories": 520,
+    "preparationTime": 15,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Akdeniz Kahvaltı Tabağı",
+        "description": "Zeytinyağlı peynirler, taze domates, salatalık, ev yapımı reçeller ve sıcak bazlama ile dengeli kahvaltı tabağı."
+      },
+      "en": {
+        "name": "Mediterranean Breakfast Platter",
+        "description": "Olive-oil marinated cheeses, fresh tomatoes, cucumbers, homemade jams and warm flatbread for a balanced start."
+      },
+      "de": {
+        "name": "Mediterranes Frühstück",
+        "description": "In Olivenöl eingelegte Käse, frische Tomaten, Gurken, hausgemachte Marmeladen und warmes Fladenbrot."
+      },
+      "fr": {
+        "name": "Petit-déjeuner Méditerranéen",
+        "description": "Fromages marinés à l'huile d'olive, tomates fraîches, concombres, confitures maison et pain plat chaud."
+      }
+    }
+  },
+  {
+    "id": "static-breakfast-2",
+    "name": "Fit Chia Kahvaltı Kasesi",
+    "description": "Badem sütü ile hazırlanmış chia puding, mevsim meyveleri ve kavrulmuş fındık ile hafif başlangıç.",
+    "price": 210,
+    "category": "breakfast",
+    "image": "https://images.unsplash.com/photo-1464347744102-11db6282f854?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["nuts"],
+    "calories": 380,
+    "preparationTime": 10,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Fit Chia Kahvaltı Kasesi",
+        "description": "Badem sütü ile hazırlanmış chia puding, mevsim meyveleri ve kavrulmuş fındık ile hafif başlangıç."
+      },
+      "en": {
+        "name": "Fit Chia Breakfast Bowl",
+        "description": "Chia pudding with almond milk, seasonal fruits and toasted hazelnuts for a light start."
+      },
+      "de": {
+        "name": "Chia-Frühstücksschale",
+        "description": "Mit Mandeldrink zubereiteter Chia-Pudding mit saisonalem Obst und gerösteten Haselnüssen."
+      },
+      "fr": {
+        "name": "Bol Petit-déjeuner Chia",
+        "description": "Pudding de chia au lait d'amande, fruits de saison et noisettes grillées pour un début léger."
+      }
+    }
+  },
+  {
+    "id": "static-appetizer-1",
+    "name": "Izgara Halloumi & Sebzeler",
+    "description": "Izgara halloumi, renkli sebzeler ve nar ekşili sos ile sıcak başlangıç.",
+    "price": 185,
+    "category": "appetizer",
+    "image": "https://images.unsplash.com/photo-1484980972926-edee96e0960d?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy"],
+    "calories": 410,
+    "preparationTime": 12,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Izgara Halloumi & Sebzeler",
+        "description": "Izgara halloumi, renkli sebzeler ve nar ekşili sos ile sıcak başlangıç."
+      },
+      "en": {
+        "name": "Grilled Halloumi & Vegetables",
+        "description": "Charred halloumi with colorful vegetables finished with pomegranate molasses."
+      },
+      "de": {
+        "name": "Gegrillter Halloumi & Gemüse",
+        "description": "Gegrillter Halloumi mit buntem Gemüse und Granatapfelmelasse."
+      },
+      "fr": {
+        "name": "Halloumi Grillé & Légumes",
+        "description": "Halloumi grillé avec légumes colorés et mélasse de grenade."
+      }
+    }
+  },
+  {
+    "id": "static-appetizer-2",
+    "name": "Ege Zeytinyağlı Trio",
+    "description": "Enginar, zeytinyağlı kuru domates ve fava püresinden oluşan meze tabağı.",
+    "price": 170,
+    "category": "appetizer",
+    "image": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["legume"],
+    "calories": 360,
+    "preparationTime": 9,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Ege Zeytinyağlı Trio",
+        "description": "Enginar, zeytinyağlı kuru domates ve fava püresinden oluşan meze tabağı."
+      },
+      "en": {
+        "name": "Aegean Olive Oil Trio",
+        "description": "Artichoke hearts, olive-oil sun-dried tomatoes and fava purée."
+      },
+      "de": {
+        "name": "Ägäis-Zeytinyağlı Trio",
+        "description": "Artischocken, in Olivenöl eingelegte getrocknete Tomaten und Favabohnen-Püree."
+      },
+      "fr": {
+        "name": "Trio Égéen à l'Huile d'Olive",
+        "description": "Cœurs d'artichaut, tomates séchées à l'huile d'olive et purée de fèves."
+      }
+    }
+  },
+  {
+    "id": "static-main-1",
+    "name": "Izgara Antrikot & Trüf Püre",
+    "description": "Kuru dinlendirilmiş antrikot, trüf aromalı patates püresi ve demiglace sos.",
+    "price": 420,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy"],
+    "calories": 780,
+    "preparationTime": 20,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Izgara Antrikot & Trüf Püre",
+        "description": "Kuru dinlendirilmiş antrikot, trüf aromalı patates püresi ve demiglace sos."
+      },
+      "en": {
+        "name": "Grilled Ribeye & Truffle Mash",
+        "description": "Dry-aged ribeye with truffle mashed potatoes and rich demi-glace."
+      },
+      "de": {
+        "name": "Gegrilltes Ribeye & Trüffelpüree",
+        "description": "Dry-Aged-Ribeye mit Trüffel-Kartoffelpüree und Demi-Glace."
+      },
+      "fr": {
+        "name": "Entrecôte Grillée & Purée Truffée",
+        "description": "Entrecôte maturée accompagnée d'une purée à la truffe et d'une sauce demi-glace."
+      }
+    }
+  },
+  {
+    "id": "static-main-2",
+    "name": "Otlu Levrek Izgara",
+    "description": "Taze levrek fileto, roka pestosu, limon kabuğu ve közlenmiş sebze garnitürü.",
+    "price": 395,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["fish", "nuts"],
+    "calories": 610,
+    "preparationTime": 18,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Otlu Levrek Izgara",
+        "description": "Taze levrek fileto, roka pestosu, limon kabuğu ve közlenmiş sebze garnitürü."
+      },
+      "en": {
+        "name": "Herb-Grilled Seabass",
+        "description": "Fresh seabass fillet with arugula pesto, lemon zest and charred vegetables."
+      },
+      "de": {
+        "name": "Kräuter-Loup de Mer",
+        "description": "Frisches Wolfsbarschfilet mit Rucola-Pesto, Zitronenzeste und geröstetem Gemüse."
+      },
+      "fr": {
+        "name": "Bar Grillé aux Herbes",
+        "description": "Filet de bar frais, pesto de roquette, zeste de citron et légumes grillés."
+      }
+    }
+  },
+  {
+    "id": "static-main-3",
+    "name": "Anadolu Vegan Bowl",
+    "description": "Izgara sebzeler, nohut, firik bulguru, humus ve nar taneleri ile besleyici kase.",
+    "price": 320,
+    "category": "main",
+    "image": "https://images.unsplash.com/photo-1542444592-0d5ccbf49414?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 540,
+    "preparationTime": 14,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Anadolu Vegan Bowl",
+        "description": "Izgara sebzeler, nohut, firik bulguru, humus ve nar taneleri ile besleyici kase."
+      },
+      "en": {
+        "name": "Anatolian Vegan Bowl",
+        "description": "Grilled vegetables, chickpeas, freekeh, hummus and pomegranate seeds."
+      },
+      "de": {
+        "name": "Anatolische Vegane Bowl",
+        "description": "Gegrilltes Gemüse, Kichererbsen, Freekeh, Hummus und Granatapfelkerne."
+      },
+      "fr": {
+        "name": "Bol Vegan Anatolien",
+        "description": "Légumes grillés, pois chiches, freekeh, houmous et graines de grenade."
+      }
+    }
+  },
+  {
+    "id": "static-dessert-1",
+    "name": "Sıcak Çikolatalı Sufle",
+    "description": "70% kakao belgian çikolata ile hazırlanmış, vanilyalı dondurma eşliğinde servis edilir.",
+    "price": 190,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476f?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["dairy", "gluten", "egg"],
+    "calories": 540,
+    "preparationTime": 12,
+    "rating": 4.9,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Sıcak Çikolatalı Sufle",
+        "description": "70% kakao belgian çikolata ile hazırlanmış, vanilyalı dondurma eşliğinde servis edilir."
+      },
+      "en": {
+        "name": "Warm Chocolate Soufflé",
+        "description": "70% cocoa Belgian chocolate soufflé served with vanilla ice cream."
+      },
+      "de": {
+        "name": "Warmer Schokoladen-Soufflé",
+        "description": "Soufflé aus belgischer 70%-Schokolade mit Vanilleeis."
+      },
+      "fr": {
+        "name": "Soufflé Chaud au Chocolat",
+        "description": "Soufflé au chocolat belge 70% servi avec glace à la vanille."
+      }
+    }
+  },
+  {
+    "id": "static-dessert-2",
+    "name": "Fıstıklı Baklava Trio",
+    "description": "Geleneksel baklava katları, Antep fıstığı dolgusu ve hafif şerbet ile.",
+    "price": 175,
+    "category": "dessert",
+    "image": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["nuts", "gluten"],
+    "calories": 480,
+    "preparationTime": 8,
+    "rating": 4.8,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Fıstıklı Baklava Trio",
+        "description": "Geleneksel baklava katları, Antep fıstığı dolgusu ve hafif şerbet ile."
+      },
+      "en": {
+        "name": "Pistachio Baklava Trio",
+        "description": "Traditional layers filled with Antep pistachios and light syrup."
+      },
+      "de": {
+        "name": "Pistazien-Baklava Trio",
+        "description": "Traditionelle Blätterteigschichten mit Antep-Pistazien und leichtem Sirup."
+      },
+      "fr": {
+        "name": "Trio de Baklava à la Pistache",
+        "description": "Feuilles traditionnelles garnies de pistaches d'Antep et d'un sirop léger."
+      }
+    }
+  },
+  {
+    "id": "static-beverage-1",
+    "name": "Taze Naneli Limonata",
+    "description": "Soğuk sıkım limon suyu, organik bal, taze nane ve gazlı su karışımı.",
+    "price": 130,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1502740479091-635887520276?auto=format&fit=crop&w=900&q=80",
+    "allergens": [],
+    "calories": 180,
+    "preparationTime": 4,
+    "rating": 4.7,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Taze Naneli Limonata",
+        "description": "Soğuk sıkım limon suyu, organik bal, taze nane ve gazlı su karışımı."
+      },
+      "en": {
+        "name": "Fresh Mint Lemonade",
+        "description": "Cold-pressed lemon juice with organic honey, fresh mint and sparkling water."
+      },
+      "de": {
+        "name": "Frische Minz-Limonade",
+        "description": "Kalt gepresster Zitronensaft mit Bio-Honig, frischer Minze und Sprudelwasser."
+      },
+      "fr": {
+        "name": "Citronnade Menthe Fraîche",
+        "description": "Jus de citron pressé à froid, miel bio, menthe fraîche et eau pétillante."
+      }
+    }
+  },
+  {
+    "id": "static-beverage-2",
+    "name": "Soğuk Demleme Kahve",
+    "description": "12 saat boyunca demlenen çekirdek kahve, esmer şeker şurubu ve badem sütü ile.",
+    "price": 140,
+    "category": "beverage",
+    "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=80",
+    "allergens": ["nuts"],
+    "calories": 90,
+    "preparationTime": 5,
+    "rating": 4.6,
+    "isAvailable": true,
+    "translations": {
+      "tr": {
+        "name": "Soğuk Demleme Kahve",
+        "description": "12 saat boyunca demlenen çekirdek kahve, esmer şeker şurubu ve badem sütü ile."
+      },
+      "en": {
+        "name": "Cold Brew Coffee",
+        "description": "12-hour brewed specialty beans with brown sugar syrup and almond milk."
+      },
+      "de": {
+        "name": "Cold Brew Kaffee",
+        "description": "12 Stunden extrahierter Spezialitätenkaffee mit braunem Zuckersirup und Mandeldrink."
+      },
+      "fr": {
+        "name": "Café Cold Brew",
+        "description": "Café infusé pendant 12 heures avec sirop de sucre brun et lait d'amande."
+      }
+    }
+  }
+]
+

@@ -6,6 +6,17 @@ const DATA_DIR = path.join(process.cwd(), '.data');
 const MENU_FILE = path.join(DATA_DIR, 'menu.json');
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
 
+async function loadFallbackMenu() {
+  try {
+    const menuData = await fs.readFile(MENU_FILE, 'utf8');
+    const parsed = JSON.parse(menuData);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.warn('Fallback menu okunamadı:', error);
+    return [];
+  }
+}
+
 export async function GET(request: Request) {
   try {
     // Tenant bilgisini al
@@ -80,7 +91,16 @@ export async function GET(request: Request) {
         });
         
         console.log('Frontend\'e döndürülen menu sayısı:', menu.length);
-        return NextResponse.json({ menu }, { status: 200 });
+
+        if (menu.length > 0) {
+          return NextResponse.json({ menu }, { status: 200 });
+        }
+
+        console.warn('Backend menüsü boş geldi, fallback menü yükleniyor.');
+        const fallbackMenu = await loadFallbackMenu();
+        if (fallbackMenu.length > 0) {
+          return NextResponse.json({ menu: fallbackMenu }, { status: 200 });
+        }
       }
     } catch (backendError) {
       console.warn('Backend menu yükleme hatası, client-side dosyaya geçiliyor:', backendError);
@@ -88,8 +108,7 @@ export async function GET(request: Request) {
 
     // Backend'den yüklenemezse, client-side dosyadan oku
     try {
-      const menuData = await fs.readFile(MENU_FILE, 'utf8');
-      const menu = JSON.parse(menuData);
+      const menu = await loadFallbackMenu();
       return NextResponse.json({ menu }, { status: 200 });
     } catch (error) {
       // Dosya yoksa boş menü döndür
