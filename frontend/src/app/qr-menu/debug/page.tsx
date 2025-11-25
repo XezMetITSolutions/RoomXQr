@@ -18,7 +18,9 @@ export default function QRMenuDebugPage() {
   const [tenantSlug, setTenantSlug] = useState('');
 
   useEffect(() => {
-    setApiUrl(process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com');
+    // Backend URL'i düzelt - roomxqr.onrender.com yerine roomxqr-backend.onrender.com olmalı
+    const defaultUrl = 'https://roomxqr-backend.onrender.com';
+    setApiUrl(process.env.NEXT_PUBLIC_API_URL || defaultUrl);
     
     // Tenant slug'ını al
     if (typeof window !== 'undefined') {
@@ -181,7 +183,7 @@ export default function QRMenuDebugPage() {
             'Database bağlantısı var ama ürün bulunamadı. Seed script çalıştırılmalı.', 
             { 
               menuCount: 0,
-              suggestion: 'Backend\'de npm run db:seed komutunu çalıştırın'
+              suggestion: 'Aşağıdaki "Seed Script Çalıştır" butonunu kullanın'
             }
           );
         } else {
@@ -198,6 +200,49 @@ export default function QRMenuDebugPage() {
       }
     } catch (error: any) {
       addResult('Database Bağlantısı', 'error', 
+        `Hata: ${error.message}`, 
+        error
+      );
+    }
+  };
+
+  const runSeedScript = async () => {
+    addResult('Seed Script', 'pending', 'Seed script çalıştırılıyor...');
+    try {
+      // Secret key - production'da environment variable'dan alınmalı
+      const secretKey = prompt('Seed secret key girin (varsayılan: demo-seed-secret-key-change-in-production):') || 'demo-seed-secret-key-change-in-production';
+      
+      const response = await fetch(`${apiUrl}/api/admin/seed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-seed-secret': secretKey
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        addResult('Seed Script', 'success', 
+          'Seed script başarıyla çalıştırıldı! Ürünler yüklendi.', 
+          { 
+            message: data.message,
+            output: data.output
+          }
+        );
+        
+        // 2 saniye sonra menu API'sini tekrar test et
+        setTimeout(() => {
+          testBackendMenuAPI();
+        }, 2000);
+      } else {
+        addResult('Seed Script', 'error', 
+          `Seed script hatası: ${data.message || 'Bilinmeyen hata'}`, 
+          data
+        );
+      }
+    } catch (error: any) {
+      addResult('Seed Script', 'error', 
         `Hata: ${error.message}`, 
         error
       );
@@ -330,6 +375,12 @@ export default function QRMenuDebugPage() {
               className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-left"
             >
               Database Bağlantı Testi
+            </button>
+            <button
+              onClick={runSeedScript}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
+            >
+              🌱 Seed Script Çalıştır
             </button>
           </div>
         </div>

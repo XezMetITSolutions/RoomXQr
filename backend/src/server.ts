@@ -3715,6 +3715,62 @@ async function runMigrations() {
   }
 }
 
+// Seed script endpoint (sadece production'da ve secret key ile)
+app.post('/api/admin/seed', async (req: Request, res: Response) => {
+  try {
+    // Güvenlik: Sadece production'da ve secret key ile çalışsın
+    const secretKey = req.headers['x-seed-secret'] as string;
+    const expectedSecret = process.env.SEED_SECRET || 'demo-seed-secret-key-change-in-production';
+    
+    if (secretKey !== expectedSecret) {
+      res.status(401).json({ 
+        message: 'Unauthorized - Secret key required',
+        hint: 'Set x-seed-secret header with SEED_SECRET environment variable value'
+      });
+      return;
+    }
+
+    console.log('🌱 Seed script başlatılıyor...');
+    
+    // Seed script'ini çalıştır
+    const { execSync } = require('child_process');
+    try {
+      const output = execSync('npm run db:seed', {
+        stdio: 'pipe',
+        cwd: process.cwd(),
+        encoding: 'utf8'
+      });
+      
+      console.log('✅ Seed script başarıyla çalıştırıldı');
+      console.log('Seed output:', output);
+      
+      res.json({ 
+        success: true,
+        message: 'Seed script başarıyla çalıştırıldı',
+        output: output.substring(0, 1000) // İlk 1000 karakter
+      });
+      return;
+    } catch (seedError: any) {
+      console.error('❌ Seed script hatası:', seedError);
+      res.status(500).json({ 
+        success: false,
+        message: 'Seed script çalıştırılırken hata oluştu',
+        error: seedError.message,
+        output: seedError.stdout?.toString() || seedError.stderr?.toString() || 'No output'
+      });
+      return;
+    }
+  } catch (error) {
+    console.error('❌ Seed endpoint hatası:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Seed endpoint hatası',
+      error: error instanceof Error ? error.message : String(error)
+    });
+    return;
+  }
+});
+
 // DeepL Translation API endpoint
 app.post('/api/translate', tenantMiddleware, authMiddleware, async (req: Request, res: Response) => {
   try {
