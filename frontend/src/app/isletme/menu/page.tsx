@@ -118,13 +118,13 @@ export default function MenuManagement() {
 
   // Tenant slug'ını al
   const getTenantSlug = (): string => {
-    if (typeof window === 'undefined') return 'default';
+    if (typeof window === 'undefined') return 'demo';
     const hostname = window.location.hostname;
     const subdomain = hostname.split('.')[0];
     if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
       return subdomain;
     }
-    return 'default';
+    return 'demo';
   };
 
   // Settings'ten desteklenen dilleri al (Türkçe hariç - çeviri için)

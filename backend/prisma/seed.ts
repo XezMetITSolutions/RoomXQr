@@ -46,6 +46,15 @@ async function main() {
 
   console.log('✅ Hotel created:', hotel.name);
 
+  // Demo tenant için mevcut tüm menu item'ları sil (tekrar eden ürünleri önlemek için)
+  console.log('🗑️  Mevcut demo menu item'ları siliniyor...');
+  const deletedCount = await prisma.menuItem.deleteMany({
+    where: {
+      tenantId: tenant.id
+    }
+  });
+  console.log(`✅ ${deletedCount.count} menu item silindi`);
+
   // Demo menu ürünleri oluştur (çok dilli)
   const menuItems = [
     {
@@ -53,7 +62,7 @@ async function main() {
       description: 'Zeytinyağlı peynirler, taze domates, salatalık, ev yapımı reçeller ve sıcak bazlama ile dengeli kahvaltı tabağı.',
       price: 260,
       category: 'Kahvaltı',
-      image: 'https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80',
       allergens: ['Süt', 'Gluten', 'Fındık'],
       calories: 520,
       translations: {
@@ -80,7 +89,7 @@ async function main() {
       description: 'Taze levrek, zeytinyağı ve limon ile marine edilmiş, yanında mevsim sebzeleri ile servis edilir.',
       price: 185,
       category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=80',
       allergens: ['Balık'],
       calories: 320,
       translations: {
@@ -107,7 +116,7 @@ async function main() {
       description: 'Yavaş pişirilmiş kuzu eti, baharatlı sos ve pilav ile servis edilir.',
       price: 320,
       category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=900&q=80',
       allergens: [],
       calories: 680,
       translations: {
@@ -134,7 +143,7 @@ async function main() {
       description: 'Taze roka, marul, domates, salatalık, zeytin ve özel sos ile hazırlanmış nefis salata.',
       price: 95,
       category: 'Mezeler',
-      image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
       allergens: [],
       calories: 120,
       translations: {
@@ -188,7 +197,7 @@ async function main() {
       description: 'İnce yufka, ceviz ve şerbet ile hazırlanmış geleneksel Türk tatlısı.',
       price: 120,
       category: 'Tatlılar',
-      image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80',
       allergens: ['Gluten', 'Fındık'],
       calories: 450,
       translations: {
@@ -215,7 +224,7 @@ async function main() {
       description: 'Pirinç, süt ve şeker ile hazırlanmış geleneksel Türk muhallebisi.',
       price: 65,
       category: 'Tatlılar',
-      image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1606312619070-d48b4bcaf211?auto=format&fit=crop&w=900&q=80',
       allergens: ['Süt', 'Gluten'],
       calories: 280,
       translations: {
@@ -296,7 +305,7 @@ async function main() {
       description: 'Kırmızı mercimek, havuç ve baharatlarla hazırlanmış geleneksel çorba.',
       price: 85,
       category: 'Mezeler',
-      image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=900&q=80',
       allergens: [],
       calories: 180,
       translations: {
@@ -323,7 +332,7 @@ async function main() {
       description: 'Marine edilmiş tavuk eti, közlenmiş sebzeler ve pilav ile servis edilir.',
       price: 195,
       category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1532550907401-a5c9e77e3856?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1608039829573-8036e3a8f3c0?auto=format&fit=crop&w=900&q=80',
       allergens: [],
       calories: 420,
       translations: {
