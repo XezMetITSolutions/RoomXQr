@@ -1032,6 +1032,13 @@ export default function MenuManagement() {
                 <Plus className="w-5 h-5" />
                 <span>Ürün Ekle</span>
               </button>
+              <Link
+                href="/isletme/menu/import-demo-products"
+                className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors flex items-center space-x-2"
+              >
+                <Upload className="w-5 h-5" />
+                <span>Demo Ürünleri Import Et</span>
+              </Link>
               <button
                 onClick={() => setShowBulkUploadModal(true)}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
