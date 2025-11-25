@@ -6,6 +6,7 @@ import { FaBell, FaTimes } from 'react-icons/fa';
 import { ApiService } from '@/services/api';
 import { useLanguageStore } from '@/store/languageStore';
 import { useThemeStore } from '@/store/themeStore';
+import { getProductImageUrl } from '@/lib/imageService';
 
 
 // Sabit kategoriler (fallback için)
@@ -110,23 +111,9 @@ export default function QRMenuPage() {
         if (response.ok) {
           const data = await response.json();
           // API'den gelen veriyi QR menü formatına çevir
-          const formattedMenu = data.menu.map((item: any, index: number) => {
+          // Önce tüm ürünler için görselleri yükle (async)
+          const formattedMenuPromises = data.menu.map(async (item: any, index: number) => {
             console.log('API Item:', item); // Debug için
-
-            // Varsayılan görselleri kontrol et
-            let defaultImage = '';
-            const itemName = item.name.toLowerCase();
-            if (itemName.includes('burger') || itemName.includes('cheeseburger')) {
-              defaultImage = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('pizza') || itemName.includes('margherita')) {
-              defaultImage = 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('salad') || itemName.includes('caesar')) {
-              defaultImage = 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('tiramisu') || itemName.includes('dessert')) {
-              defaultImage = 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80';
-            } else if (itemName.includes('coffee') || itemName.includes('cappuccino')) {
-              defaultImage = 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80';
-            }
 
             // Dil seçimine göre çeviriyi al
             let translations = {};
@@ -157,6 +144,13 @@ export default function QRMenuPage() {
               });
             }
 
+            // Ürün adını kullanarak dinamik görsel al (İngilizce arama ile)
+            const productImage = await getProductImageUrl(
+              item.name,
+              item.image,
+              item.category
+            );
+
             return {
               id: item.id || `api-${index}`,
               name: translation?.name || item.name,
@@ -167,13 +161,16 @@ export default function QRMenuPage() {
               category: item.category || 'Diğer', // Backend'den gelen kategori adını direkt kullan
               originalCategory: item.category || 'Diğer', // Orijinal kategori adını sakla
               subCategory: 'general',
-              image: item.image || defaultImage, // API görseli yoksa varsayılan görseli kullan
+              image: productImage, // Dinamik olarak oluşturulan görsel
               allergens: item.allergens || [],
               service: '',
               available: item.available !== false,
               translations: translations, // Çevirileri de sakla
             };
           });
+          
+          // Tüm görselleri paralel olarak yükle
+          const formattedMenu = await Promise.all(formattedMenuPromises);
           // Sadece API'den gelen gerçek ürünleri kullan, demo ürünleri ekleme
           setMenuData(formattedMenu);
 
