@@ -10,6 +10,10 @@ npx prisma migrate resolve --applied 20250106210000_add_super_admin_role 2>/dev/
 echo "🔄 Migration'lar uygulanıyor..."
 npx prisma migrate deploy
 
+# Seed script'ini çalıştır (demo ürünleri yükle)
+echo "🌱 Seed script çalıştırılıyor..."
+npm run db:seed || echo "⚠️ Seed script hatası (devam ediliyor)"
+
 # Uygulamayı başlat
 echo "🚀 Uygulama başlatılıyor..."
 npm start
