@@ -133,7 +133,7 @@ const corsOptions: cors.CorsOptions = {
     callback(new Error(`CORS policy violation: ${normalizedOrigin} is not allowed`))
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "x-tenant", "X-Tenant"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "x-tenant", "X-Tenant", "x-seed-secret", "X-Seed-Secret"],
   exposedHeaders: ["Content-Length", "Content-Type"],
   credentials: true,
   optionsSuccessStatus: 200,

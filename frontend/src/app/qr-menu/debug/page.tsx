@@ -212,13 +212,31 @@ export default function QRMenuDebugPage() {
       // Secret key - production'da environment variable'dan alınmalı
       const secretKey = prompt('Seed secret key girin (varsayılan: demo-seed-secret-key-change-in-production):') || 'demo-seed-secret-key-change-in-production';
       
+      console.log('🌱 Seed script çağrılıyor:', { apiUrl, secretKey: secretKey.substring(0, 10) + '...' });
+      
       const response = await fetch(`${apiUrl}/api/admin/seed`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-seed-secret': secretKey
-        }
+          'x-seed-secret': secretKey,
+          'x-tenant': tenantSlug
+        },
+        mode: 'cors',
+        credentials: 'include'
       });
+      
+      console.log('📡 Seed script response:', { status: response.status, ok: response.ok });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { message: errorText, status: response.status };
+        }
+        throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+      }
       
       const data = await response.json();
       
