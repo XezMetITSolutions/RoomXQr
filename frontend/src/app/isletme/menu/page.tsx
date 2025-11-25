@@ -256,7 +256,6 @@ export default function MenuManagement() {
         const data = await response.json();
         console.log('Menü yüklendi, toplam item sayısı:', data.menu?.length || 0);
         const formattedItems = data.menu
-          .filter((item: any) => !isDemoProduct(item.name)) // Demo ürünleri filtrele
           .map((item: any, index: number) => {
             // Translations'ı parse et
             let translations = {};
@@ -327,10 +326,7 @@ export default function MenuManagement() {
   }, [categories]);
 
   const filteredItems = menuItems.filter(item => {
-    // Demo ürünleri filtrele
-    if (isDemoProduct(item.name)) {
-      return false;
-    }
+    // Demo ürünleri filtreleme kaldırıldı - tüm ürünler gösterilecek
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
