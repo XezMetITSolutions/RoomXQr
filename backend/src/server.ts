@@ -3716,6 +3716,30 @@ async function runMigrations() {
 }
 
 // Seed script endpoint (sadece production'da ve secret key ile)
+// OPTIONS preflight request'i handle et
+app.options('/api/admin/seed', (req: Request, res: Response) => {
+  const origin = req.headers.origin
+  if (origin) {
+    const normalizedOrigin = origin.replace(/\/$/, '')
+    const allowedDomains = ['roomxqr.com', 'roomxr.com', 'onrender.com', 'netlify.app', 'localhost']
+    
+    for (const domain of allowedDomains) {
+      if (normalizedOrigin.includes(domain)) {
+        res.setHeader('Access-Control-Allow-Origin', origin)
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-seed-secret, X-Seed-Secret, x-tenant, X-Tenant')
+        res.setHeader('Access-Control-Allow-Credentials', 'true')
+        res.status(200).end()
+        return
+      }
+    }
+  }
+  cors(corsOptions)(req, res, () => {
+    res.status(200).end()
+  })
+  return
+});
+
 app.post('/api/admin/seed', async (req: Request, res: Response) => {
   try {
     // Güvenlik: Sadece production'da ve secret key ile çalışsın
