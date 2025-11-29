@@ -1,62 +1,33 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const locales = ['tr', 'en', 'de'];
-const defaultLocale = 'en';
-
-function getLocale(request: NextRequest): string {
-    // URL'den locale kontrolü
-    const pathname = request.nextUrl.pathname;
-    const pathnameLocale = locales.find(
-        (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-    );
-
-    if (pathnameLocale) return pathnameLocale;
-
-    // Accept-Language header'dan locale al
-    const acceptLanguage = request.headers.get('accept-language');
-    if (acceptLanguage) {
-        // İlk tercih edilen dili al
-        const preferredLang = acceptLanguage.split(',')[0].split('-')[0].toLowerCase();
-
-        // Türkçe için
-        if (preferredLang === 'tr') return 'tr';
-        // Almanca için
-        if (preferredLang === 'de') return 'de';
-    }
-
-    // Varsayılan İngilizce
-    return defaultLocale;
-}
+const supportedLocales = ['tr', 'de', 'en'];
+const defaultLocale = 'tr';
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
-    // API, static files ve özel rotaları atla
+    // Skip middleware for API routes, static files, and special Next.js paths
     if (
-        pathname.startsWith('/api') ||
-        pathname.startsWith('/_next') ||
-        pathname.startsWith('/favicon') ||
-        pathname.startsWith('/sw.js') ||
-        pathname.startsWith('/workbox') ||
+        pathname.startsWith('/api/') ||
+        pathname.startsWith('/_next/') ||
+        pathname.startsWith('/static/') ||
         pathname.includes('.') ||
-        pathname.startsWith('/guest') ||
         pathname.startsWith('/isletme') ||
-        pathname.startsWith('/demo_') ||
+        pathname.startsWith('/guest') ||
         pathname.startsWith('/login') ||
-        pathname.startsWith('/admin') ||
+        pathname.startsWith('/demo') ||
+        pathname.startsWith('/system-admin') ||
         pathname.startsWith('/kitchen') ||
         pathname.startsWith('/reception') ||
-        pathname.startsWith('/system-admin') ||
         pathname.startsWith('/qr-menu') ||
-        pathname.startsWith('/paneller') ||
-        pathname.startsWith('/bilgi')
+        pathname.startsWith('/paneller')
     ) {
         return NextResponse.next();
     }
 
-    // Zaten locale ile başlıyorsa devam et
-    const pathnameHasLocale = locales.some(
+    // Check if pathname already has a locale
+    const pathnameHasLocale = supportedLocales.some(
         (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
     );
 
@@ -64,9 +35,29 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    // Root path için locale yönlendirmesi
+    // Redirect root to locale-specific page
     if (pathname === '/') {
-        const locale = getLocale(request);
+        // Get browser language
+        const acceptLanguage = request.headers.get('accept-language');
+        let locale = defaultLocale;
+
+        if (acceptLanguage) {
+            // Parse accept-language header
+            const languages = acceptLanguage.split(',').map(lang => {
+                const parts = lang.trim().split(';');
+                return parts[0].split('-')[0].toLowerCase();
+            });
+
+            // Find first supported language
+            const supportedLang = languages.find(lang => supportedLocales.includes(lang));
+            if (supportedLang) {
+                locale = supportedLang;
+            } else if (!languages.includes('tr') && !languages.includes('de')) {
+                // If neither Turkish nor German, default to English
+                locale = 'en';
+            }
+        }
+
         return NextResponse.redirect(new URL(`/${locale}`, request.url));
     }
 
