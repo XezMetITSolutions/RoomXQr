@@ -140,7 +140,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div id="hero">
-        <HeroBlue />
+        <HeroBlue lang="tr" />
       </div>
 
       {/* Stats Section */}
