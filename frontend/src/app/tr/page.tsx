@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Hotel, QrCode, Settings, CheckCircle, Star, Play, Shield, Globe, Smartphone, CreditCard, Zap, ChevronDown, ChevronUp, Camera, Image, Users, TrendingUp, Clock, DollarSign, Heart, MessageCircle, BarChart3, Award, Target, Sparkles, ArrowRight, CheckCircle2, XCircle, Lightbulb, Megaphone, ThumbsUp, Share2, Instagram, Facebook, Twitter } from 'lucide-react';
 import { Language } from '@/types';
 import { translate } from '@/lib/translations';
-import HeroBlue from './hero-blue';
+import HeroBlue from '../hero-blue';
 
 export default function HomePage() {
   const router = useRouter();
