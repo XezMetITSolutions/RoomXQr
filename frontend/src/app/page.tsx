@@ -36,7 +36,7 @@ export default function HomePage() {
 
   const features = [
     { icon: QrCode, title: 'QR Kod Sistemi', description: 'Her oda için özel QR kod ile misafirler anında menüye erişir', color: 'text-blue-600' },
-    { icon: Globe, title: '9 Dil Desteği', description: 'AI destekli çeviri ile uluslararası misafirler için mükemmel deneyim', color: 'text-green-600' },
+    { icon: Globe, title: 'Çoklu Dil Desteği', description: 'AI destekli çeviri ile uluslararası misafirler için mükemmel deneyim', color: 'text-green-600' },
     { icon: Camera, title: 'AI Görsel İyileştirme', description: 'Telefon çekimlerini profesyonel menü fotoğraflarına dönüştürün', color: 'text-purple-600' },
     { icon: Zap, title: 'Gerçek Zamanlı', description: 'Anlık bildirimler ve güncellemeler ile hızlı hizmet', color: 'text-yellow-600' },
     { icon: CreditCard, title: 'Entegre Ödeme', description: 'Güvenli ödeme sistemi ile oda servisi kolayca', color: 'text-indigo-600' },
@@ -56,7 +56,7 @@ export default function HomePage() {
       description: 'En popüler seçenek! Orta vadeli taahhüt ile ideal fiyat/performans.',
       features: [
         { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
-        { name: 'Çoklu Dil Desteği (9 Dil)', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
+        { name: 'Çoklu Dil Desteği', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
         { name: 'AI Görsel İyileştirme', desc: 'Telefon fotoğraflarını profesyonel menü görsellerine dönüştürün.' },
         { name: 'Detaylı Satış Raporları', desc: 'Günlük, haftalık, aylık satış analizi ve trend raporları.' },
         { name: 'Mutfak & Resepsiyon Paneli', desc: 'Siparişleri takip edin, misafir taleplerini yönetin.' },
@@ -80,7 +80,7 @@ export default function HomePage() {
       description: 'Uzun vadeli taahhüt ile maksimum tasarruf! En avantajlı seçenek.',
       features: [
         { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
-        { name: 'Çoklu Dil Desteği (9 Dil)', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
+        { name: 'Çoklu Dil Desteği', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
         { name: 'AI Görsel İyileştirme', desc: 'Telefon fotoğraflarını profesyonel menü görsellerine dönüştürün.' },
         { name: 'Detaylı Satış Raporları', desc: 'Günlük, haftalık, aylık satış analizi ve trend raporları.' },
         { name: 'Mutfak & Resepsiyon Paneli', desc: 'Siparişleri takip edin, misafir taleplerini yönetin.' },
@@ -107,7 +107,7 @@ export default function HomePage() {
         { name: 'Şubeler Arası Analiz', desc: 'Tüm şubelerin performansını karşılaştırın ve analiz edin.' },
         { name: 'Kurumsal API Entegrasyonu', desc: 'Mevcut sistemlerinizle (PMS, Muhasebe, CRM) entegrasyon.' },
         { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
-        { name: 'Çoklu Dil Desteği (9 Dil)', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
+        { name: 'Çoklu Dil Desteği', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
         { name: 'AI Görsel İyileştirme', desc: 'Telefon fotoğraflarını profesyonel menü görsellerine dönüştürün.' },
         { name: 'Gelişmiş Raporlama', desc: 'Şube bazlı detaylı satış ve performans raporları.' },
         { name: 'Özel Markalama', desc: 'Her şube için özel logo ve tema özelleştirmesi.' },
