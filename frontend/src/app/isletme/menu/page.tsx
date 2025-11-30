@@ -61,6 +61,13 @@ interface Category {
 
 export default function MenuManagement() {
   const { currentLanguage, getTranslation } = useLanguageStore();
+
+  useEffect(() => {
+    console.log('Current Language:', currentLanguage);
+    console.log('Test Translation (category_label):', getTranslation('page.menu.category_label'));
+    console.log('Test Translation (title):', getTranslation('page.menu.title'));
+  }, [currentLanguage, getTranslation]);
+
   const [activeTab, setActiveTab] = useState<'menu' | 'categories'>('menu');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
