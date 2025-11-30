@@ -168,7 +168,7 @@ export default function QRMenuPage() {
               translations: translations, // Çevirileri de sakla
             };
           });
-          
+
           // Tüm görselleri paralel olarak yükle
           const formattedMenu = await Promise.all(formattedMenuPromises);
           // Sadece API'den gelen gerçek ürünleri kullan, demo ürünleri ekleme
@@ -796,7 +796,7 @@ export default function QRMenuPage() {
 
               return (
                 <p className="text-center mt-2 text-sm" style={{ color: theme.textColor, opacity: 0.7 }}>
-                  {cleanRoomNumber} numaralı oda
+                  {cleanRoomNumber} {getTranslation('room.number')}
                 </p>
               );
             })()}
@@ -1107,13 +1107,13 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
         <div className="flex items-center space-x-4 text-sm mb-4" style={{ color: theme.textColor }}>
           <div className="flex items-center space-x-2">
             <Clock className="w-4 h-4" />
-            <span>{preparationTime} dakika</span>
+            <span>{preparationTime} {getTranslation('product.minutes')}</span>
           </div>
           {rating && (
             <div className="flex items-center space-x-2">
               <Star className="w-4 h-4" style={{ color: theme.accentColor }} />
               <span>{rating}</span>
-              <span className="text-xs text-gray-400">(İşletme)</span>
+              <span className="text-xs text-gray-400">{getTranslation('product.rating')}</span>
             </div>
           )}
         </div>

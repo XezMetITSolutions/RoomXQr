@@ -64,6 +64,9 @@ export const translations: Record<string, Translations> = {
     'product.show_details': 'Detay',
     'product.show_less': 'Daha az göster',
 
+    // Oda
+    'room.number': 'numaralı oda',
+
     // Sepet
     'cart.title': 'Sepetim',
     'cart.empty': 'Sepetiniz boş',
@@ -410,6 +413,9 @@ export const translations: Record<string, Translations> = {
     'product.show_details': 'Details',
     'product.show_less': 'Show Less',
 
+    // Room
+    'room.number': 'Room',
+
     // Cart
     'cart.title': 'My Cart',
     'cart.empty': 'Your cart is empty',
@@ -755,6 +761,9 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Gesamt',
     'product.show_details': 'Details',
     'product.show_less': 'Weniger anzeigen',
+
+    // Zimmer
+    'room.number': 'Zimmer',
 
     // Cart
     'cart.title': 'Mein Warenkorb',
