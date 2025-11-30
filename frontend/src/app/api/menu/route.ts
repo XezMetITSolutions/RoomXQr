@@ -93,13 +93,13 @@ export async function GET(request: Request) {
         console.log('Frontend\'e döndürülen menu sayısı:', menu.length);
 
         if (menu.length > 0) {
-          return NextResponse.json({ menu }, { status: 200 });
+          return NextResponse.json({ menu, source: 'backend' }, { status: 200 });
         }
 
         console.warn('Backend menüsü boş geldi, fallback menü yükleniyor.');
         const fallbackMenu = await loadFallbackMenu();
         if (fallbackMenu.length > 0) {
-          return NextResponse.json({ menu: fallbackMenu }, { status: 200 });
+          return NextResponse.json({ menu: fallbackMenu, source: 'local_fallback_empty_backend' }, { status: 200 });
         }
       }
     } catch (backendError) {
@@ -109,7 +109,7 @@ export async function GET(request: Request) {
     // Backend'den yüklenemezse, client-side dosyadan oku
     try {
       const menu = await loadFallbackMenu();
-      return NextResponse.json({ menu }, { status: 200 });
+      return NextResponse.json({ menu, source: 'local_fallback_error' }, { status: 200 });
     } catch (error) {
       // Dosya yoksa boş menü döndür
       return NextResponse.json({ menu: [] }, { status: 200 });
