@@ -105,6 +105,12 @@ export default function MenuManagement() {
     isValid: false
   });
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Toast notification fonksiyonları
   const showSuccessToast = (message: string) => {
     setToast({ show: true, message, type: 'success' });
@@ -1170,10 +1176,10 @@ export default function MenuManagement() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-gray-900">
-                        {item.translations?.[currentLanguage]?.name || item.name}
+                        {mounted && item.translations?.[currentLanguage]?.name ? item.translations[currentLanguage].name : item.name}
                       </h3>
                       <p className="text-gray-600 text-sm mt-1">
-                        {item.translations?.[currentLanguage]?.description || item.description}
+                        {mounted && item.translations?.[currentLanguage]?.description ? item.translations[currentLanguage].description : item.description}
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">
