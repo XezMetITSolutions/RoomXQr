@@ -14,18 +14,28 @@ export async function POST(request: Request) {
 
     // Tenant bilgisini al
     let tenantSlug = request.headers.get('x-tenant') || '';
-    
+
     // Eğer header'da yoksa, host header'ından subdomain'i çıkar
     if (!tenantSlug) {
       const host = request.headers.get('host') || '';
-      const subdomain = host.split('.')[0];
-      if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend' && subdomain !== 'localhost') {
-        tenantSlug = subdomain;
-      } else {
-        // Varsayılan tenant
+
+      // localhost kontrolü
+      if (host === 'localhost' || host.startsWith('127.0.0.1')) {
         tenantSlug = 'demo';
+      } else {
+        const parts = host.split('.');
+        const subdomain = parts[0];
+
+        // Ana domain kontrolü (roomxqr.com, roomxqr.onrender.com vb.)
+        if (subdomain === 'www' || subdomain === 'roomxqr' || parts.length <= 2) {
+          tenantSlug = 'demo';
+        } else {
+          tenantSlug = subdomain;
+        }
       }
     }
+
+    console.log('🗑️ Delete Item - Tenant:', tenantSlug, 'Item ID:', id);
 
     // Authorization token'ını al
     const authHeader = request.headers.get('authorization') || '';
@@ -49,8 +59,8 @@ export async function POST(request: Request) {
 
       // 404 - Backend endpoint yok, client-side'da zaten silindi, başarılı dön
       if (backendResponse.status === 404) {
-        return NextResponse.json({ 
-          success: true, 
+        return NextResponse.json({
+          success: true,
           message: 'Ürün silindi',
           note: 'Backend endpoint bulunamadı, client-side silme başarılı'
         }, { status: 200 });
@@ -59,14 +69,14 @@ export async function POST(request: Request) {
       const backendData = await backendResponse.json();
 
       if (backendResponse.ok) {
-        return NextResponse.json({ 
-          success: true, 
+        return NextResponse.json({
+          success: true,
           ...backendData
         }, { status: 200 });
       } else {
         // Backend hatası ama client-side'da zaten silindi, başarılı dön
-        return NextResponse.json({ 
-          success: true, 
+        return NextResponse.json({
+          success: true,
           message: 'Ürün silindi',
           warning: 'Backend hatası: ' + (backendData.error || 'Bilinmeyen hata'),
           note: 'Client-side silme başarılı'
@@ -75,8 +85,8 @@ export async function POST(request: Request) {
     } catch (backendError: any) {
       // Backend'e ulaşılamazsa, client-side'da zaten silindi, başarılı dön
       console.warn('Backend silme hatası (devam ediliyor):', backendError);
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         message: 'Ürün silindi',
         warning: 'Backend bağlantısı kurulamadı',
         note: 'Client-side silme başarılı'
@@ -86,8 +96,8 @@ export async function POST(request: Request) {
   } catch (err: any) {
     console.error('Menu delete API hatası:', err);
     // Hata olsa bile client-side'da silindi, başarılı dön
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: 'Ürün silindi',
       warning: err?.message || 'Sunucu hatası',
       note: 'Client-side silme başarılı'
