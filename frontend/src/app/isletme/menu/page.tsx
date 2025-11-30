@@ -260,6 +260,11 @@ export default function MenuManagement() {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log('📊 Menü API Yanıtı:', {
+          source: data.source || 'unknown',
+          itemCount: data.menu?.length || 0,
+          firstItem: data.menu?.[0]?.name || 'N/A'
+        });
         console.log('Menü yüklendi, toplam item sayısı:', data.menu?.length || 0);
         const formattedItems = data.menu
           .map((item: any, index: number) => {

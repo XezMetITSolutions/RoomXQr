@@ -384,15 +384,20 @@ export default function ImportDemoProductsPage() {
                     }
                   });
 
+                  const responseData = await response.json();
+                  console.log('🗑️ Delete-All API Yanıtı:', responseData);
+
                   if (response.ok) {
                     setResult({
                       success: true,
                       message: 'Tüm ürünler başarıyla silindi!',
+                      details: responseData
                     });
                   } else {
                     throw new Error('Silme işlemi başarısız oldu');
                   }
                 } catch (error: any) {
+                  console.error('❌ Silme hatası:', error);
                   setResult({
                     success: false,
                     message: `Silme hatası: ${error.message}`,
