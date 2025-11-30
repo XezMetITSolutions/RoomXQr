@@ -1094,32 +1094,6 @@ export const translations: Record<string, Translations> = {
     'notifications.maintenance_message': 'Ihre Anfrage zu einem technischen Problem wurde an die Rezeption gesendet. Unser Personal ist für Notfälle unterwegs.',
     'notifications.maintenance_description': 'Technisches Problem gemeldet',
     'notifications.survey_title': 'Bewertung',
-    'notifications.survey_thank_you': 'Danke für Ihren Kommentar! Ihr Feedback ist uns sehr wichtig.',
-    'notifications.general_request_title': 'Allgemeine Anfrage',
-  },
-
-  fr: {
-    // Menu management labels
-    'page.menu.category_label': 'Catégorie:',
-    'page.menu.price_label': 'Prix:',
-    'page.menu.calories_label': 'Calories:',
-    'page.menu.status_label': 'Statut:',
-    'page.menu.allergens_label': 'Allergènes:',
-    'page.menu.status_available': 'Disponible',
-    'page.menu.status_unavailable': 'Indisponible',
-    'page.menu.kcal': 'kcal',
-
-    // Product info
-    'product.minutes': 'min',
-    'product.rating': 'Note',
-
-    // Room
-    'room.number': 'Chambre',
-  },
-
-  ru: {
-    // Заголовки меню
-    'menu.title': 'Меню Обслуживания',
     'menu.back': 'Назад',
     'menu.search': 'Поиск...',
     'menu.categories': 'Категории',
