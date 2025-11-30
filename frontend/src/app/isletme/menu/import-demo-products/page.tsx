@@ -368,6 +368,47 @@ export default function ImportDemoProductsPage() {
 
           <div className="flex gap-4">
             <button
+              onClick={async () => {
+                if (!confirm('Tüm ürünleri silmek istediğinize emin misiniz?')) return;
+                setLoading(true);
+                try {
+                  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+                  const tenantSlug = typeof window !== 'undefined' ? (window.location.hostname.split('.')[0] === 'www' ? 'demo' : window.location.hostname.split('.')[0]) : 'demo';
+
+                  const response = await fetch('/api/menu/delete-all', {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'x-tenant': tenantSlug,
+                      'Authorization': `Bearer ${token}`
+                    }
+                  });
+
+                  if (response.ok) {
+                    setResult({
+                      success: true,
+                      message: 'Tüm ürünler başarıyla silindi!',
+                    });
+                  } else {
+                    throw new Error('Silme işlemi başarısız oldu');
+                  }
+                } catch (error: any) {
+                  setResult({
+                    success: false,
+                    message: `Silme hatası: ${error.message}`,
+                  });
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading || importing}
+              className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              <XCircle className="w-5 h-5" />
+              Önce Tümünü Sil
+            </button>
+
+            <button
               onClick={handleImport}
               disabled={loading || importing}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
