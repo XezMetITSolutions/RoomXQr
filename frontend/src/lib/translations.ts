@@ -30,7 +30,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'feature_3_title': 'Entegre Ödeme',
     'feature_3_desc': 'Oda servisi için güvenli ödeme işlemleri',
     'footer_text': 'Otel operasyonlarını modern teknoloji ile kolaylaştırıyoruz',
-    
+
     // Package System
     'premium_package': 'Premium Paket',
     'kurumsal_package': 'Kurumsal Paket',
@@ -42,7 +42,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'select_package': 'Paket Seç',
     'current_package': 'Mevcut Paket',
     'upgrade_package': 'Paket Yükselt',
-    
+
     // Business Panel
     'business_panel_title': 'İşletme Paneli',
     'business_panel_desc': 'İşletme bilgileri, müşteri yönetimi ve QR kod oluşturma',
@@ -59,7 +59,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'active': 'Aktif',
     'expired': 'Süresi Dolmuş',
     'suspended': 'Askıya Alınmış',
-    
+
     // Reception Panel
     'room_requests': 'Oda İstekleri',
     'urgent_requests': 'Acil İstekler',
@@ -75,7 +75,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'in_progress': 'İşlemde',
     'completed': 'Tamamlandı',
     'escalate': 'Üst Seviyeye Çıkar',
-    
+
     // Kitchen Panel
     'active_orders': 'Aktif Siparişler',
     'preparation_queue': 'Hazırlık Kuyruğu',
@@ -90,7 +90,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'add_menu_item': 'Menü Ürünü Ekle',
     'edit_menu_item': 'Menü Ürünü Düzenle',
     'toggle_availability': 'Mevcutluk Durumunu Değiştir',
-    
+
     // Payment System
     'payment_system': 'Ödeme Sistemi',
     'payment_methods': 'Ödeme Yöntemleri',
@@ -107,7 +107,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'total_amount': 'Toplam Tutar',
     'payment_date': 'Ödeme Tarihi',
     'transaction_id': 'İşlem ID',
-    
+
     // QR Menu
     'qr_menu_title': 'QR Menü',
     'qr_menu_desc': 'Oda QR kodları ile menü erişimi ve sipariş sistemi',
@@ -122,7 +122,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'place_order': 'Sipariş Ver',
     'order_confirmation': 'Sipariş Onayı',
     'order_number': 'Sipariş Numarası',
-    
+
     // Menu System
     'menu': 'Menü',
     'search': 'Arama',
@@ -197,13 +197,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'no_occupied_rooms_desc': 'Demo için şu anda dolu oda bulunmuyor.',
     'guest_interface_features': 'Misafir Arayüzü Özellikleri',
     'multi_language_support': 'Çoklu Dil Desteği',
-    'multi_language_support_desc': 'Türkçe, İngilizce, Almanca, Fransızca ve daha fazlası dahil 9 dilde AI destekli çeviri.',
+    'multi_language_support_desc': 'Türkçe, İngilizce, Almanca, Fransızca ve daha fazlası dahil birçok dilde AI destekli çeviri.',
     'room_service_ordering': 'Oda Servisi Siparişi',
     'room_service_ordering_desc': 'Menüyü inceleyin, sepete ekleyin ve doğrudan oda arayüzünden sipariş verin.',
     'quick_requests': 'Hızlı Talepler',
     'quick_requests_desc': 'Havlu, temizlik, bakım ve konsiyerj için tek tıkla talep.',
     // Common
-    
+
     // Guest Interface
     'room_service': 'Oda Servisi',
     'hotel_info': 'Otel Bilgileri',
@@ -213,7 +213,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Kahvaltı Saati',
     'hotel_rules': 'Otel Kuralları',
     'emergency_contacts': 'Acil Durum İletişim',
-    
+
     // Requests
     'housekeeping': 'Temizlik',
     'maintenance': 'Bakım',
@@ -224,14 +224,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Oda Temizliği',
     'extra_pillows': 'Ekstra Yastık',
     'extra_blankets': 'Ekstra Battaniye',
-    
+
     // Menu Categories
     'appetizer': 'Meze',
     'main': 'Ana Yemek',
     'dessert': 'Tatlı',
     'beverage': 'İçecek',
     'breakfast': 'Kahvaltı',
-    
+
     // Status
     'available': 'Mevcut',
     'unavailable': 'Mevcut Değil',
@@ -239,8 +239,31 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Hazır',
     'delivered': 'Teslim Edildi'
   },
-  
+
   en: {
+    // Guest Demo
+    'guest_demo_title': 'Guest Interface Demo',
+    'guest_demo_desc': 'Preview guest experience for different rooms',
+    'guest_demo_instructions_title': 'Demo Instructions:',
+    'guest_demo_instruction_1': 'Select a room below to preview the guest interface',
+    'guest_demo_instruction_2': 'Each room demonstrates guest experience with multi-language support',
+    'guest_demo_instruction_3': 'Test hotel information, room service, and request features',
+    'guest_demo_instruction_4': 'In reality, guests access this page via QR code in the room',
+    'floor': 'Floor',
+    'occupied': 'OCCUPIED',
+    'current_guest': 'Current Guest',
+    'open_guest_interface': 'Open Guest Interface',
+    'opens_in_new_tab': 'Opens in new tab to simulate QR code experience',
+    'no_occupied_rooms': 'No occupied rooms',
+    'no_occupied_rooms_desc': 'There are currently no occupied rooms available for the demo.',
+    'guest_interface_features': 'Guest Interface Features',
+    'multi_language_support': 'Multi-Language Support',
+    'multi_language_support_desc': 'AI-powered translation in many languages including Turkish, English, German, French, and more.',
+    'room_service_ordering': 'Room Service Ordering',
+    'room_service_ordering_desc': 'Browse the menu, add to cart, and order directly from the guest interface.',
+    'quick_requests': 'Quick Requests',
+    'quick_requests_desc': 'One-click requests for towels, cleaning, maintenance, and concierge.',
+
     // Common
     'welcome': 'Welcome',
     'room': 'Room',
@@ -255,7 +278,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'Pending',
     'completed': 'Completed',
     'in_progress': 'In Progress',
-    
+
     // Guest Interface
     'room_service': 'Room Service',
     'hotel_info': 'Hotel Information',
@@ -265,7 +288,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Breakfast Time',
     'hotel_rules': 'Hotel Rules',
     'emergency_contacts': 'Emergency Contacts',
-    
+
     // Requests
     'housekeeping': 'Housekeeping',
     'maintenance': 'Maintenance',
@@ -276,14 +299,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Room Cleaning',
     'extra_pillows': 'Extra Pillows',
     'extra_blankets': 'Extra Blankets',
-    
+
     // Menu Categories
     'appetizer': 'Appetizer',
     'main': 'Main Course',
     'dessert': 'Dessert',
     'beverage': 'Beverage',
     'breakfast': 'Breakfast',
-    
+
     // Status
     'available': 'Available',
     'unavailable': 'Unavailable',
@@ -291,7 +314,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Ready',
     'delivered': 'Delivered'
   },
-  
+
   de: {
     // Homepage
     'hotel_management_system': 'Hotelverwaltungssystem',
@@ -339,7 +362,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'no_occupied_rooms_desc': 'Derzeit sind keine belegten Zimmer für die Demo verfügbar.',
     'guest_interface_features': 'Gästeoberfläche Funktionen',
     'multi_language_support': 'Mehrsprachige Unterstützung',
-    'multi_language_support_desc': 'KI-Übersetzungen in 9 Sprachen, darunter Türkisch, Englisch, Deutsch, Französisch und mehr.',
+    'multi_language_support_desc': 'KI-Übersetzungen in vielen Sprachen, darunter Türkisch, Englisch, Deutsch, Französisch und mehr.',
     'room_service_ordering': 'Zimmerservice Bestellung',
     'room_service_ordering_desc': 'Menü durchsuchen, zum Warenkorb hinzufügen und direkt aus der Gästeoberfläche bestellen.',
     'quick_requests': 'Schnellanfragen',
@@ -358,7 +381,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'Ausstehend',
     'completed': 'Abgeschlossen',
     'in_progress': 'In Bearbeitung',
-    
+
     // Guest Interface
     'room_service': 'Zimmerservice',
     'hotel_info': 'Hotel Information',
@@ -368,7 +391,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Frühstückszeit',
     'hotel_rules': 'Hotel Regeln',
     'emergency_contacts': 'Notfallkontakte',
-    
+
     // Requests
     'housekeeping': 'Housekeeping',
     'maintenance': 'Wartung',
@@ -379,14 +402,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Zimmerreinigung',
     'extra_pillows': 'Extra Kissen',
     'extra_blankets': 'Extra Decken',
-    
+
     // Menu Categories
     'appetizer': 'Vorspeise',
     'main': 'Hauptgang',
     'dessert': 'Dessert',
     'beverage': 'Getränk',
     'breakfast': 'Frühstück',
-    
+
     // Status
     'available': 'Verfügbar',
     'unavailable': 'Nicht Verfügbar',
@@ -394,7 +417,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Bereit',
     'delivered': 'Geliefert'
   },
-  
+
   fr: {
     // Common
     'welcome': 'Bienvenue',
@@ -410,7 +433,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'En Attente',
     'completed': 'Terminé',
     'in_progress': 'En Cours',
-    
+
     // Guest Interface
     'room_service': 'Service en Chambre',
     'hotel_info': 'Informations Hôtel',
@@ -420,7 +443,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Heure du Petit-déjeuner',
     'hotel_rules': 'Règles de l\'Hôtel',
     'emergency_contacts': 'Contacts d\'Urgence',
-    
+
     // Requests
     'housekeeping': 'Ménage',
     'maintenance': 'Maintenance',
@@ -431,14 +454,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Nettoyage de Chambre',
     'extra_pillows': 'Oreillers Supplémentaires',
     'extra_blankets': 'Couvertures Supplémentaires',
-    
+
     // Menu Categories
     'appetizer': 'Entrée',
     'main': 'Plat Principal',
     'dessert': 'Dessert',
     'beverage': 'Boisson',
     'breakfast': 'Petit-déjeuner',
-    
+
     // Status
     'available': 'Disponible',
     'unavailable': 'Indisponible',
@@ -446,7 +469,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Prêt',
     'delivered': 'Livré'
   },
-  
+
   es: {
     // Common
     'welcome': 'Bienvenido',
@@ -462,7 +485,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'Pendiente',
     'completed': 'Completado',
     'in_progress': 'En Progreso',
-    
+
     // Guest Interface
     'room_service': 'Servicio a la Habitación',
     'hotel_info': 'Información del Hotel',
@@ -472,7 +495,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Hora del Desayuno',
     'hotel_rules': 'Reglas del Hotel',
     'emergency_contacts': 'Contactos de Emergencia',
-    
+
     // Requests
     'housekeeping': 'Limpieza',
     'maintenance': 'Mantenimiento',
@@ -483,14 +506,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Limpieza de Habitación',
     'extra_pillows': 'Almohadas Extra',
     'extra_blankets': 'Mantas Extra',
-    
+
     // Menu Categories
     'appetizer': 'Aperitivo',
     'main': 'Plato Principal',
     'dessert': 'Postre',
     'beverage': 'Bebida',
     'breakfast': 'Desayuno',
-    
+
     // Status
     'available': 'Disponible',
     'unavailable': 'No Disponible',
@@ -498,7 +521,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Listo',
     'delivered': 'Entregado'
   },
-  
+
   it: {
     // Common
     'welcome': 'Benvenuto',
@@ -514,7 +537,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'In Attesa',
     'completed': 'Completato',
     'in_progress': 'In Corso',
-    
+
     // Guest Interface
     'room_service': 'Servizio in Camera',
     'hotel_info': 'Informazioni Hotel',
@@ -524,7 +547,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Orario Colazione',
     'hotel_rules': 'Regole Hotel',
     'emergency_contacts': 'Contatti Emergenza',
-    
+
     // Requests
     'housekeeping': 'Pulizie',
     'maintenance': 'Manutenzione',
@@ -535,14 +558,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Pulizia Camera',
     'extra_pillows': 'Cuscini Extra',
     'extra_blankets': 'Coperte Extra',
-    
+
     // Menu Categories
     'appetizer': 'Antipasto',
     'main': 'Piatto Principale',
     'dessert': 'Dolce',
     'beverage': 'Bevanda',
     'breakfast': 'Colazione',
-    
+
     // Status
     'available': 'Disponibile',
     'unavailable': 'Non Disponibile',
@@ -550,7 +573,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Pronto',
     'delivered': 'Consegnato'
   },
-  
+
   ru: {
     // Common
     'welcome': 'Добро пожаловать',
@@ -566,7 +589,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'Ожидание',
     'completed': 'Завершено',
     'in_progress': 'В процессе',
-    
+
     // Guest Interface
     'room_service': 'Обслуживание номеров',
     'hotel_info': 'Информация об отеле',
@@ -576,7 +599,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'Время завтрака',
     'hotel_rules': 'Правила отеля',
     'emergency_contacts': 'Экстренные контакты',
-    
+
     // Requests
     'housekeeping': 'Уборка',
     'maintenance': 'Обслуживание',
@@ -587,14 +610,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'Уборка номера',
     'extra_pillows': 'Дополнительные подушки',
     'extra_blankets': 'Дополнительные одеяла',
-    
+
     // Menu Categories
     'appetizer': 'Закуска',
     'main': 'Основное блюдо',
     'dessert': 'Десерт',
     'beverage': 'Напиток',
     'breakfast': 'Завтрак',
-    
+
     // Status
     'available': 'Доступно',
     'unavailable': 'Недоступно',
@@ -602,7 +625,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'Готово',
     'delivered': 'Доставлено'
   },
-  
+
   ar: {
     // Common
     'welcome': 'أهلاً وسهلاً',
@@ -618,7 +641,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': 'في الانتظار',
     'completed': 'مكتمل',
     'in_progress': 'قيد التنفيذ',
-    
+
     // Guest Interface
     'room_service': 'خدمة الغرف',
     'hotel_info': 'معلومات الفندق',
@@ -628,7 +651,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': 'وقت الإفطار',
     'hotel_rules': 'قوانين الفندق',
     'emergency_contacts': 'جهات الاتصال الطارئة',
-    
+
     // Requests
     'housekeeping': 'التنظيف',
     'maintenance': 'الصيانة',
@@ -639,14 +662,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': 'تنظيف الغرفة',
     'extra_pillows': 'وسائد إضافية',
     'extra_blankets': 'بطانيات إضافية',
-    
+
     // Menu Categories
     'appetizer': 'مقبلات',
     'main': 'الطبق الرئيسي',
     'dessert': 'حلويات',
     'beverage': 'مشروبات',
     'breakfast': 'إفطار',
-    
+
     // Status
     'available': 'متوفر',
     'unavailable': 'غير متوفر',
@@ -654,7 +677,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'ready': 'جاهز',
     'delivered': 'تم التوصيل'
   },
-  
+
   zh: {
     // Common
     'welcome': '欢迎',
@@ -670,7 +693,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'pending': '待处理',
     'completed': '已完成',
     'in_progress': '进行中',
-    
+
     // Guest Interface
     'room_service': '客房服务',
     'hotel_info': '酒店信息',
@@ -680,7 +703,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'breakfast_time': '早餐时间',
     'hotel_rules': '酒店规则',
     'emergency_contacts': '紧急联系方式',
-    
+
     // Requests
     'housekeeping': '客房清洁',
     'maintenance': '维修',
@@ -691,14 +714,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'room_cleaning': '房间清洁',
     'extra_pillows': '额外枕头',
     'extra_blankets': '额外毯子',
-    
+
     // Menu Categories
     'appetizer': '开胃菜',
     'main': '主菜',
     'dessert': '甜点',
     'beverage': '饮料',
     'breakfast': '早餐',
-    
+
     // Status
     'available': '可用',
     'unavailable': '不可用',

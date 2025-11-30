@@ -20,6 +20,24 @@ export default function GuestDemoPage({ initialLang }: GuestDemoPageProps) {
 
     const occupiedRooms = rooms.filter(room => room.status === 'occupied');
 
+    const guestNames: Record<string, Record<string, string>> = {
+        '101': {
+            tr: 'Ahmet Yılmaz',
+            de: 'Hans Müller',
+            en: 'John Smith'
+        },
+        '102': {
+            tr: 'Fatma Demir',
+            de: 'Anna Schmidt',
+            en: 'Sarah Johnson'
+        },
+        '201': {
+            tr: 'Mehmet Kaya',
+            de: 'Michael Weber',
+            en: 'Michael Brown'
+        }
+    };
+
     const handleLanguageChange = (newLang: Language) => {
         setCurrentLanguage(newLang);
         router.push(`/${newLang}/guest/demo`);
@@ -97,7 +115,9 @@ export default function GuestDemoPage({ initialLang }: GuestDemoPageProps) {
                             {room.guestName && (
                                 <div className="text-center mb-4 p-3 bg-gray-50 rounded-lg">
                                     <p className="text-xs text-gray-600 mb-1">{translate('current_guest', currentLanguage)}</p>
-                                    <p className="font-medium text-gray-900">{room.guestName}</p>
+                                    <p className="font-medium text-gray-900">
+                                        {guestNames[room.id]?.[currentLanguage] || room.guestName}
+                                    </p>
                                     <p className="text-xs text-gray-500 mt-1">
                                         {translate('checkout_time', currentLanguage)}: {room.checkOut ? new Date(room.checkOut).toLocaleDateString() : 'N/A'}
                                     </p>
