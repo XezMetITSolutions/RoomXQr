@@ -234,14 +234,25 @@ export default function ImportDemoProductsPage() {
       const getTenantSlug = (): string => {
         if (typeof window === 'undefined') return 'demo';
         const hostname = window.location.hostname;
-        const subdomain = hostname.split('.')[0];
-        if (subdomain && subdomain !== 'www' && subdomain !== 'roomxqr' && subdomain !== 'roomxqr-backend') {
-          return subdomain;
+
+        // localhost kontrolü
+        if (hostname === 'localhost' || hostname.startsWith('127.0.0.1')) {
+          return 'demo';
         }
-        return 'demo';
+
+        const parts = hostname.split('.');
+        const subdomain = parts[0];
+
+        // Ana domain kontrolü (roomxqr.com, roomxqr.onrender.com vb.)
+        if (subdomain === 'www' || subdomain === 'roomxqr' || parts.length <= 2) {
+          return 'demo';
+        }
+
+        return subdomain;
       };
 
       const tenantSlug = getTenantSlug();
+      console.log('🔍 Import Tenant Slug:', tenantSlug);
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
       if (!token) {
@@ -373,7 +384,30 @@ export default function ImportDemoProductsPage() {
                 setLoading(true);
                 try {
                   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-                  const tenantSlug = typeof window !== 'undefined' ? (window.location.hostname.split('.')[0] === 'www' ? 'demo' : window.location.hostname.split('.')[0]) : 'demo';
+
+                  // Tenant slug'ını doğru şekilde al
+                  const getTenantSlug = (): string => {
+                    if (typeof window === 'undefined') return 'demo';
+                    const hostname = window.location.hostname;
+
+                    // localhost kontrolü
+                    if (hostname === 'localhost' || hostname.startsWith('127.0.0.1')) {
+                      return 'demo';
+                    }
+
+                    const parts = hostname.split('.');
+                    const subdomain = parts[0];
+
+                    // Ana domain kontrolü (roomxqr.com, roomxqr.onrender.com vb.)
+                    if (subdomain === 'www' || subdomain === 'roomxqr' || parts.length <= 2) {
+                      return 'demo';
+                    }
+
+                    return subdomain;
+                  };
+
+                  const tenantSlug = getTenantSlug();
+                  console.log('🔍 Tenant Slug:', tenantSlug);
 
                   const response = await fetch('/api/menu/delete-all', {
                     method: 'DELETE',
