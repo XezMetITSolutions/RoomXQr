@@ -42,19 +42,34 @@ export function middleware(request: NextRequest) {
         let locale = defaultLocale;
 
         if (acceptLanguage) {
-            // Parse accept-language header
-            const languages = acceptLanguage.split(',').map(lang => {
-                const parts = lang.trim().split(';');
-                return parts[0].split('-')[0].toLowerCase();
-            });
+            try {
+                // Parse accept-language header
+                // Example: "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
+                const languages = acceptLanguage.split(',')
+                    .map(lang => {
+                        const [tag, quality] = lang.split(';');
+                        return {
+                            tag: tag.trim().split('-')[0].toLowerCase(),
+                            quality: quality ? parseFloat(quality.split('=')[1]) : 1.0
+                        };
+                    })
+                    .sort((a, b) => b.quality - a.quality)
+                    .map(l => l.tag);
 
-            // Find first supported language
-            const supportedLang = languages.find(lang => supportedLocales.includes(lang));
-            if (supportedLang) {
-                locale = supportedLang;
-            } else if (!languages.includes('tr') && !languages.includes('de')) {
-                // If neither Turkish nor German, default to English
-                locale = 'en';
+                // Find first supported language
+                const supportedLang = languages.find(lang => supportedLocales.includes(lang));
+
+                if (supportedLang) {
+                    locale = supportedLang;
+                } else {
+                    // If user's preferred language is not supported, default to English
+                    // unless it's specifically Turkish or German (which are supported and would be caught above)
+                    // This fallback is for languages like French, Spanish, etc.
+                    locale = 'en';
+                }
+            } catch (e) {
+                console.error('Error parsing accept-language:', e);
+                // Fallback to default locale (tr)
             }
         }
 
