@@ -16,411 +16,210 @@ export default function ImportDemoProductsPage() {
   const [result, setResult] = useState<ImportResult | null>(null);
   const [importing, setImporting] = useState(false);
 
-  // Demo ürünler (15 adet, çok dilli)
+  // Demo ürünler (12 adet, çok dilli - Uluslararası)
   const demoProducts = [
     {
-      name: 'Akdeniz Kahvaltı Tabağı',
-      description: 'Zeytinyağlı peynirler, taze domates, salatalık, ev yapımı reçeller ve sıcak bazlama ile dengeli kahvaltı tabağı.',
-      price: 260,
-      category: 'Kahvaltı',
-      image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Süt', 'Gluten', 'Fındık'],
-      calories: 520,
+      name: "Classic Burger",
+      description: "Juicy beef patty with lettuce, tomato, and our secret sauce.",
+      price: 18.50,
+      category: "Main Courses",
+      image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80",
+      allergens: ["Gluten", "Dairy", "Egg"],
+      calories: 850,
+      preparationTime: 20,
+      rating: 4.8,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Akdeniz Kahvaltı Tabağı',
-          description: 'Zeytinyağlı peynirler, taze domates, salatalık, ev yapımı reçeller ve sıcak bazlama ile dengeli kahvaltı tabağı.'
-        },
-        en: {
-          name: 'Mediterranean Breakfast Platter',
-          description: 'Olive-oil marinated cheeses, fresh tomatoes, cucumbers, homemade jams and warm flatbread for a balanced start.'
-        },
-        de: {
-          name: 'Mediterranes Frühstück',
-          description: 'In Olivenöl eingelegte Käse, frische Tomaten, Gurken, hausgemachte Marmeladen und warmes Fladenbrot.'
-        },
-        fr: {
-          name: 'Petit-déjeuner Méditerranéen',
-          description: 'Fromages marinés à l\'huile d\'olive, tomates fraîches, concombres, confitures maison et pain plat chaud.'
-        }
+        tr: { name: "Klasik Burger", description: "Marul, domates ve özel soslu sulu dana köftesi." },
+        de: { name: "Klassischer Burger", description: "Saftiges Rindfleischpatty mit Salat, Tomate und unserer Geheimsoße." },
+        fr: { name: "Burger Classique", description: "Galette de bœuf juteuse avec laitue, tomate et notre sauce secrète." }
       }
     },
     {
-      name: 'Izgara Levrek',
-      description: 'Taze levrek, zeytinyağı ve limon ile marine edilmiş, yanında mevsim sebzeleri ile servis edilir.',
-      price: 185,
-      category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Balık'],
-      calories: 320,
+      name: "Pizza Margherita",
+      description: "Classic pizza with tomato sauce, mozzarella, and fresh basil.",
+      price: 14.00,
+      category: "Main Courses",
+      image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80",
+      allergens: ["Gluten", "Dairy"],
+      calories: 700,
+      preparationTime: 25,
+      rating: 4.7,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Izgara Levrek',
-          description: 'Taze levrek, zeytinyağı ve limon ile marine edilmiş, yanında mevsim sebzeleri ile servis edilir.'
-        },
-        en: {
-          name: 'Grilled Sea Bass',
-          description: 'Fresh sea bass marinated with olive oil and lemon, served with seasonal vegetables.'
-        },
-        de: {
-          name: 'Gegrillter Wolfsbarsch',
-          description: 'Frischer Wolfsbarsch in Olivenöl und Zitrone mariniert, serviert mit saisonalem Gemüse.'
-        },
-        fr: {
-          name: 'Bar Grillé',
-          description: 'Bar frais mariné à l\'huile d\'olive et au citron, servi avec des légumes de saison.'
-        }
+        tr: { name: "Pizza Margarita", description: "Domates sosu, mozzarella ve taze fesleğenli klasik pizza." },
+        de: { name: "Pizza Margherita", description: "Klassische Pizza mit Tomatensoße, Mozzarella und frischem Basilikum." },
+        fr: { name: "Pizza Margherita", description: "Pizza classique avec sauce tomate, mozzarella et basilic frais." }
       }
     },
     {
-      name: 'Kuzu Tandır',
-      description: 'Yavaş pişirilmiş kuzu eti, baharatlı sos ve pilav ile servis edilir.',
-      price: 320,
-      category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=900&q=80',
+      name: "Caesar Salad",
+      description: "Romaine lettuce, croutons, parmesan cheese, and Caesar dressing.",
+      price: 12.50,
+      category: "Salads",
+      image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=800&q=80",
+      allergens: ["Gluten", "Dairy", "Egg"],
+      calories: 350,
+      preparationTime: 15,
+      rating: 4.5,
+      isAvailable: true,
+      translations: {
+        tr: { name: "Sezar Salata", description: "Marul, kruton, parmesan peyniri ve Sezar sos." },
+        de: { name: "Caesar Salat", description: "Römersalat, Croutons, Parmesan und Caesar-Dressing." },
+        fr: { name: "Salade César", description: "Laitue romaine, croûtons, parmesan et vinaigrette César." }
+      }
+    },
+    {
+      name: "Club Sandwich",
+      description: "Triple-decker sandwich with chicken, bacon, lettuce, tomato, and mayo.",
+      price: 16.00,
+      category: "Snacks",
+      image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&q=80",
+      allergens: ["Gluten", "Egg"],
+      calories: 600,
+      preparationTime: 15,
+      rating: 4.6,
+      isAvailable: true,
+      translations: {
+        tr: { name: "Kulüp Sandviç", description: "Tavuk, pastırma, marul, domates ve mayonezli üç katlı sandviç." },
+        de: { name: "Club Sandwich", description: "Dreistöckiges Sandwich mit Hähnchen, Speck, Salat, Tomate und Mayonnaise." },
+        fr: { name: "Club Sandwich", description: "Sandwich à trois étages avec poulet, bacon, laitue, tomate et mayonnaise." }
+      }
+    },
+    {
+      name: "Spaghetti Bolognese",
+      description: "Spaghetti served with a rich meat and tomato sauce.",
+      price: 15.50,
+      category: "Main Courses",
+      image: "https://images.unsplash.com/photo-1622973536968-3ead9e780960?w=800&q=80",
+      allergens: ["Gluten"],
+      calories: 550,
+      preparationTime: 20,
+      rating: 4.7,
+      isAvailable: true,
+      translations: {
+        tr: { name: "Spagetti Bolonez", description: "Zengin kıymalı ve domates soslu spagetti." },
+        de: { name: "Spaghetti Bolognese", description: "Spaghetti serviert mit einer reichhaltigen Fleisch- und Tomatensoße." },
+        fr: { name: "Spaghetti Bolognaise", description: "Spaghetti servis avec une riche sauce à la viande et à la tomate." }
+      }
+    },
+    {
+      name: "Grilled Chicken Breast",
+      description: "Tender grilled chicken breast served with steamed vegetables.",
+      price: 19.00,
+      category: "Main Courses",
+      image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=800&q=80",
       allergens: [],
-      calories: 680,
+      calories: 400,
+      preparationTime: 25,
+      rating: 4.8,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Kuzu Tandır',
-          description: 'Yavaş pişirilmiş kuzu eti, baharatlı sos ve pilav ile servis edilir.'
-        },
-        en: {
-          name: 'Slow-Cooked Lamb',
-          description: 'Tender slow-cooked lamb with spiced sauce, served with rice.'
-        },
-        de: {
-          name: 'Langsam Gegartes Lamm',
-          description: 'Zartes, langsam gegartes Lammfleisch mit würziger Soße, serviert mit Reis.'
-        },
-        fr: {
-          name: 'Agneau Braisé',
-          description: 'Agneau tendre cuit lentement avec sauce épicée, servi avec du riz.'
-        }
+        tr: { name: "Izgara Tavuk Göğsü", description: "Buharda pişmiş sebzelerle servis edilen yumuşak ızgara tavuk göğsü." },
+        de: { name: "Gegrillte Hähnchenbrust", description: "Zarte gegrillte Hähnchenbrust serviert mit gedünstetem Gemüse." },
+        fr: { name: "Poitrine de Poulet Grillée", description: "Poitrine de poulet grillée tendre servie avec des légumes à la vapeur." }
       }
     },
     {
-      name: 'Mevsim Salatası',
-      description: 'Taze roka, marul, domates, salatalık, zeytin ve özel sos ile hazırlanmış nefis salata.',
-      price: 95,
-      category: 'Mezeler',
-      image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
+      name: "French Fries",
+      description: "Crispy golden potato fries.",
+      price: 6.00,
+      category: "Sides",
+      image: "https://images.unsplash.com/photo-1573080496987-aeb7d53385c7?w=800&q=80",
       allergens: [],
-      calories: 120,
+      calories: 300,
+      preparationTime: 10,
+      rating: 4.5,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Mevsim Salatası',
-          description: 'Taze roka, marul, domates, salatalık, zeytin ve özel sos ile hazırlanmış nefis salata.'
-        },
-        en: {
-          name: 'Seasonal Salad',
-          description: 'Fresh arugula, lettuce, tomatoes, cucumbers, olives and special dressing.'
-        },
-        de: {
-          name: 'Saisonsalat',
-          description: 'Frischer Rucola, Salat, Tomaten, Gurken, Oliven und spezielle Soße.'
-        },
-        fr: {
-          name: 'Salade de Saison',
-          description: 'Roquette fraîche, laitue, tomates, concombres, olives et vinaigrette spéciale.'
-        }
+        tr: { name: "Patates Kızartması", description: "Çıtır altın sarısı patates kızartması." },
+        de: { name: "Pommes Frites", description: "Knusprige goldene Kartoffelpommes." },
+        fr: { name: "Frites", description: "Frites de pommes de terre dorées et croustillantes." }
       }
     },
     {
-      name: 'Humus',
-      description: 'Nohut, tahin, zeytinyağı ve limon ile hazırlanmış geleneksel mezze.',
-      price: 75,
-      category: 'Mezeler',
-      image: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Susam'],
-      calories: 180,
-      translations: {
-        tr: {
-          name: 'Humus',
-          description: 'Nohut, tahin, zeytinyağı ve limon ile hazırlanmış geleneksel mezze.'
-        },
-        en: {
-          name: 'Hummus',
-          description: 'Traditional dip made with chickpeas, tahini, olive oil and lemon.'
-        },
-        de: {
-          name: 'Hummus',
-          description: 'Traditioneller Dip aus Kichererbsen, Tahini, Olivenöl und Zitrone.'
-        },
-        fr: {
-          name: 'Houmous',
-          description: 'Trempette traditionnelle à base de pois chiches, tahini, huile d\'olive et citron.'
-        }
-      }
-    },
-    {
-      name: 'Baklava',
-      description: 'İnce yufka, ceviz ve şerbet ile hazırlanmış geleneksel Türk tatlısı.',
-      price: 120,
-      category: 'Tatlılar',
-      image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Gluten', 'Fındık'],
+      name: "Cheesecake",
+      description: "Creamy cheesecake with a graham cracker crust and berry topping.",
+      price: 9.00,
+      category: "Desserts",
+      image: "https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=800&q=80",
+      allergens: ["Gluten", "Dairy", "Egg"],
       calories: 450,
+      preparationTime: 5,
+      rating: 4.9,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Baklava',
-          description: 'İnce yufka, ceviz ve şerbet ile hazırlanmış geleneksel Türk tatlısı.'
-        },
-        en: {
-          name: 'Baklava',
-          description: 'Traditional Turkish dessert made with thin pastry, walnuts and syrup.'
-        },
-        de: {
-          name: 'Baklava',
-          description: 'Traditionelles türkisches Dessert aus dünnem Teig, Walnüssen und Sirup.'
-        },
-        fr: {
-          name: 'Baklava',
-          description: 'Dessert turc traditionnel à base de pâte fine, noix et sirop.'
-        }
+        tr: { name: "Cheesecake", description: "Bisküvi tabanlı ve meyve soslu kremalı cheesecake." },
+        de: { name: "Käsekuchen", description: "Cremiger Käsekuchen mit Keksboden und Beerenbelag." },
+        fr: { name: "Cheesecake", description: "Cheesecake crémeux avec une croûte de biscuits Graham et une garniture aux baies." }
       }
     },
     {
-      name: 'Sütlaç',
-      description: 'Pirinç, süt ve şeker ile hazırlanmış geleneksel Türk muhallebisi.',
-      price: 65,
-      category: 'Tatlılar',
-      image: 'https://images.unsplash.com/photo-1606312619070-d48b4bcaf211?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Süt', 'Gluten'],
-      calories: 280,
+      name: "Tiramisu",
+      description: "Classic Italian dessert made with coffee-soaked ladyfingers and mascarpone cream.",
+      price: 10.00,
+      category: "Desserts",
+      image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800&q=80",
+      allergens: ["Gluten", "Dairy", "Egg"],
+      calories: 500,
+      preparationTime: 5,
+      rating: 4.8,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Sütlaç',
-          description: 'Pirinç, süt ve şeker ile hazırlanmış geleneksel Türk muhallebisi.'
-        },
-        en: {
-          name: 'Rice Pudding',
-          description: 'Traditional Turkish rice pudding made with rice, milk and sugar.'
-        },
-        de: {
-          name: 'Milchreis',
-          description: 'Traditioneller türkischer Milchreis aus Reis, Milch und Zucker.'
-        },
-        fr: {
-          name: 'Riz au Lait',
-          description: 'Dessert turc traditionnel à base de riz, lait et sucre.'
-        }
+        tr: { name: "Tiramisu", description: "Kahveye batırılmış kedi dili ve mascarpone kreması ile yapılan klasik İtalyan tatlısı." },
+        de: { name: "Tiramisu", description: "Klassisches italienisches Dessert aus in Kaffee getunkten Löffelbiskuits und Mascarpone-Creme." },
+        fr: { name: "Tiramisu", description: "Dessert italien classique fait de boudoirs trempés dans le café et de crème mascarpone." }
       }
     },
     {
-      name: 'Türk Kahvesi',
-      description: 'Geleneksel yöntemle pişirilmiş Türk kahvesi, lokum ile servis edilir.',
-      price: 45,
-      category: 'İçecekler',
-      image: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?auto=format&fit=crop&w=900&q=80',
+      name: "Coca Cola",
+      description: "Chilled classic cola.",
+      price: 4.00,
+      category: "Drinks",
+      image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800&q=80",
       allergens: [],
-      calories: 15,
+      calories: 140,
+      preparationTime: 2,
+      rating: 4.5,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Türk Kahvesi',
-          description: 'Geleneksel yöntemle pişirilmiş Türk kahvesi, lokum ile servis edilir.'
-        },
-        en: {
-          name: 'Turkish Coffee',
-          description: 'Traditionally brewed Turkish coffee, served with Turkish delight.'
-        },
-        de: {
-          name: 'Türkischer Kaffee',
-          description: 'Traditionell gebrühter türkischer Kaffee, serviert mit türkischem Honig.'
-        },
-        fr: {
-          name: 'Café Turc',
-          description: 'Café turc préparé de manière traditionnelle, servi avec des loukoums.'
-        }
+        tr: { name: "Coca Cola", description: "Soğuk klasik kola." },
+        de: { name: "Coca Cola", description: "Gekühlte klassische Cola." },
+        fr: { name: "Coca Cola", description: "Cola classique frais." }
       }
     },
     {
-      name: 'Taze Sıkılmış Portakal Suyu',
-      description: 'Günlük taze sıkılmış portakal suyu, C vitamini deposu.',
-      price: 55,
-      category: 'İçecekler',
-      image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=900&q=80',
+      name: "Mineral Water",
+      description: "Refreshing sparkling mineral water.",
+      price: 3.00,
+      category: "Drinks",
+      image: "https://images.unsplash.com/photo-1560023907-5f339617ea30?w=800&q=80",
       allergens: [],
-      calories: 110,
+      calories: 0,
+      preparationTime: 2,
+      rating: 4.6,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Taze Sıkılmış Portakal Suyu',
-          description: 'Günlük taze sıkılmış portakal suyu, C vitamini deposu.'
-        },
-        en: {
-          name: 'Fresh Orange Juice',
-          description: 'Daily fresh squeezed orange juice, rich in vitamin C.'
-        },
-        de: {
-          name: 'Frisch Gepresster Orangensaft',
-          description: 'Täglich frisch gepresster Orangensaft, reich an Vitamin C.'
-        },
-        fr: {
-          name: 'Jus d\'Orange Frais',
-          description: 'Jus d\'orange pressé quotidiennement, riche en vitamine C.'
-        }
+        tr: { name: "Maden Suyu", description: "Ferahlatıcı maden suyu." },
+        de: { name: "Mineralwasser", description: "Erfrischendes Mineralwasser." },
+        fr: { name: "Eau Minérale", description: "Eau minérale pétillante rafraîchissante." }
       }
     },
     {
-      name: 'Mercimek Çorbası',
-      description: 'Kırmızı mercimek, havuç ve baharatlarla hazırlanmış geleneksel çorba.',
-      price: 85,
-      category: 'Mezeler',
-      image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=900&q=80',
+      name: "Coffee",
+      description: "Freshly brewed hot coffee.",
+      price: 5.00,
+      category: "Drinks",
+      image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80",
       allergens: [],
-      calories: 180,
+      calories: 5,
+      preparationTime: 5,
+      rating: 4.7,
+      isAvailable: true,
       translations: {
-        tr: {
-          name: 'Mercimek Çorbası',
-          description: 'Kırmızı mercimek, havuç ve baharatlarla hazırlanmış geleneksel çorba.'
-        },
-        en: {
-          name: 'Lentil Soup',
-          description: 'Traditional soup made with red lentils, carrots and spices.'
-        },
-        de: {
-          name: 'Linsensuppe',
-          description: 'Traditionelle Suppe aus roten Linsen, Karotten und Gewürzen.'
-        },
-        fr: {
-          name: 'Soupe de Lentilles',
-          description: 'Soupe traditionnelle à base de lentilles rouges, carottes et épices.'
-        }
-      }
-    },
-    {
-      name: 'Izgara Tavuk Şiş',
-      description: 'Marine edilmiş tavuk eti, közlenmiş sebzeler ve pilav ile servis edilir.',
-      price: 195,
-      category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1608039829573-8036e3a8f3c0?auto=format&fit=crop&w=900&q=80',
-      allergens: [],
-      calories: 420,
-      translations: {
-        tr: {
-          name: 'Izgara Tavuk Şiş',
-          description: 'Marine edilmiş tavuk eti, közlenmiş sebzeler ve pilav ile servis edilir.'
-        },
-        en: {
-          name: 'Grilled Chicken Kebab',
-          description: 'Marinated chicken meat, grilled vegetables and rice.'
-        },
-        de: {
-          name: 'Gegrilltes Hähnchenspieß',
-          description: 'Mariniertes Hähnchenfleisch, gegrilltes Gemüse und Reis.'
-        },
-        fr: {
-          name: 'Brochette de Poulet Grillée',
-          description: 'Viande de poulet marinée, légumes grillés et riz.'
-        }
-      }
-    },
-    {
-      name: 'Künefe',
-      description: 'İnce kadayıf, taze peynir ve şerbet ile hazırlanmış sıcak tatlı.',
-      price: 135,
-      category: 'Tatlılar',
-      image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Gluten', 'Süt'],
-      calories: 520,
-      translations: {
-        tr: {
-          name: 'Künefe',
-          description: 'İnce kadayıf, taze peynir ve şerbet ile hazırlanmış sıcak tatlı.'
-        },
-        en: {
-          name: 'Kunefe',
-          description: 'Hot dessert made with thin kadayif, fresh cheese and syrup.'
-        },
-        de: {
-          name: 'Künefe',
-          description: 'Heißes Dessert aus dünnem Kadayif, frischem Käse und Sirup.'
-        },
-        fr: {
-          name: 'Kunefe',
-          description: 'Dessert chaud à base de kadayif fin, fromage frais et sirop.'
-        }
-      }
-    },
-    {
-      name: 'Ayran',
-      description: 'Geleneksel Türk ayranı, taze yoğurt ve su ile hazırlanmış serinletici içecek.',
-      price: 35,
-      category: 'İçecekler',
-      image: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Süt'],
-      calories: 60,
-      translations: {
-        tr: {
-          name: 'Ayran',
-          description: 'Geleneksel Türk ayranı, taze yoğurt ve su ile hazırlanmış serinletici içecek.'
-        },
-        en: {
-          name: 'Ayran',
-          description: 'Traditional Turkish ayran, refreshing drink made with fresh yogurt and water.'
-        },
-        de: {
-          name: 'Ayran',
-          description: 'Traditionelles türkisches Ayran, erfrischendes Getränk aus frischem Joghurt und Wasser.'
-        },
-        fr: {
-          name: 'Ayran',
-          description: 'Ayran turc traditionnel, boisson rafraîchissante à base de yaourt frais et d\'eau.'
-        }
-      }
-    },
-    {
-      name: 'Menemen',
-      description: 'Yumurta, domates, biber ve soğan ile hazırlanmış geleneksel Türk kahvaltısı.',
-      price: 125,
-      category: 'Kahvaltı',
-      image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Yumurta'],
-      calories: 280,
-      translations: {
-        tr: {
-          name: 'Menemen',
-          description: 'Yumurta, domates, biber ve soğan ile hazırlanmış geleneksel Türk kahvaltısı.'
-        },
-        en: {
-          name: 'Menemen',
-          description: 'Traditional Turkish breakfast dish made with eggs, tomatoes, peppers and onions.'
-        },
-        de: {
-          name: 'Menemen',
-          description: 'Traditionelles türkisches Frühstücksgericht aus Eiern, Tomaten, Paprika und Zwiebeln.'
-        },
-        fr: {
-          name: 'Menemen',
-          description: 'Plat de petit-déjeuner turc traditionnel à base d\'œufs, tomates, poivrons et oignons.'
-        }
-      }
-    },
-    {
-      name: 'Lahmacun',
-      description: 'İnce hamur üzerine kıyma, domates, biber ve baharatlarla hazırlanmış geleneksel yemek.',
-      price: 75,
-      category: 'Ana Yemekler',
-      image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=80',
-      allergens: ['Gluten'],
-      calories: 320,
-      translations: {
-        tr: {
-          name: 'Lahmacun',
-          description: 'İnce hamur üzerine kıyma, domates, biber ve baharatlarla hazırlanmış geleneksel yemek.'
-        },
-        en: {
-          name: 'Lahmacun',
-          description: 'Traditional dish made with thin dough topped with minced meat, tomatoes, peppers and spices.'
-        },
-        de: {
-          name: 'Lahmacun',
-          description: 'Traditionelles Gericht aus dünnem Teig mit Hackfleisch, Tomaten, Paprika und Gewürzen.'
-        },
-        fr: {
-          name: 'Lahmacun',
-          description: 'Plat traditionnel à base de pâte fine garnie de viande hachée, tomates, poivrons et épices.'
-        }
+        tr: { name: "Kahve", description: "Taze demlenmiş sıcak kahve." },
+        de: { name: "Kaffee", description: "Frisch gebrühter heißer Kaffee." },
+        fr: { name: "Café", description: "Café chaud fraîchement moulu." }
       }
     }
   ];
@@ -527,11 +326,10 @@ export default function ImportDemoProductsPage() {
           </div>
 
           {result && (
-            <div className={`mb-6 p-4 rounded-lg ${
-              result.success 
-                ? 'bg-green-50 border border-green-200' 
-                : 'bg-red-50 border border-red-200'
-            }`}>
+            <div className={`mb-6 p-4 rounded-lg ${result.success
+              ? 'bg-green-50 border border-green-200'
+              : 'bg-red-50 border border-red-200'
+              }`}>
               <div className="flex items-start gap-3">
                 {result.success ? (
                   <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
@@ -539,14 +337,12 @@ export default function ImportDemoProductsPage() {
                   <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
                 )}
                 <div className="flex-1">
-                  <h3 className={`font-semibold mb-1 ${
-                    result.success ? 'text-green-800' : 'text-red-800'
-                  }`}>
+                  <h3 className={`font-semibold mb-1 ${result.success ? 'text-green-800' : 'text-red-800'
+                    }`}>
                     {result.success ? 'Başarılı!' : 'Hata!'}
                   </h3>
-                  <p className={`text-sm ${
-                    result.success ? 'text-green-700' : 'text-red-700'
-                  }`}>
+                  <p className={`text-sm ${result.success ? 'text-green-700' : 'text-red-700'
+                    }`}>
                     {result.message}
                   </p>
                   {result.details && (
@@ -606,7 +402,7 @@ export default function ImportDemoProductsPage() {
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Ürün Kategorileri</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['Kahvaltı', 'Ana Yemekler', 'Mezeler', 'Tatlılar', 'İçecekler'].map((category) => {
+            {['Main Courses', 'Salads', 'Snacks', 'Sides', 'Desserts', 'Drinks'].map((category) => {
               const count = demoProducts.filter(p => p.category === category).length;
               return (
                 <div key={category} className="p-3 bg-gray-50 rounded-lg">

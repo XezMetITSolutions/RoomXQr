@@ -1,0 +1,261 @@
+// const fetch = require('node-fetch'); // Native fetch used
+
+const BASE_URL = 'https://roomxqr.com';
+const TENANT = 'demo'; // Or whatever the default tenant is
+
+const menuItems = [
+    {
+        name: "Classic Burger",
+        description: "Juicy beef patty with lettuce, tomato, and our secret sauce.",
+        price: 18.50,
+        category: "Main Courses",
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80",
+        preparationTime: 20,
+        calories: 850,
+        allergens: ["Gluten", "Dairy", "Egg"],
+        rating: 4.8,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Klasik Burger", description: "Marul, domates ve özel soslu sulu dana köftesi." },
+            de: { name: "Klassischer Burger", description: "Saftiges Rindfleischpatty mit Salat, Tomate und unserer Geheimsoße." },
+            fr: { name: "Burger Classique", description: "Galette de bœuf juteuse avec laitue, tomate et notre sauce secrète." }
+        }
+    },
+    {
+        name: "Pizza Margherita",
+        description: "Classic pizza with tomato sauce, mozzarella, and fresh basil.",
+        price: 14.00,
+        category: "Main Courses",
+        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80",
+        preparationTime: 25,
+        calories: 700,
+        allergens: ["Gluten", "Dairy"],
+        rating: 4.7,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Pizza Margarita", description: "Domates sosu, mozzarella ve taze fesleğenli klasik pizza." },
+            de: { name: "Pizza Margherita", description: "Klassische Pizza mit Tomatensoße, Mozzarella und frischem Basilikum." },
+            fr: { name: "Pizza Margherita", description: "Pizza classique avec sauce tomate, mozzarella et basilic frais." }
+        }
+    },
+    {
+        name: "Caesar Salad",
+        description: "Romaine lettuce, croutons, parmesan cheese, and Caesar dressing.",
+        price: 12.50,
+        category: "Salads",
+        image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=800&q=80",
+        preparationTime: 15,
+        calories: 350,
+        allergens: ["Gluten", "Dairy", "Egg"],
+        rating: 4.5,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Sezar Salata", description: "Marul, kruton, parmesan peyniri ve Sezar sos." },
+            de: { name: "Caesar Salat", description: "Römersalat, Croutons, Parmesan und Caesar-Dressing." },
+            fr: { name: "Salade César", description: "Laitue romaine, croûtons, parmesan et vinaigrette César." }
+        }
+    },
+    {
+        name: "Club Sandwich",
+        description: "Triple-decker sandwich with chicken, bacon, lettuce, tomato, and mayo.",
+        price: 16.00,
+        category: "Snacks",
+        image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&q=80",
+        preparationTime: 15,
+        calories: 600,
+        allergens: ["Gluten", "Egg"],
+        rating: 4.6,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Kulüp Sandviç", description: "Tavuk, pastırma, marul, domates ve mayonezli üç katlı sandviç." },
+            de: { name: "Club Sandwich", description: "Dreistöckiges Sandwich mit Hähnchen, Speck, Salat, Tomate und Mayonnaise." },
+            fr: { name: "Club Sandwich", description: "Sandwich à trois étages avec poulet, bacon, laitue, tomate et mayonnaise." }
+        }
+    },
+    {
+        name: "Spaghetti Bolognese",
+        description: "Spaghetti served with a rich meat and tomato sauce.",
+        price: 15.50,
+        category: "Main Courses",
+        image: "https://images.unsplash.com/photo-1622973536968-3ead9e780960?w=800&q=80",
+        preparationTime: 20,
+        calories: 550,
+        allergens: ["Gluten"],
+        rating: 4.7,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Spagetti Bolonez", description: "Zengin kıymalı ve domates soslu spagetti." },
+            de: { name: "Spaghetti Bolognese", description: "Spaghetti serviert mit einer reichhaltigen Fleisch- und Tomatensoße." },
+            fr: { name: "Spaghetti Bolognaise", description: "Spaghetti servis avec une riche sauce à la viande et à la tomate." }
+        }
+    },
+    {
+        name: "Grilled Chicken Breast",
+        description: "Tender grilled chicken breast served with steamed vegetables.",
+        price: 19.00,
+        category: "Main Courses",
+        image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=800&q=80",
+        preparationTime: 25,
+        calories: 400,
+        allergens: [],
+        rating: 4.8,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Izgara Tavuk Göğsü", description: "Buharda pişmiş sebzelerle servis edilen yumuşak ızgara tavuk göğsü." },
+            de: { name: "Gegrillte Hähnchenbrust", description: "Zarte gegrillte Hähnchenbrust serviert mit gedünstetem Gemüse." },
+            fr: { name: "Poitrine de Poulet Grillée", description: "Poitrine de poulet grillée tendre servie avec des légumes à la vapeur." }
+        }
+    },
+    {
+        name: "French Fries",
+        description: "Crispy golden potato fries.",
+        price: 6.00,
+        category: "Sides",
+        image: "https://images.unsplash.com/photo-1573080496987-aeb7d53385c7?w=800&q=80",
+        preparationTime: 10,
+        calories: 300,
+        allergens: [],
+        rating: 4.5,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Patates Kızartması", description: "Çıtır altın sarısı patates kızartması." },
+            de: { name: "Pommes Frites", description: "Knusprige goldene Kartoffelpommes." },
+            fr: { name: "Frites", description: "Frites de pommes de terre dorées et croustillantes." }
+        }
+    },
+    {
+        name: "Cheesecake",
+        description: "Creamy cheesecake with a graham cracker crust and berry topping.",
+        price: 9.00,
+        category: "Desserts",
+        image: "https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=800&q=80",
+        preparationTime: 5,
+        calories: 450,
+        allergens: ["Gluten", "Dairy", "Egg"],
+        rating: 4.9,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Cheesecake", description: "Bisküvi tabanlı ve meyve soslu kremalı cheesecake." },
+            de: { name: "Käsekuchen", description: "Cremiger Käsekuchen mit Keksboden und Beerenbelag." },
+            fr: { name: "Cheesecake", description: "Cheesecake crémeux avec une croûte de biscuits Graham et une garniture aux baies." }
+        }
+    },
+    {
+        name: "Tiramisu",
+        description: "Classic Italian dessert made with coffee-soaked ladyfingers and mascarpone cream.",
+        price: 10.00,
+        category: "Desserts",
+        image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800&q=80",
+        preparationTime: 5,
+        calories: 500,
+        allergens: ["Gluten", "Dairy", "Egg"],
+        rating: 4.8,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Tiramisu", description: "Kahveye batırılmış kedi dili ve mascarpone kreması ile yapılan klasik İtalyan tatlısı." },
+            de: { name: "Tiramisu", description: "Klassisches italienisches Dessert aus in Kaffee getunkten Löffelbiskuits und Mascarpone-Creme." },
+            fr: { name: "Tiramisu", description: "Dessert italien classique fait de boudoirs trempés dans le café et de crème mascarpone." }
+        }
+    },
+    {
+        name: "Coca Cola",
+        description: "Chilled classic cola.",
+        price: 4.00,
+        category: "Drinks",
+        image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800&q=80",
+        preparationTime: 2,
+        calories: 140,
+        allergens: [],
+        rating: 4.5,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Coca Cola", description: "Soğuk klasik kola." },
+            de: { name: "Coca Cola", description: "Gekühlte klassische Cola." },
+            fr: { name: "Coca Cola", description: "Cola classique frais." }
+        }
+    },
+    {
+        name: "Mineral Water",
+        description: "Refreshing sparkling mineral water.",
+        price: 3.00,
+        category: "Drinks",
+        image: "https://images.unsplash.com/photo-1560023907-5f339617ea30?w=800&q=80",
+        preparationTime: 2,
+        calories: 0,
+        allergens: [],
+        rating: 4.6,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Maden Suyu", description: "Ferahlatıcı maden suyu." },
+            de: { name: "Mineralwasser", description: "Erfrischendes Mineralwasser." },
+            fr: { name: "Eau Minérale", description: "Eau minérale pétillante rafraîchissante." }
+        }
+    },
+    {
+        name: "Coffee",
+        description: "Freshly brewed hot coffee.",
+        price: 5.00,
+        category: "Drinks",
+        image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80",
+        preparationTime: 5,
+        calories: 5,
+        allergens: [],
+        rating: 4.7,
+        isAvailable: true,
+        translations: {
+            tr: { name: "Kahve", description: "Taze demlenmiş sıcak kahve." },
+            de: { name: "Kaffee", description: "Frisch gebrühter heißer Kaffee." },
+            fr: { name: "Café", description: "Café chaud fraîchement moulu." }
+        }
+    }
+];
+
+async function seedMenu() {
+    try {
+        console.log(`Seeding menu to ${BASE_URL}...`);
+
+        console.log('Clearing existing menu...');
+        const deleteResponse = await fetch(`${BASE_URL}/api/menu/delete-all`, {
+            method: 'DELETE',
+            headers: {
+                'x-tenant': TENANT,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!deleteResponse.ok) {
+            console.error('Failed to delete menu:', await deleteResponse.text());
+            // Don't stop, try to add anyway
+        } else {
+            console.log('Menu cleared successfully.');
+        }
+
+        console.log('Adding new menu items...');
+        const saveResponse = await fetch(`${BASE_URL}/api/menu/save`, {
+            method: 'POST',
+            headers: {
+                'x-tenant': TENANT,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ items: menuItems })
+        });
+
+        if (!saveResponse.ok) {
+            const errorText = await saveResponse.text();
+            try {
+                const errorJson = JSON.parse(errorText);
+                console.error('Failed to save menu:', JSON.stringify(errorJson, null, 2));
+            } catch (e) {
+                console.error('Failed to save menu (raw):', errorText);
+            }
+        } else {
+            const result = await saveResponse.json();
+            console.log('Menu seeded successfully!', result);
+        }
+
+    } catch (error) {
+        console.error('Error seeding menu:', error);
+    }
+}
+
+seedMenu();
