@@ -34,7 +34,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Arama...',
     'menu.categories': 'Kategoriler',
     'menu.items': 'Ürünler',
-    
+
     // Kategoriler
     'category.all': 'Tümü',
     'category.breakfast': 'Kahvaltı',
@@ -44,14 +44,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'İçecekler',
     'category.snack': 'Atıştırmalıklar',
     'menu.subcategories': 'Alt Kategoriler',
-    
+
     // Alt Kategoriler
     'subcategory.classic': 'Klasik',
     'subcategory.meat': 'Et',
     'subcategory.fish': 'Balık',
     'subcategory.hot': 'Sıcak',
     'subcategory.juice': 'Meyve Suyu',
-    
+
     // Ürün bilgileri
     'product.price': '₺',
     'product.preparation': 'Hazırlık',
@@ -63,14 +63,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Toplam',
     'product.show_details': 'Detay',
     'product.show_less': 'Daha az göster',
-    
+
     // Sepet
     'cart.title': 'Sepetim',
     'cart.empty': 'Sepetiniz boş',
     'cart.remove': 'Kaldır',
     'cart.checkout': 'Sipariş Ver',
     'cart.add_products': 'Ürün eklemek için menüden seçim yapın',
-    
+
     // Anket/Değerlendirme
     'survey.title': 'Bizi Değerlendirin',
     'survey.cleanliness': 'Temizlik',
@@ -83,7 +83,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Google\'da Değerlendirin',
     'survey.thank_you': 'Teşekkürler!',
     'survey.submitted': 'Değerlendirmeniz başarıyla gönderildi.',
-    
+
     // Bildirimler
     'notifications.housekeeping_title': 'Temizlik Talebi',
     'notifications.housekeeping_message': 'Oda temizliği talebiniz resepsiyona iletildi. En kısa sürede yanıtlanacaktır.',
@@ -94,7 +94,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_title': 'Değerlendirme',
     'notifications.survey_thank_you': 'Yorumunuz için teşekkür ederiz! Geri bildiriminiz bizim için çok değerli.',
     'notifications.general_request_title': 'Genel Talep',
-    
+
     // Genel
     'general.loading': 'Yükleniyor...',
     'general.error': 'Bir hata oluştu',
@@ -107,7 +107,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'Ürün Bulunamadı',
     'general.no_search_results': 'Arama kriterlerinize uygun ürün bulunamadı.',
     'general.no_category_products': 'Bu kategoride ürün bulunmuyor.',
-    
+
     // Oda Arayüzü
     'room.welcome': 'Hoş Geldiniz',
     'room.services': 'Hizmetler',
@@ -124,7 +124,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'İstek Detayı',
     'room.quantity': 'Miktar',
     'room.send_request': 'İsteği Gönder',
-    
+
     // Hızlı seçim öğeleri
     'quick.towel': 'Havlu',
     'quick.slippers': 'Terlik',
@@ -134,7 +134,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Şampuan',
     'quick.soap': 'Sabun',
     'quick.water': 'Su',
-    
+
     // Login
     'login.title': 'İşletme Paneline Giriş',
     'login.subtitle': 'Hesabınızla giriş yapın',
@@ -149,7 +149,7 @@ export const translations: Record<string, Translations> = {
     'login.error_invalid': 'Geçersiz email veya şifre',
     'login.error_general': 'Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.',
     'login.error_session': 'Giriş başarılı ancak oturum kaydedilemedi. Lütfen tekrar deneyin.',
-    
+
     // Dashboard
     'dashboard.title': 'Dashboard',
     'dashboard.subtitle': 'Otel yönetim paneline hoş geldiniz',
@@ -173,7 +173,7 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Oda',
     'dashboard.unknown_product': 'Bilinmeyen Ürün',
     'dashboard.product_id': 'Ürün #',
-    
+
     // Sidebar
     'sidebar.business_panel': 'İşletme Paneli',
     'sidebar.management_system': 'Yönetim Sistemi',
@@ -188,7 +188,7 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Bildirimler',
     'sidebar.analytics': 'Analitik',
     'sidebar.settings': 'Ayarlar',
-    
+
     // Page Titles
     'page.announcements.title': 'Duyuru Yönetimi',
     'page.announcements.subtitle': 'Misafirlere gösterilecek duyuruları yönetin',
@@ -202,7 +202,26 @@ export const translations: Record<string, Translations> = {
     'page.hotel_info.subtitle': 'Misafirlerin göreceği bilgileri buradan yönetebilirsiniz',
     'page.settings.title': 'Ayarlar',
     'page.settings.subtitle': 'Sistem ayarlarını yönetin',
-    
+
+    // Menu Page
+    'page.menu.title': 'Menü Yönetimi',
+    'page.menu.subtitle': 'Menü ürünlerini ve kategorileri düzenleyin',
+    'page.menu.add_item': 'Ürün Ekle',
+    'page.menu.import_demo': 'Demo Ürünleri Import Et',
+    'page.menu.bulk_upload': 'Toplu Yükle',
+    'page.menu.translation': 'Çeviri',
+    'page.menu.debug': 'Debug',
+    'page.menu.add_category': 'Kategori Ekle',
+    'page.menu.tab_menu': 'Menü',
+    'page.menu.tab_categories': 'Kategoriler',
+    'page.menu.search_placeholder': 'Ürün ara...',
+    'page.menu.all_categories': 'Tüm Kategoriler',
+    'page.menu.no_items': 'Ürün bulunamadı',
+    'page.menu.no_items_desc': 'Arama kriterlerinizi değiştirerek tekrar deneyin.',
+    'page.menu.no_categories': 'Henüz kategori yok',
+    'page.menu.no_categories_desc': 'İlk kategorinizi eklemek için yukarıdaki "Kategori Ekle" butonuna tıklayın.',
+    'page.menu.items_count': 'ürün',
+
     // QR Kod Page
     'qr.select_room': 'Oda Seçimi',
     'qr.database_rooms': 'Veritabanı Odaları',
@@ -226,7 +245,7 @@ export const translations: Record<string, Translations> = {
     'qr.example': 'Örnek',
     'qr.rooms_will_be_created': 'oda oluşturulacak',
     'page.qr.subtitle': 'Her oda için özel QR kod oluşturun ve yazdırın',
-    
+
     // Common Buttons
     'common.add': 'Ekle',
     'common.edit': 'Düzenle',
@@ -240,7 +259,7 @@ export const translations: Record<string, Translations> = {
     'common.inactive': 'Pasif',
     'common.loading': 'Yükleniyor...',
     'common.no_data': 'Veri bulunamadı',
-    
+
     // Announcements Page
     'announcements.add': 'Duyuru Ekle',
     'announcements.filter': 'Filtrele:',
@@ -263,7 +282,7 @@ export const translations: Record<string, Translations> = {
     'announcements.created_by': 'Oluşturan',
     'announcements.make_active': 'Aktif yap',
     'announcements.make_inactive': 'Pasif yap',
-    
+
     // Users Page
     'users.add': 'Kullanıcı Ekle',
     'users.search_placeholder': 'Kullanıcı ara...',
@@ -286,7 +305,7 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Kullanıcı Düzenle',
     'users.no_login': 'Hiç giriş yapmamış',
     'users.pages': 'sayfa',
-    
+
     // Notifications Page
     'notifications.refresh': 'Yenile',
     'notifications.mark_all_read': 'Tümünü Okundu İşaretle',
@@ -298,7 +317,7 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Okundu olarak işaretle',
     'notifications.mark_unread': 'Okunmamış olarak işaretle',
     'notifications.new': 'Yeni',
-    
+
     // Analytics Page
     'analytics.total_revenue': 'Toplam Gelir',
     'analytics.total_orders': 'Toplam Sipariş',
@@ -318,7 +337,7 @@ export const translations: Record<string, Translations> = {
     'analytics.chart_note': 'Chart.js veya başka bir kütüphane ile',
     'analytics.orders': 'sipariş',
     'analytics.date': 'Tarih',
-    
+
     // Hotel Info Page
     'hotel_info.wifi_internet': 'WiFi & İnternet',
     'hotel_info.network_name': 'Ağ Adı',
@@ -344,7 +363,7 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Kaydet',
     'hotel_info.loading': 'Otel bilgileri yükleniyor...',
     'hotel_info.error': 'Otel bilgileri yüklenemedi',
-    
+
     // Settings Page
     'settings.tab.hotel': 'Otel Bilgileri',
     'settings.tab.social': 'Sosyal Medya',
@@ -353,7 +372,7 @@ export const translations: Record<string, Translations> = {
     'settings.save': 'Kaydet',
     'settings.saving': 'Kaydediliyor...',
   },
-  
+
   en: {
     // Menu titles
     'menu.title': 'Room Service Menu',
@@ -361,7 +380,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Search...',
     'menu.categories': 'Categories',
     'menu.items': 'Items',
-    
+
     // Categories
     'category.all': 'All',
     'category.breakfast': 'Breakfast',
@@ -371,14 +390,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'Beverages',
     'category.snack': 'Snacks',
     'menu.subcategories': 'Subcategories',
-    
+
     // Subcategories
     'subcategory.classic': 'Classic',
     'subcategory.meat': 'Meat',
     'subcategory.fish': 'Fish',
     'subcategory.hot': 'Hot',
     'subcategory.juice': 'Juice',
-    
+
     // Product info
     'product.price': '$',
     'product.preparation': 'Prep',
@@ -390,14 +409,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Total',
     'product.show_details': 'Details',
     'product.show_less': 'Show Less',
-    
+
     // Cart
     'cart.title': 'My Cart',
     'cart.empty': 'Your cart is empty',
     'cart.remove': 'Remove',
     'cart.checkout': 'Checkout',
     'cart.add_products': 'Select items from the menu to add to cart',
-    
+
     // General
     'general.loading': 'Loading...',
     'general.error': 'An error occurred',
@@ -410,7 +429,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'No Products Found',
     'general.no_search_results': 'No products found matching your search criteria.',
     'general.no_category_products': 'No products available in this category.',
-    
+
     // Room Interface
     'room.welcome': 'Welcome',
     'room.services': 'Services',
@@ -427,7 +446,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'Request Details',
     'room.quantity': 'Quantity',
     'room.send_request': 'Send Request',
-    
+
     // Quick select items
     'quick.towel': 'Towel',
     'quick.slippers': 'Slippers',
@@ -437,7 +456,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Shampoo',
     'quick.soap': 'Soap',
     'quick.water': 'Water',
-    
+
     // Login
     'login.title': 'Business Panel Login',
     'login.subtitle': 'Sign in to your account',
@@ -452,7 +471,7 @@ export const translations: Record<string, Translations> = {
     'login.error_invalid': 'Invalid email or password',
     'login.error_general': 'An error occurred during login. Please try again.',
     'login.error_session': 'Login successful but session could not be saved. Please try again.',
-    
+
     // Dashboard
     'dashboard.title': 'Dashboard',
     'dashboard.subtitle': 'Welcome to the hotel management panel',
@@ -476,7 +495,7 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Room',
     'dashboard.unknown_product': 'Unknown Product',
     'dashboard.product_id': 'Product #',
-    
+
     // Sidebar
     'sidebar.business_panel': 'Business Panel',
     'sidebar.management_system': 'Management System',
@@ -491,7 +510,7 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Notifications',
     'sidebar.analytics': 'Analytics',
     'sidebar.settings': 'Settings',
-    
+
     // Page Titles
     'page.announcements.title': 'Announcement Management',
     'page.announcements.subtitle': 'Manage announcements to show to guests',
@@ -505,7 +524,26 @@ export const translations: Record<string, Translations> = {
     'page.hotel_info.subtitle': 'Manage information that guests will see',
     'page.settings.title': 'Settings',
     'page.settings.subtitle': 'Manage system settings',
-    
+
+    // Menu Page
+    'page.menu.title': 'Menu Management',
+    'page.menu.subtitle': 'Manage menu items and categories',
+    'page.menu.add_item': 'Add Item',
+    'page.menu.import_demo': 'Import Demo Products',
+    'page.menu.bulk_upload': 'Bulk Upload',
+    'page.menu.translation': 'Translation',
+    'page.menu.debug': 'Debug',
+    'page.menu.add_category': 'Add Category',
+    'page.menu.tab_menu': 'Menu',
+    'page.menu.tab_categories': 'Categories',
+    'page.menu.search_placeholder': 'Search items...',
+    'page.menu.all_categories': 'All Categories',
+    'page.menu.no_items': 'No items found',
+    'page.menu.no_items_desc': 'Try changing your search criteria.',
+    'page.menu.no_categories': 'No categories yet',
+    'page.menu.no_categories_desc': 'Click the "Add Category" button above to add your first category.',
+    'page.menu.items_count': 'items',
+
     // QR Kod Page
     'qr.select_room': 'Select Room',
     'qr.database_rooms': 'Database Rooms',
@@ -529,7 +567,7 @@ export const translations: Record<string, Translations> = {
     'qr.example': 'Example',
     'qr.rooms_will_be_created': 'rooms will be created',
     'page.qr.subtitle': 'Create and print custom QR codes for each room',
-    
+
     // Common Buttons
     'common.add': 'Add',
     'common.edit': 'Edit',
@@ -543,7 +581,7 @@ export const translations: Record<string, Translations> = {
     'common.inactive': 'Inactive',
     'common.loading': 'Loading...',
     'common.no_data': 'No data found',
-    
+
     // Announcements Page
     'announcements.add': 'Add Announcement',
     'announcements.filter': 'Filter:',
@@ -566,7 +604,7 @@ export const translations: Record<string, Translations> = {
     'announcements.created_by': 'Created by',
     'announcements.make_active': 'Make Active',
     'announcements.make_inactive': 'Make Inactive',
-    
+
     // Users Page
     'users.add': 'Add User',
     'users.search_placeholder': 'Search users...',
@@ -589,7 +627,7 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Edit User',
     'users.no_login': 'Never logged in',
     'users.pages': 'pages',
-    
+
     // Notifications Page
     'notifications.refresh': 'Refresh',
     'notifications.mark_all_read': 'Mark All as Read',
@@ -601,7 +639,7 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Mark as Read',
     'notifications.mark_unread': 'Mark as Unread',
     'notifications.new': 'New',
-    
+
     // Analytics Page
     'analytics.total_revenue': 'Total Revenue',
     'analytics.total_orders': 'Total Orders',
@@ -621,7 +659,7 @@ export const translations: Record<string, Translations> = {
     'analytics.chart_note': 'Using Chart.js or another library',
     'analytics.orders': 'orders',
     'analytics.date': 'Date',
-    
+
     // Hotel Info Page
     'hotel_info.wifi_internet': 'WiFi & Internet',
     'hotel_info.network_name': 'Network Name',
@@ -647,7 +685,7 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Save',
     'hotel_info.loading': 'Loading hotel information...',
     'hotel_info.error': 'Failed to load hotel information',
-    
+
     // Settings Page
     'settings.tab.hotel': 'Hotel Information',
     'settings.tab.social': 'Social Media',
@@ -655,7 +693,7 @@ export const translations: Record<string, Translations> = {
     'settings.tab.language': 'Language Settings',
     'settings.save': 'Save',
     'settings.saving': 'Saving...',
-    
+
     // Survey/Evaluation
     'survey.title': 'Rate Us',
     'survey.cleanliness': 'Cleanliness',
@@ -668,7 +706,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Review on Google',
     'survey.thank_you': 'Thank You!',
     'survey.submitted': 'Your evaluation has been submitted successfully.',
-    
+
     // Notifications
     'notifications.housekeeping_title': 'Housekeeping Request',
     'notifications.housekeeping_message': 'Your housekeeping request has been sent to reception. You will receive a response shortly.',
@@ -680,7 +718,353 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': 'Thank you for your comment! Your feedback is very valuable to us.',
     'notifications.general_request_title': 'General Request',
   },
-  
+
+  de: {
+    // Menu titles
+    'menu.title': 'Zimmerservice-Menü',
+    'menu.back': 'Zurück',
+    'menu.search': 'Suchen...',
+    'menu.categories': 'Kategorien',
+    'menu.items': 'Artikel',
+
+    // Categories
+    'category.all': 'Alle',
+    'category.breakfast': 'Frühstück',
+    'category.main': 'Hauptgerichte',
+    'category.appetizer': 'Vorspeisen',
+    'category.dessert': 'Desserts',
+    'category.beverage': 'Getränke',
+    'category.snack': 'Snacks',
+    'menu.subcategories': 'Unterkategorien',
+
+    // Subcategories
+    'subcategory.classic': 'Klassisch',
+    'subcategory.meat': 'Fleisch',
+    'subcategory.fish': 'Fisch',
+    'subcategory.hot': 'Heiß',
+    'subcategory.juice': 'Saft',
+
+    // Product info
+    'product.price': '€',
+    'product.preparation': 'Zubereitung',
+    'product.minutes': 'Min',
+    'product.rating': 'Bewertung',
+    'product.allergens': 'Allergene',
+    'product.add_to_cart': 'In den Warenkorb',
+    'product.quantity': 'Menge',
+    'product.total': 'Gesamt',
+    'product.show_details': 'Details',
+    'product.show_less': 'Weniger anzeigen',
+
+    // Cart
+    'cart.title': 'Mein Warenkorb',
+    'cart.empty': 'Ihr Warenkorb ist leer',
+    'cart.remove': 'Entfernen',
+    'cart.checkout': 'Bestellen',
+    'cart.add_products': 'Wählen Sie Artikel aus dem Menü, um sie hinzuzufügen',
+
+    // General
+    'general.loading': 'Laden...',
+    'general.error': 'Ein Fehler ist aufgetreten',
+    'general.success': 'Erfolg',
+    'general.cancel': 'Abbrechen',
+    'general.confirm': 'Bestätigen',
+    'general.save': 'Speichern',
+    'general.edit': 'Bearbeiten',
+    'general.delete': 'Löschen',
+    'general.no_products': 'Keine Produkte gefunden',
+    'general.no_search_results': 'Keine Produkte gefunden, die Ihren Suchkriterien entsprechen.',
+    'general.no_category_products': 'Keine Produkte in dieser Kategorie verfügbar.',
+
+    // Room Interface
+    'room.welcome': 'Willkommen',
+    'room.services': 'Dienstleistungen',
+    'room.room_service': 'Zimmerservice',
+    'room.housekeeping': 'Reinigung',
+    'room.maintenance': 'Wartung',
+    'room.concierge': 'Concierge',
+    'room.wifi': 'WiFi',
+    'room.menu': 'Menü',
+    'room.survey': 'Umfrage',
+    'room.social_media': 'Soziale Medien',
+    'room.follow_us': 'Folgen Sie uns',
+    'room.quick_select': 'Schnellauswahl',
+    'room.request_details': 'Anfragedetails',
+    'room.quantity': 'Menge',
+    'room.send_request': 'Anfrage senden',
+
+    // Quick select items
+    'quick.towel': 'Handtuch',
+    'quick.slippers': 'Hausschuhe',
+    'quick.toothpaste': 'Zahnpasta',
+    'quick.pillow': 'Kissen',
+    'quick.blanket': 'Decke',
+    'quick.shampoo': 'Shampoo',
+    'quick.soap': 'Seife',
+    'quick.water': 'Wasser',
+
+    // Login
+    'login.title': 'Business Panel Login',
+    'login.subtitle': 'Melden Sie sich bei Ihrem Konto an',
+    'login.email': 'E-Mail-Adresse oder Benutzername',
+    'login.password': 'Passwort',
+    'login.remember': 'Angemeldet bleiben',
+    'login.forgot': 'Passwort vergessen',
+    'login.submit': 'Anmelden',
+    'login.submitting': 'Anmelden...',
+    'login.email_placeholder': 'beispiel@email.com oder benutzername',
+    'login.password_placeholder': 'Geben Sie Ihr Passwort ein',
+    'login.error_invalid': 'Ungültige E-Mail oder Passwort',
+    'login.error_general': 'Ein Fehler ist beim Anmelden aufgetreten. Bitte versuchen Sie es erneut.',
+    'login.error_session': 'Anmeldung erfolgreich, aber Sitzung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.',
+
+    // Dashboard
+    'dashboard.title': 'Dashboard',
+    'dashboard.subtitle': 'Willkommen im Hotelmanagement-Panel',
+    'dashboard.total_guests': 'Gäste gesamt',
+    'dashboard.active_orders': 'Aktive Bestellungen',
+    'dashboard.pending_requests': 'Ausstehende Anfragen',
+    'dashboard.daily_revenue': 'Tagesumsatz',
+    'dashboard.recent_orders': 'Letzte Bestellungen',
+    'dashboard.recent_requests': 'Letzte Anfragen',
+    'dashboard.no_orders': 'Noch keine Bestellungen',
+    'dashboard.no_requests': 'Noch keine Anfragen',
+    'dashboard.view_all_orders': 'Alle Bestellungen anzeigen',
+    'dashboard.view_all_requests': 'Alle Anfragen anzeigen',
+    'dashboard.quick_actions': 'Schnellaktionen',
+    'dashboard.create_qr': 'QR-Code erstellen',
+    'dashboard.edit_menu': 'Menü bearbeiten',
+    'dashboard.add_announcement': 'Ankündigung hinzufügen',
+    'dashboard.add_staff': 'Personal hinzufügen',
+    'dashboard.view_reports': 'Berichte anzeigen',
+    'dashboard.social_media': 'Soziale Medien',
+    'dashboard.room': 'Zimmer',
+    'dashboard.unknown_product': 'Unbekanntes Produkt',
+    'dashboard.product_id': 'Produkt #',
+
+    // Sidebar
+    'sidebar.business_panel': 'Business Panel',
+    'sidebar.management_system': 'Managementsystem',
+    'sidebar.loading': 'Laden...',
+    'sidebar.logout': 'Abmelden',
+    'sidebar.dashboard': 'Dashboard',
+    'sidebar.qr_generator': 'QR-Code-Generator',
+    'sidebar.menu_management': 'Menüverwaltung',
+    'sidebar.announcements': 'Ankündigungen',
+    'sidebar.hotel_info': 'Hotelinformationen',
+    'sidebar.users': 'Benutzer',
+    'sidebar.notifications': 'Benachrichtigungen',
+    'sidebar.analytics': 'Analytik',
+    'sidebar.settings': 'Einstellungen',
+
+    // Page Titles
+    'page.announcements.title': 'Ankündigungsverwaltung',
+    'page.announcements.subtitle': 'Verwalten Sie Ankündigungen, die Gästen angezeigt werden',
+    'page.notifications.title': 'Benachrichtigungen',
+    'page.notifications.subtitle': 'Systembenachrichtigungen verwalten',
+    'page.analytics.title': 'Analytik & Berichte',
+    'page.analytics.subtitle': 'Leistungskennzahlen und detaillierte Berichte anzeigen',
+    'page.users.title': 'Benutzerverwaltung',
+    'page.users.subtitle': 'Personalkonten verwalten und autorisieren',
+    'page.hotel_info.title': 'Hotelinformationen',
+    'page.hotel_info.subtitle': 'Verwalten Sie Informationen, die Gäste sehen werden',
+    'page.settings.title': 'Einstellungen',
+    'page.settings.subtitle': 'Systemeinstellungen verwalten',
+
+    // Menu Page
+    'page.menu.title': 'Menüverwaltung',
+    'page.menu.subtitle': 'Menüpunkte und Kategorien verwalten',
+    'page.menu.add_item': 'Artikel hinzufügen',
+    'page.menu.import_demo': 'Demo-Produkte importieren',
+    'page.menu.bulk_upload': 'Massen-Upload',
+    'page.menu.translation': 'Übersetzung',
+    'page.menu.debug': 'Debug',
+    'page.menu.add_category': 'Kategorie hinzufügen',
+    'page.menu.tab_menu': 'Menü',
+    'page.menu.tab_categories': 'Kategorien',
+    'page.menu.search_placeholder': 'Artikel suchen...',
+    'page.menu.all_categories': 'Alle Kategorien',
+    'page.menu.no_items': 'Keine Artikel gefunden',
+    'page.menu.no_items_desc': 'Versuchen Sie, Ihre Suchkriterien zu ändern.',
+    'page.menu.no_categories': 'Noch keine Kategorien',
+    'page.menu.no_categories_desc': 'Klicken Sie oben auf "Kategorie hinzufügen", um Ihre erste Kategorie hinzuzufügen.',
+    'page.menu.items_count': 'Artikel',
+
+    // QR Kod Page
+    'qr.select_room': 'Zimmer auswählen',
+    'qr.database_rooms': 'Datenbankzimmer',
+    'qr.generated_rooms': 'Generierte Zimmer',
+    'qr.custom_rooms': 'Benutzerdefinierte Zimmer',
+    'qr.add_custom_room': 'Neues benutzerdefiniertes Zimmer hinzufügen',
+    'qr.room_placeholder': 'Z.B.: 201, 301, A101, Suite-1...',
+    'qr.save': 'Speichern',
+    'qr.download': 'Herunterladen',
+    'qr.print': 'Drucken',
+    'qr.copy': 'Kopieren',
+    'qr.copied': 'Kopiert!',
+    'qr.create_rooms': 'Zimmer erstellen',
+    'qr.rooms_created': 'Zimmer erstellt',
+    'qr.no_rooms': 'Noch keine Zimmer gefunden. Klicken Sie oben auf "Zimmer erstellen".',
+    'qr.loading_rooms': 'Zimmer werden geladen...',
+    'qr.hotel_config': 'Hotelkonfiguration',
+    'qr.floor_count': 'Anzahl der Etagen',
+    'qr.rooms_per_floor': 'Zimmer pro Etage',
+    'qr.total': 'Gesamt',
+    'qr.example': 'Beispiel',
+    'qr.rooms_will_be_created': 'Zimmer werden erstellt',
+    'page.qr.subtitle': 'Erstellen und drucken Sie benutzerdefinierte QR-Codes für jedes Zimmer',
+
+    // Common Buttons
+    'common.add': 'Hinzufügen',
+    'common.edit': 'Bearbeiten',
+    'common.delete': 'Löschen',
+    'common.save': 'Speichern',
+    'common.cancel': 'Abbrechen',
+    'common.search': 'Suchen',
+    'common.filter': 'Filtern',
+    'common.all': 'Alle',
+    'common.active': 'Aktiv',
+    'common.inactive': 'Inaktiv',
+    'common.loading': 'Laden...',
+    'common.no_data': 'Keine Daten gefunden',
+
+    // Announcements Page
+    'announcements.add': 'Ankündigung hinzufügen',
+    'announcements.filter': 'Filtern:',
+    'announcements.all': 'Alle',
+    'announcements.active': 'Aktiv',
+    'announcements.inactive': 'Inaktiv',
+    'announcements.edit': 'Bearbeiten',
+    'announcements.delete': 'Löschen',
+    'announcements.new': 'Neue Ankündigung hinzufügen',
+    'announcements.edit_title': 'Ankündigung bearbeiten',
+    'announcements.not_found': 'Keine Ankündigungen gefunden',
+    'announcements.not_found_desc': 'Klicken Sie auf "Ankündigung hinzufügen", um eine neue Ankündigung zu erstellen.',
+    'announcements.title_label': 'Titel (Türkisch) *',
+    'announcements.content_label': 'Inhalt (Türkisch) *',
+    'announcements.title_placeholder': 'Ankündigungstitel',
+    'announcements.content_placeholder': 'Ankündigungsinhalt',
+    'announcements.translations_title': 'Mehrsprachige Übersetzungen (Automatisch)',
+    'announcements.start_date': 'Start',
+    'announcements.end_date': 'Ende',
+    'announcements.created_by': 'Erstellt von',
+    'announcements.make_active': 'Aktivieren',
+    'announcements.make_inactive': 'Deaktivieren',
+
+    // Users Page
+    'users.add': 'Benutzer hinzufügen',
+    'users.search_placeholder': 'Benutzer suchen...',
+    'users.table.user': 'Benutzer',
+    'users.table.role': 'Rolle',
+    'users.table.contact': 'Kontakt',
+    'users.table.last_login': 'Letzte Anmeldung',
+    'users.table.permissions': 'Berechtigungen',
+    'users.table.status': 'Status',
+    'users.table.actions': 'Aktionen',
+    'users.loading': 'Benutzer werden geladen...',
+    'users.not_found': 'Benutzer nicht gefunden',
+    'users.not_found_desc': 'Versuchen Sie, Ihre Suchkriterien zu ändern.',
+    'users.manage_permissions': 'Berechtigungen verwalten',
+    'users.make_active': 'Aktivieren',
+    'users.make_inactive': 'Deaktivieren',
+    'users.edit': 'Bearbeiten',
+    'users.delete': 'Löschen',
+    'users.new_user': 'Neuen Benutzer hinzufügen',
+    'users.edit_user': 'Benutzer bearbeiten',
+    'users.no_login': 'Nie angemeldet',
+    'users.pages': 'Seiten',
+
+    // Notifications Page
+    'notifications.refresh': 'Aktualisieren',
+    'notifications.mark_all_read': 'Alle als gelesen markieren',
+    'notifications.total': 'Gesamtbenachrichtigungen',
+    'notifications.unread': 'Ungelesen',
+    'notifications.read': 'Gelesen',
+    'notifications.search_placeholder': 'Benachrichtigungen suchen...',
+    'notifications.not_found': 'Keine Benachrichtigungen gefunden',
+    'notifications.mark_read': 'Als gelesen markieren',
+    'notifications.mark_unread': 'Als ungelesen markieren',
+    'notifications.new': 'Neu',
+
+    // Analytics Page
+    'analytics.total_revenue': 'Gesamtumsatz',
+    'analytics.total_orders': 'Gesamtbestellungen',
+    'analytics.avg_order': 'Durchschnittliche Bestellung',
+    'analytics.active_guests': 'Aktive Gäste',
+    'analytics.previous_period': 'vs Vorperiode',
+    'analytics.download_report': 'Bericht herunterladen',
+    'analytics.revenue_trend': 'Umsatztrend',
+    'analytics.category_distribution': 'Kategorieverteilung',
+    'analytics.recent_orders': 'Letzte Bestellungen',
+    'analytics.view_all': 'Alle anzeigen',
+    'analytics.order': 'Bestellung',
+    'analytics.room': 'Zimmer',
+    'analytics.amount': 'Betrag',
+    'analytics.status': 'Status',
+    'analytics.chart_placeholder': 'Diagramm wird hier angezeigt',
+    'analytics.chart_note': 'Mit Chart.js oder einer anderen Bibliothek',
+    'analytics.orders': 'Bestellungen',
+    'analytics.date': 'Datum',
+
+    // Hotel Info Page
+    'hotel_info.wifi_internet': 'WiFi & Internet',
+    'hotel_info.network_name': 'Netzwerkname',
+    'hotel_info.password': 'Passwort',
+    'hotel_info.speed': 'Geschwindigkeit',
+    'hotel_info.tech_support_phone': 'Technischer Support Telefon',
+    'hotel_info.working_hours': 'Arbeitszeiten',
+    'hotel_info.reception': 'Rezeption',
+    'hotel_info.restaurant': 'Restaurant',
+    'hotel_info.bar': 'Bar',
+    'hotel_info.spa': 'Spa & Wellness',
+    'hotel_info.dining_services': 'Essen & Service',
+    'hotel_info.breakfast': 'Frühstück',
+    'hotel_info.lunch': 'Mittagessen',
+    'hotel_info.dinner': 'Abendessen',
+    'hotel_info.room_service': 'Zimmerservice',
+    'hotel_info.towel_change': 'Handtuchwechsel',
+    'hotel_info.tech_support': 'Technischer Support',
+    'hotel_info.amenities': 'Hotelannehmlichkeiten',
+    'hotel_info.contacts': 'Kontakte',
+    'hotel_info.security': 'Sicherheit',
+    'hotel_info.concierge': 'Concierge',
+    'hotel_info.save': 'Speichern',
+    'hotel_info.loading': 'Hotelinformationen werden geladen...',
+    'hotel_info.error': 'Hotelinformationen konnten nicht geladen werden',
+
+    // Settings Page
+    'settings.tab.hotel': 'Hotelinformationen',
+    'settings.tab.social': 'Soziale Medien',
+    'settings.tab.theme': 'Thema & Erscheinungsbild',
+    'settings.tab.language': 'Spracheinstellungen',
+    'settings.save': 'Speichern',
+    'settings.saving': 'Speichern...',
+
+    // Survey/Evaluation
+    'survey.title': 'Bewerten Sie uns',
+    'survey.cleanliness': 'Sauberkeit',
+    'survey.service': 'Zimmerservice',
+    'survey.staff': 'Personal',
+    'survey.overall': 'Gesamtzufriedenheit',
+    'survey.comment': 'Kommentar (Optional)',
+    'survey.comment_placeholder': 'Teilen Sie uns Ihre Erfahrung mit...',
+    'survey.submit': 'An Unternehmen senden',
+    'survey.google_review': 'Auf Google bewerten',
+    'survey.thank_you': 'Danke!',
+    'survey.submitted': 'Ihre Bewertung wurde erfolgreich gesendet.',
+
+    // Notifications
+    'notifications.housekeeping_title': 'Reinigungsanfrage',
+    'notifications.housekeeping_message': 'Ihre Reinigungsanfrage wurde an die Rezeption gesendet. Sie erhalten in Kürze eine Antwort.',
+    'notifications.housekeeping_description': 'Reinigung angefordert',
+    'notifications.maintenance_title': 'Technisches Problem',
+    'notifications.maintenance_message': 'Ihre Anfrage zu einem technischen Problem wurde an die Rezeption gesendet. Unser Personal ist für Notfälle unterwegs.',
+    'notifications.maintenance_description': 'Technisches Problem gemeldet',
+    'notifications.survey_title': 'Bewertung',
+    'notifications.survey_thank_you': 'Danke für Ihren Kommentar! Ihr Feedback ist uns sehr wichtig.',
+    'notifications.general_request_title': 'Allgemeine Anfrage',
+  },
+
   ru: {
     // Заголовки меню
     'menu.title': 'Меню Обслуживания',
@@ -688,7 +1072,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Поиск...',
     'menu.categories': 'Категории',
     'menu.items': 'Блюда',
-    
+
     // Категории
     'category.all': 'Все',
     'category.breakfast': 'Завтрак',
@@ -698,14 +1082,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'Напитки',
     'category.snack': 'Закуски',
     'menu.subcategories': 'Подкатегории',
-    
+
     // Подкатегории
     'subcategory.classic': 'Классические',
     'subcategory.meat': 'Мясные',
     'subcategory.fish': 'Рыбные',
     'subcategory.hot': 'Горячие',
     'subcategory.juice': 'Соки',
-    
+
     // Информация о продукте
     'product.price': '₽',
     'product.preparation': 'Готовка',
@@ -717,14 +1101,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Итого',
     'product.show_details': 'Подробности',
     'product.show_less': 'Скрыть',
-    
+
     // Корзина
     'cart.title': 'Моя Корзина',
     'cart.empty': 'Ваша корзина пуста',
     'cart.remove': 'Удалить',
     'cart.checkout': 'Оформить',
     'cart.add_products': 'Выберите блюда из меню для добавления в корзину',
-    
+
     // Общее
     'general.loading': 'Загрузка...',
     'general.error': 'Произошла ошибка',
@@ -737,7 +1121,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'Товары не найдены',
     'general.no_search_results': 'По вашему запросу товары не найдены.',
     'general.no_category_products': 'В этой категории нет товаров.',
-    
+
     // Интерфейс Номера
     'room.welcome': 'Добро пожаловать',
     'room.services': 'Услуги',
@@ -754,7 +1138,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'Детали запроса',
     'room.quantity': 'Количество',
     'room.send_request': 'Отправить запрос',
-    
+
     // Быстрый выбор
     'quick.towel': 'Полотенце',
     'quick.slippers': 'Тапочки',
@@ -764,7 +1148,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Шампунь',
     'quick.soap': 'Мыло',
     'quick.water': 'Вода',
-    
+
     // Опрос/Оценка
     'survey.title': 'Оцените нас',
     'survey.cleanliness': 'Чистота',
@@ -777,7 +1161,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Оценить в Google',
     'survey.thank_you': 'Спасибо!',
     'survey.submitted': 'Ваша оценка успешно отправлена.',
-    
+
     // Уведомления
     'notifications.housekeeping_title': 'Запрос на уборку',
     'notifications.housekeeping_message': 'Ваш запрос на уборку передан на ресепшн. Вам ответят в ближайшее время.',
@@ -789,7 +1173,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': 'Спасибо за ваш комментарий! Ваш отзыв очень ценен для нас.',
     'notifications.general_request_title': 'Общий запрос',
   },
-  
+
   ar: {
     // عناوين القائمة
     'menu.title': 'قائمة خدمة الغرف',
@@ -797,7 +1181,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'بحث...',
     'menu.categories': 'الفئات',
     'menu.items': 'العناصر',
-    
+
     // الفئات
     'category.all': 'الكل',
     'category.breakfast': 'الإفطار',
@@ -807,14 +1191,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'المشروبات',
     'category.snack': 'الوجبات الخفيفة',
     'menu.subcategories': 'الفئات الفرعية',
-    
+
     // الفئات الفرعية
     'subcategory.classic': 'كلاسيكي',
     'subcategory.meat': 'لحوم',
     'subcategory.fish': 'أسماك',
     'subcategory.hot': 'ساخن',
     'subcategory.juice': 'عصائر',
-    
+
     // معلومات المنتج
     'product.price': 'ريال',
     'product.preparation': 'التحضير',
@@ -826,14 +1210,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'المجموع',
     'product.show_details': 'التفاصيل',
     'product.show_less': 'عرض أقل',
-    
+
     // السلة
     'cart.title': 'سلتي',
     'cart.empty': 'سلتك فارغة',
     'cart.remove': 'إزالة',
     'cart.checkout': 'الدفع',
     'cart.add_products': 'اختر العناصر من القائمة لإضافتها إلى السلة',
-    
+
     // عام
     'general.loading': 'جاري التحميل...',
     'general.error': 'حدث خطأ',
@@ -846,7 +1230,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'لم يتم العثور على منتجات',
     'general.no_search_results': 'لم يتم العثور على منتجات تطابق معايير البحث الخاصة بك.',
     'general.no_category_products': 'لا توجد منتجات متاحة في هذه الفئة.',
-    
+
     // واجهة الغرفة
     'room.welcome': 'مرحباً',
     'room.services': 'الخدمات',
@@ -863,7 +1247,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'تفاصيل الطلب',
     'room.quantity': 'الكمية',
     'room.send_request': 'إرسال الطلب',
-    
+
     // الاختيار السريع
     'quick.towel': 'منشفة',
     'quick.slippers': 'نعال',
@@ -873,7 +1257,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'شامبو',
     'quick.soap': 'صابون',
     'quick.water': 'ماء',
-    
+
     // الاستطلاع/التقييم
     'survey.title': 'قيمنا',
     'survey.cleanliness': 'النظافة',
@@ -886,7 +1270,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'تقييم على جوجل',
     'survey.thank_you': 'شكراً لك!',
     'survey.submitted': 'تم إرسال تقييمك بنجاح.',
-    
+
     // الإشعارات
     'notifications.housekeeping_title': 'طلب التنظيف',
     'notifications.housekeeping_message': 'تم إرسال طلب التنظيف إلى الاستقبال. ستحصل على رد قريباً.',
@@ -898,7 +1282,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': 'شكراً لك على تعليقك! ملاحظاتك ثمينة جداً بالنسبة لنا.',
     'notifications.general_request_title': 'طلب عام',
   },
-  
+
   de: {
     // Menü-Titel
     'menu.title': 'Zimmerservice-Menü',
@@ -906,7 +1290,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Suchen...',
     'menu.categories': 'Kategorien',
     'menu.items': 'Gerichte',
-    
+
     // Kategorien
     'category.all': 'Alle',
     'category.breakfast': 'Frühstück',
@@ -916,14 +1300,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'Getränke',
     'category.snack': 'Snacks',
     'menu.subcategories': 'Unterkategorien',
-    
+
     // Unterkategorien
     'subcategory.classic': 'Klassisch',
     'subcategory.meat': 'Fleisch',
     'subcategory.fish': 'Fisch',
     'subcategory.hot': 'Heiß',
     'subcategory.juice': 'Saft',
-    
+
     // Produktinformationen
     'product.price': '€',
     'product.preparation': 'Zubereitung',
@@ -933,13 +1317,13 @@ export const translations: Record<string, Translations> = {
     'product.add_to_cart': 'In den Warenkorb',
     'product.quantity': 'Menge',
     'product.total': 'Gesamt',
-    
+
     // Warenkorb
     'cart.title': 'Mein Warenkorb',
     'cart.empty': 'Ihr Warenkorb ist leer',
     'cart.remove': 'Entfernen',
     'cart.checkout': 'Zur Kasse',
-    
+
     // Allgemein
     'general.loading': 'Wird geladen...',
     'general.error': 'Ein Fehler ist aufgetreten',
@@ -952,7 +1336,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'Keine Produkte gefunden',
     'general.no_search_results': 'Keine Produkte gefunden, die Ihren Suchkriterien entsprechen.',
     'general.no_category_products': 'Keine Produkte in dieser Kategorie verfügbar.',
-    
+
     // Zimmer-Interface
     'room.welcome': 'Willkommen',
     'room.services': 'Dienstleistungen',
@@ -969,7 +1353,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'Anfrage-Details',
     'room.quantity': 'Anzahl',
     'room.send_request': 'Anfrage senden',
-    
+
     // Schnellauswahl
     'quick.towel': 'Handtuch',
     'quick.slippers': 'Hausschuhe',
@@ -979,7 +1363,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Shampoo',
     'quick.soap': 'Seife',
     'quick.water': 'Wasser',
-    
+
     // Login
     'login.title': 'Geschäftspanel-Anmeldung',
     'login.subtitle': 'Melden Sie sich mit Ihrem Konto an',
@@ -994,7 +1378,7 @@ export const translations: Record<string, Translations> = {
     'login.error_invalid': 'Ungültige E-Mail oder Passwort',
     'login.error_general': 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
     'login.error_session': 'Anmeldung erfolgreich, aber Sitzung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.',
-    
+
     // Dashboard
     'dashboard.title': 'Dashboard',
     'dashboard.subtitle': 'Willkommen im Hotel-Verwaltungspanel',
@@ -1018,7 +1402,7 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Zimmer',
     'dashboard.unknown_product': 'Unbekanntes Produkt',
     'dashboard.product_id': 'Produkt #',
-    
+
     // Sidebar
     'sidebar.business_panel': 'Geschäftspanel',
     'sidebar.management_system': 'Verwaltungssystem',
@@ -1033,7 +1417,7 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Benachrichtigungen',
     'sidebar.analytics': 'Analytik',
     'sidebar.settings': 'Einstellungen',
-    
+
     // Page Titles
     'page.announcements.title': 'Ankündigungsverwaltung',
     'page.announcements.subtitle': 'Verwalten Sie Ankündigungen für Gäste',
@@ -1047,7 +1431,7 @@ export const translations: Record<string, Translations> = {
     'page.hotel_info.subtitle': 'Verwalten Sie Informationen, die Gäste sehen werden',
     'page.settings.title': 'Einstellungen',
     'page.settings.subtitle': 'Systemeinstellungen verwalten',
-    
+
     // QR Kod Page
     'qr.select_room': 'Zimmer auswählen',
     'qr.database_rooms': 'Datenbank-Zimmer',
@@ -1071,7 +1455,7 @@ export const translations: Record<string, Translations> = {
     'qr.example': 'Beispiel',
     'qr.rooms_will_be_created': 'Zimmer werden erstellt',
     'page.qr.subtitle': 'Erstellen und drucken Sie benutzerdefinierte QR-Codes für jedes Zimmer',
-    
+
     // Common Buttons
     'common.add': 'Hinzufügen',
     'common.edit': 'Bearbeiten',
@@ -1085,7 +1469,7 @@ export const translations: Record<string, Translations> = {
     'common.inactive': 'Inaktiv',
     'common.loading': 'Wird geladen...',
     'common.no_data': 'Keine Daten gefunden',
-    
+
     // Announcements Page
     'announcements.add': 'Ankündigung hinzufügen',
     'announcements.filter': 'Filtern:',
@@ -1108,7 +1492,7 @@ export const translations: Record<string, Translations> = {
     'announcements.created_by': 'Erstellt von',
     'announcements.make_active': 'Aktivieren',
     'announcements.make_inactive': 'Deaktivieren',
-    
+
     // Users Page
     'users.add': 'Benutzer hinzufügen',
     'users.search_placeholder': 'Benutzer suchen...',
@@ -1131,7 +1515,7 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Benutzer bearbeiten',
     'users.no_login': 'Nie eingeloggt',
     'users.pages': 'Seiten',
-    
+
     // Notifications Page
     'notifications.refresh': 'Aktualisieren',
     'notifications.mark_all_read': 'Alle als gelesen markieren',
@@ -1143,7 +1527,7 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Als gelesen markieren',
     'notifications.mark_unread': 'Als ungelesen markieren',
     'notifications.new': 'Neu',
-    
+
     // Analytics Page
     'analytics.total_revenue': 'Gesamteinnahmen',
     'analytics.total_orders': 'Gesamtbestellungen',
@@ -1163,7 +1547,7 @@ export const translations: Record<string, Translations> = {
     'analytics.chart_note': 'Mit Chart.js oder einer anderen Bibliothek',
     'analytics.orders': 'Bestellungen',
     'analytics.date': 'Datum',
-    
+
     // Hotel Info Page
     'hotel_info.wifi_internet': 'WiFi & Internet',
     'hotel_info.network_name': 'Netzwerkname',
@@ -1189,7 +1573,7 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Speichern',
     'hotel_info.loading': 'Hotelinformationen werden geladen...',
     'hotel_info.error': 'Hotelinformationen konnten nicht geladen werden',
-    
+
     // Settings Page
     'settings.tab.hotel': 'Hotelinformationen',
     'settings.tab.social': 'Soziale Medien',
@@ -1197,7 +1581,7 @@ export const translations: Record<string, Translations> = {
     'settings.tab.language': 'Spracheinstellungen',
     'settings.save': 'Speichern',
     'settings.saving': 'Wird gespeichert...',
-    
+
     // Umfrage/Bewertung
     'survey.title': 'Bewerten Sie uns',
     'survey.cleanliness': 'Sauberkeit',
@@ -1210,7 +1594,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Bei Google bewerten',
     'survey.thank_you': 'Vielen Dank!',
     'survey.submitted': 'Ihre Bewertung wurde erfolgreich gesendet.',
-    
+
     // Benachrichtigungen
     'notifications.housekeeping_title': 'Zimmerservice-Anfrage',
     'notifications.housekeeping_message': 'Ihre Zimmerservice-Anfrage wurde an die Rezeption gesendet. Sie erhalten bald eine Antwort.',
@@ -1222,7 +1606,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': 'Vielen Dank für Ihren Kommentar! Ihr Feedback ist sehr wertvoll für uns.',
     'notifications.general_request_title': 'Allgemeine Anfrage',
   },
-  
+
   fr: {
     // Titres de menu
     'menu.title': 'Menu Service Chambre',
@@ -1230,7 +1614,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Recherche...',
     'menu.categories': 'Catégories',
     'menu.items': 'Articles',
-    
+
     // Catégories
     'category.all': 'Tous',
     'category.breakfast': 'Petit-déjeuner',
@@ -1240,14 +1624,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'Boissons',
     'category.snack': 'Collations',
     'menu.subcategories': 'Sous-catégories',
-    
+
     // Sous-catégories
     'subcategory.classic': 'Classique',
     'subcategory.meat': 'Viande',
     'subcategory.fish': 'Poisson',
     'subcategory.hot': 'Chaud',
     'subcategory.juice': 'Jus',
-    
+
     // Informations produit
     'product.price': '€',
     'product.preparation': 'Préparation',
@@ -1259,14 +1643,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Total',
     'product.show_details': 'Détails',
     'product.show_less': 'Afficher Moins',
-    
+
     // Panier
     'cart.title': 'Mon Panier',
     'cart.empty': 'Votre panier est vide',
     'cart.remove': 'Supprimer',
     'cart.checkout': 'Commander',
     'cart.add_products': 'Sélectionnez des articles du menu pour les ajouter au panier',
-    
+
     // Général
     'general.loading': 'Chargement...',
     'general.error': 'Une erreur s\'est produite',
@@ -1279,7 +1663,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'Aucun Produit Trouvé',
     'general.no_search_results': 'Aucun produit trouvé correspondant à vos critères de recherche.',
     'general.no_category_products': 'Aucun produit disponible dans cette catégorie.',
-    
+
     // Interface Chambre
     'room.welcome': 'Bienvenue',
     'room.services': 'Services',
@@ -1296,7 +1680,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'Détails de la Demande',
     'room.quantity': 'Quantité',
     'room.send_request': 'Envoyer la Demande',
-    
+
     // Sélection rapide
     'quick.towel': 'Serviette',
     'quick.slippers': 'Pantoufles',
@@ -1306,7 +1690,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Shampoing',
     'quick.soap': 'Savon',
     'quick.water': 'Eau',
-    
+
     // Login
     'login.title': 'Connexion au Panneau d\'Administration',
     'login.subtitle': 'Connectez-vous à votre compte',
@@ -1321,7 +1705,7 @@ export const translations: Record<string, Translations> = {
     'login.error_invalid': 'E-mail ou mot de passe invalide',
     'login.error_general': 'Une erreur s\'est produite lors de la connexion. Veuillez réessayer.',
     'login.error_session': 'Connexion réussie mais la session n\'a pas pu être enregistrée. Veuillez réessayer.',
-    
+
     // Dashboard
     'dashboard.title': 'Tableau de bord',
     'dashboard.subtitle': 'Bienvenue dans le panneau de gestion de l\'hôtel',
@@ -1345,7 +1729,7 @@ export const translations: Record<string, Translations> = {
     'dashboard.room': 'Chambre',
     'dashboard.unknown_product': 'Produit inconnu',
     'dashboard.product_id': 'Produit #',
-    
+
     // Sidebar
     'sidebar.business_panel': 'Panneau d\'Administration',
     'sidebar.management_system': 'Système de Gestion',
@@ -1360,7 +1744,7 @@ export const translations: Record<string, Translations> = {
     'sidebar.notifications': 'Notifications',
     'sidebar.analytics': 'Analytique',
     'sidebar.settings': 'Paramètres',
-    
+
     // Page Titles
     'page.announcements.title': 'Gestion des Annonces',
     'page.announcements.subtitle': 'Gérer les annonces à afficher aux invités',
@@ -1374,7 +1758,7 @@ export const translations: Record<string, Translations> = {
     'page.hotel_info.subtitle': 'Gérer les informations que les invités verront',
     'page.settings.title': 'Paramètres',
     'page.settings.subtitle': 'Gérer les paramètres système',
-    
+
     // QR Kod Page
     'qr.select_room': 'Sélectionner la Chambre',
     'qr.database_rooms': 'Chambres de la Base de Données',
@@ -1398,7 +1782,7 @@ export const translations: Record<string, Translations> = {
     'qr.example': 'Exemple',
     'qr.rooms_will_be_created': 'chambres seront créées',
     'page.qr.subtitle': 'Créez et imprimez des codes QR personnalisés pour chaque chambre',
-    
+
     // Common Buttons
     'common.add': 'Ajouter',
     'common.edit': 'Modifier',
@@ -1412,7 +1796,7 @@ export const translations: Record<string, Translations> = {
     'common.inactive': 'Inactif',
     'common.loading': 'Chargement...',
     'common.no_data': 'Aucune donnée trouvée',
-    
+
     // Announcements Page
     'announcements.add': 'Ajouter une Annonce',
     'announcements.filter': 'Filtrer:',
@@ -1435,7 +1819,7 @@ export const translations: Record<string, Translations> = {
     'announcements.created_by': 'Créé par',
     'announcements.make_active': 'Activer',
     'announcements.make_inactive': 'Désactiver',
-    
+
     // Users Page
     'users.add': 'Ajouter un Utilisateur',
     'users.search_placeholder': 'Rechercher des utilisateurs...',
@@ -1458,7 +1842,7 @@ export const translations: Record<string, Translations> = {
     'users.edit_user': 'Modifier l\'Utilisateur',
     'users.no_login': 'Jamais connecté',
     'users.pages': 'pages',
-    
+
     // Notifications Page
     'notifications.refresh': 'Actualiser',
     'notifications.mark_all_read': 'Tout Marquer comme Lu',
@@ -1470,7 +1854,7 @@ export const translations: Record<string, Translations> = {
     'notifications.mark_read': 'Marquer comme Lu',
     'notifications.mark_unread': 'Marquer comme Non Lu',
     'notifications.new': 'Nouveau',
-    
+
     // Analytics Page
     'analytics.total_revenue': 'Revenu Total',
     'analytics.total_orders': 'Total des Commandes',
@@ -1490,7 +1874,7 @@ export const translations: Record<string, Translations> = {
     'analytics.chart_note': 'En utilisant Chart.js ou une autre bibliothèque',
     'analytics.orders': 'commandes',
     'analytics.date': 'Date',
-    
+
     // Hotel Info Page
     'hotel_info.wifi_internet': 'WiFi & Internet',
     'hotel_info.network_name': 'Nom du Réseau',
@@ -1516,7 +1900,7 @@ export const translations: Record<string, Translations> = {
     'hotel_info.save': 'Enregistrer',
     'hotel_info.loading': 'Chargement des informations de l\'hôtel...',
     'hotel_info.error': 'Échec du chargement des informations de l\'hôtel',
-    
+
     // Settings Page
     'settings.tab.hotel': 'Informations sur l\'Hôtel',
     'settings.tab.social': 'Réseaux Sociaux',
@@ -1524,7 +1908,7 @@ export const translations: Record<string, Translations> = {
     'settings.tab.language': 'Paramètres de Langue',
     'settings.save': 'Enregistrer',
     'settings.saving': 'Enregistrement...',
-    
+
     // Enquête/Évaluation
     'survey.title': 'Évaluez-nous',
     'survey.cleanliness': 'Propreté',
@@ -1537,7 +1921,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Évaluer sur Google',
     'survey.thank_you': 'Merci!',
     'survey.submitted': 'Votre évaluation a été soumise avec succès.',
-    
+
     // Notifications
     'notifications.housekeeping_title': 'Demande de Ménage',
     'notifications.housekeeping_message': 'Votre demande de ménage a été envoyée à la réception. Vous recevrez une réponse sous peu.',
@@ -1549,7 +1933,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': 'Merci pour votre commentaire! Votre retour est très précieux pour nous.',
     'notifications.general_request_title': 'Demande Générale',
   },
-  
+
   es: {
     // Títulos de menú
     'menu.title': 'Menú Servicio Habitación',
@@ -1557,7 +1941,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Buscar...',
     'menu.categories': 'Categorías',
     'menu.items': 'Artículos',
-    
+
     // Categorías
     'category.all': 'Todos',
     'category.breakfast': 'Desayuno',
@@ -1567,14 +1951,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'Bebidas',
     'category.snack': 'Aperitivos',
     'menu.subcategories': 'Subcategorías',
-    
+
     // Subcategorías
     'subcategory.classic': 'Clásico',
     'subcategory.meat': 'Carne',
     'subcategory.fish': 'Pescado',
     'subcategory.hot': 'Caliente',
     'subcategory.juice': 'Jugo',
-    
+
     // Información del producto
     'product.price': '€',
     'product.preparation': 'Preparación',
@@ -1586,14 +1970,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Total',
     'product.show_details': 'Detalles',
     'product.show_less': 'Mostrar Menos',
-    
+
     // Carrito
     'cart.title': 'Mi Carrito',
     'cart.empty': 'Tu carrito está vacío',
     'cart.remove': 'Eliminar',
     'cart.checkout': 'Pedir',
     'cart.add_products': 'Selecciona artículos del menú para añadir al carrito',
-    
+
     // General
     'general.loading': 'Cargando...',
     'general.error': 'Ocurrió un error',
@@ -1606,7 +1990,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'No se Encontraron Productos',
     'general.no_search_results': 'No se encontraron productos que coincidan con tus criterios de búsqueda.',
     'general.no_category_products': 'No hay productos disponibles en esta categoría.',
-    
+
     // Interfaz Habitación
     'room.welcome': 'Bienvenido',
     'room.services': 'Servicios',
@@ -1623,7 +2007,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'Detalles de la Solicitud',
     'room.quantity': 'Cantidad',
     'room.send_request': 'Enviar Solicitud',
-    
+
     // Selección rápida
     'quick.towel': 'Toalla',
     'quick.slippers': 'Pantuflas',
@@ -1633,7 +2017,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Champú',
     'quick.soap': 'Jabón',
     'quick.water': 'Agua',
-    
+
     // Encuesta/Evaluación
     'survey.title': 'Evalúanos',
     'survey.cleanliness': 'Limpieza',
@@ -1646,7 +2030,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Evaluar en Google',
     'survey.thank_you': '¡Gracias!',
     'survey.submitted': 'Tu evaluación ha sido enviada exitosamente.',
-    
+
     // Notificaciones
     'notifications.housekeeping_title': 'Solicitud de Limpieza',
     'notifications.housekeeping_message': 'Tu solicitud de limpieza ha sido enviada a recepción. Recibirás una respuesta pronto.',
@@ -1658,7 +2042,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': '¡Gracias por tu comentario! Tu retroalimentación es muy valiosa para nosotros.',
     'notifications.general_request_title': 'Solicitud General',
   },
-  
+
   it: {
     // Titoli menu
     'menu.title': 'Menu Servizio Camera',
@@ -1666,7 +2050,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': 'Cerca...',
     'menu.categories': 'Categorie',
     'menu.items': 'Articoli',
-    
+
     // Categorie
     'category.all': 'Tutti',
     'category.breakfast': 'Colazione',
@@ -1676,14 +2060,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': 'Bevande',
     'category.snack': 'Snack',
     'menu.subcategories': 'Sottocategorie',
-    
+
     // Sottocategorie
     'subcategory.classic': 'Classico',
     'subcategory.meat': 'Carne',
     'subcategory.fish': 'Pesce',
     'subcategory.hot': 'Caldo',
     'subcategory.juice': 'Succo',
-    
+
     // Informazioni prodotto
     'product.price': '€',
     'product.preparation': 'Preparazione',
@@ -1695,14 +2079,14 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Totale',
     'product.show_details': 'Dettagli',
     'product.show_less': 'Mostra Meno',
-    
+
     // Carrello
     'cart.title': 'Il Mio Carrello',
     'cart.empty': 'Il tuo carrello è vuoto',
     'cart.remove': 'Rimuovi',
     'cart.checkout': 'Ordina',
     'cart.add_products': 'Seleziona articoli dal menu per aggiungere al carrello',
-    
+
     // Generale
     'general.loading': 'Caricamento...',
     'general.error': 'Si è verificato un errore',
@@ -1715,7 +2099,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': 'Nessun Prodotto Trovato',
     'general.no_search_results': 'Nessun prodotto trovato che corrisponda ai tuoi criteri di ricerca.',
     'general.no_category_products': 'Nessun prodotto disponibile in questa categoria.',
-    
+
     // Interfaccia Camera
     'room.welcome': 'Benvenuto',
     'room.services': 'Servizi',
@@ -1732,7 +2116,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': 'Dettagli Richiesta',
     'room.quantity': 'Quantità',
     'room.send_request': 'Invia Richiesta',
-    
+
     // Selezione rapida
     'quick.towel': 'Asciugamano',
     'quick.slippers': 'Pantalofole',
@@ -1742,7 +2126,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': 'Shampoo',
     'quick.soap': 'Sapone',
     'quick.water': 'Acqua',
-    
+
     // Sondaggio/Valutazione
     'survey.title': 'Valutaci',
     'survey.cleanliness': 'Pulizia',
@@ -1755,7 +2139,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': 'Valuta su Google',
     'survey.thank_you': 'Grazie!',
     'survey.submitted': 'La tua valutazione è stata inviata con successo.',
-    
+
     // Notifiche
     'notifications.housekeeping_title': 'Richiesta Pulizia',
     'notifications.housekeeping_message': 'La tua richiesta di pulizia è stata inviata alla reception. Riceverai una risposta a breve.',
@@ -1767,7 +2151,7 @@ export const translations: Record<string, Translations> = {
     'notifications.survey_thank_you': 'Grazie per il tuo commento! Il tuo feedback è molto prezioso per noi.',
     'notifications.general_request_title': 'Richiesta Generale',
   },
-  
+
   zh: {
     // 菜单标题
     'menu.title': '客房服务菜单',
@@ -1775,7 +2159,7 @@ export const translations: Record<string, Translations> = {
     'menu.search': '搜索...',
     'menu.categories': '分类',
     'menu.items': '项目',
-    
+
     // 分类
     'category.all': '全部',
     'category.breakfast': '早餐',
@@ -1785,14 +2169,14 @@ export const translations: Record<string, Translations> = {
     'category.beverage': '饮料',
     'category.snack': '小吃',
     'menu.subcategories': '子分类',
-    
+
     // 子分类
     'subcategory.classic': '经典',
     'subcategory.meat': '肉类',
     'subcategory.fish': '鱼类',
     'subcategory.hot': '热饮',
     'subcategory.juice': '果汁',
-    
+
     // 产品信息
     'product.price': '¥',
     'product.preparation': '准备',
@@ -1804,14 +2188,14 @@ export const translations: Record<string, Translations> = {
     'product.total': '总计',
     'product.show_details': '详情',
     'product.show_less': '显示更少',
-    
+
     // 购物车
     'cart.title': '我的购物车',
     'cart.empty': '您的购物车是空的',
     'cart.remove': '移除',
     'cart.checkout': '结账',
     'cart.add_products': '从菜单中选择项目添加到购物车',
-    
+
     // 一般
     'general.loading': '加载中...',
     'general.error': '发生错误',
@@ -1824,7 +2208,7 @@ export const translations: Record<string, Translations> = {
     'general.no_products': '未找到产品',
     'general.no_search_results': '没有找到符合您搜索条件的产品。',
     'general.no_category_products': '此类别中没有可用产品。',
-    
+
     // 房间界面
     'room.welcome': '欢迎',
     'room.services': '服务',
@@ -1841,7 +2225,7 @@ export const translations: Record<string, Translations> = {
     'room.request_details': '请求详情',
     'room.quantity': '数量',
     'room.send_request': '发送请求',
-    
+
     // 快速选择
     'quick.towel': '毛巾',
     'quick.slippers': '拖鞋',
@@ -1851,7 +2235,7 @@ export const translations: Record<string, Translations> = {
     'quick.shampoo': '洗发水',
     'quick.soap': '肥皂',
     'quick.water': '水',
-    
+
     // 调查/评估
     'survey.title': '评价我们',
     'survey.cleanliness': '清洁度',
@@ -1864,7 +2248,7 @@ export const translations: Record<string, Translations> = {
     'survey.google_review': '在Google上评价',
     'survey.thank_you': '谢谢！',
     'survey.submitted': '您的评价已成功提交。',
-    
+
     // 通知
     'notifications.housekeeping_title': '清洁请求',
     'notifications.housekeeping_message': '您的清洁请求已发送到前台。您将很快收到回复。',
@@ -1889,7 +2273,7 @@ interface LanguageStore {
 // Settings'ten desteklenen dilleri al
 const getSupportedLanguagesFromSettings = (): string[] => {
   if (typeof window === 'undefined') return ['tr', 'en', 'de', 'fr'];
-  
+
   try {
     const savedSettings = localStorage.getItem('hotel-settings');
     if (savedSettings) {
@@ -1904,7 +2288,7 @@ const getSupportedLanguagesFromSettings = (): string[] => {
   } catch (error) {
     console.warn('Settings yüklenirken hata:', error);
   }
-  
+
   // Varsayılan diller
   return ['tr', 'en', 'de', 'fr'];
 };
@@ -1912,7 +2296,7 @@ const getSupportedLanguagesFromSettings = (): string[] => {
 // Settings'ten varsayılan dili al
 const getDefaultLanguageFromSettings = (): string => {
   if (typeof window === 'undefined') return 'tr';
-  
+
   try {
     const savedSettings = localStorage.getItem('hotel-settings');
     if (savedSettings) {
@@ -1924,7 +2308,7 @@ const getDefaultLanguageFromSettings = (): string => {
   } catch (error) {
     console.warn('Settings yüklenirken hata:', error);
   }
-  
+
   return 'tr';
 };
 
@@ -1932,38 +2316,25 @@ export const useLanguageStore = create<LanguageStore>()(
   persist(
     (set, get) => ({
       currentLanguage: typeof window !== 'undefined' ? getDefaultLanguageFromSettings() : 'tr',
-      
+
       setLanguage: (language: string) => {
         set({ currentLanguage: language });
       },
-      
+
       getTranslation: (key: string) => {
         const { currentLanguage } = get();
         const langTranslations = translations[currentLanguage];
         return langTranslations?.[key] || key;
       },
-      
+
       getCurrentLanguage: () => {
         const { currentLanguage } = get();
         return languages.find(lang => lang.code === currentLanguage) || languages[0];
       },
-      
+
       getSupportedLanguages: () => {
         const supportedCodes = getSupportedLanguagesFromSettings();
         const supported = languages.filter(lang => supportedCodes.includes(lang.code));
-        
-        // Eğer currentLanguage desteklenmiyorsa, varsayılan dile geç
-        const { currentLanguage } = get();
-        if (!supportedCodes.includes(currentLanguage)) {
-          const defaultLang = getDefaultLanguageFromSettings();
-          // Varsayılan dil de desteklenmiyorsa, ilk desteklenen dile geç
-          if (!supportedCodes.includes(defaultLang)) {
-            set({ currentLanguage: supportedCodes[0] || 'tr' });
-          } else {
-            set({ currentLanguage: defaultLang });
-          }
-        }
-        
         return supported;
       },
     }),

@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  FaConciergeBell, 
-  FaWifi, 
-  FaBroom, 
-  FaTools, 
+import {
+  FaConciergeBell,
+  FaWifi,
+  FaBroom,
+  FaTools,
   FaStar,
   FaBell,
   FaBed,
@@ -29,9 +29,10 @@ import { Globe, ChevronDown } from 'lucide-react';
 
 interface GuestInterfaceClientProps {
   roomId: string;
+  initialLang?: string;
 }
 
-export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientProps) {
+export default function GuestInterfaceClient({ roomId, initialLang }: GuestInterfaceClientProps) {
   const router = useRouter();
   const [showSurvey, setShowSurvey] = useState(false);
   // Guest info artık kullanılmıyor - soyisim sorusu kaldırıldı
@@ -40,10 +41,18 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
 
   // Dil store'u
   const { currentLanguage, setLanguage, getTranslation, getCurrentLanguage, getSupportedLanguages } = useLanguageStore();
+
+  // URL'den gelen dili ayarla
+  useEffect(() => {
+    if (initialLang && ['tr', 'en', 'de', 'fr', 'es', 'it', 'ru', 'ar', 'zh'].includes(initialLang)) {
+      setLanguage(initialLang);
+    }
+  }, [initialLang, setLanguage]);
+
   const supportedLanguages = getSupportedLanguages();
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
-  
+
   // Theme store'u - hook'ları component'in başında çağır
   const theme = useThemeStore();
 
@@ -61,7 +70,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
     const loadHotelName = async () => {
       try {
         const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-        
+
         // URL'den tenant slug'ını al
         let tenantSlug = 'demo';
         if (typeof window !== 'undefined') {
@@ -126,18 +135,18 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
   // Otel adına göre hoş geldiniz mesajı formatla (Türkçe dilbilgisi: e/a ekleme)
   const formatWelcomeMessage = (name: string, lang: string = 'tr'): string => {
     if (!name) return safeGetTranslation('room.welcome', 'Hoş Geldiniz');
-    
+
     // Türkçe dışındaki dillerde sadece "Welcome to {name}" formatı kullan
     if (lang !== 'tr') {
       const welcomeText = safeGetTranslation('room.welcome', 'Welcome');
       return `${welcomeText} ${name}`;
     }
-    
+
     // Türkçe için dilbilgisi kurallarına göre formatla
     const trimmedName = name.trim();
     const lastChar = trimmedName.slice(-1).toLowerCase();
     const vowels = ['a', 'e', 'ı', 'i', 'o', 'ö', 'u', 'ü'];
-    
+
     // Son harf sesli ise "ye" veya "ya" ekle
     if (vowels.includes(lastChar)) {
       // Kalın sesliler: a, ı, o, u -> "ya"
@@ -157,7 +166,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
           break;
         }
       }
-      
+
       // Son sesli harf kalın ise "a", ince ise "e"
       if (lastVowel === 'a' || lastVowel === 'ı' || lastVowel === 'o' || lastVowel === 'u') {
         return `${trimmedName}'a Hoş Geldiniz`;
@@ -171,21 +180,21 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
   useEffect(() => {
     const fullRoomId = roomId;
     const welcomeKey = `welcome_shown_${fullRoomId}`;
-    
+
     // Bu oda için hoş geldiniz bildirimi daha önce gösterildi mi?
     const hasShownWelcome = localStorage.getItem(welcomeKey);
-    
+
     // Otel adı yüklendikten sonra hoş geldiniz mesajını göster
     if (!hasShownWelcome && hotelName) {
       const timer = setTimeout(() => {
         const welcomeMessage = formatWelcomeMessage(hotelName);
-        
+
         addNotification('info', welcomeMessage, 'Resepsiyon ekibimiz 7/24 hizmetinizdedir. İsteklerinizi buradan gönderebilirsiniz.', false, true, 5000);
-        
+
         // Bu oda için hoş geldiniz bildirimi gösterildi olarak işaretle
         localStorage.setItem(welcomeKey, 'true');
       }, 2000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [hotelName, roomId, addNotification]);
@@ -211,7 +220,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
       <div className="min-h-screen flex flex-col items-center py-8 relative" style={{ background: theme.backgroundColor }}>
         <div className="w-full max-w-md px-4 mb-4 flex items-center justify-between">
           <h1 className="text-xl sm:text-2xl font-bold flex-1" style={{ color: theme.textColor }}>
-            {hotelName 
+            {hotelName
               ? formatWelcomeMessage(hotelName, currentLanguage)
               : safeGetTranslation('room.welcome', 'Hoş Geldiniz')
             }
@@ -226,13 +235,13 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
             </div>
           </div>
         </div>
-        
+
         <div className="w-full max-w-md mb-4 px-4">
           <div className="rounded-lg p-4" style={{ background: `${theme.secondaryColor}20`, border: `1px solid ${theme.secondaryColor}40` }}>
             <div className="text-center" style={{ color: theme.secondaryColor }}>Yükleniyor...</div>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md mb-4 px-4">
           <div className="flex flex-col items-center justify-center rounded-xl p-4 sm:p-6 shadow" style={{ background: `${theme.primaryColor}20` }}>
             <FaConciergeBell className="text-2xl sm:text-3xl mb-2" style={{ color: theme.primaryColor }} />
@@ -251,7 +260,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
             <span className="font-medium text-sm sm:text-base" style={{ color: theme.textColor }}>Bakım</span>
           </div>
         </div>
-        
+
         <button className="w-full max-w-md text-white rounded-xl p-3 sm:p-4 shadow-lg mb-4 sm:mb-6 mx-4" style={{ background: theme.gradientColors?.length ? `linear-gradient(135deg, ${theme.gradientColors[0]} 0%, ${theme.gradientColors[1]} 100%)` : theme.primaryColor }}>
           <div className="flex items-center justify-center gap-2 sm:gap-3">
             <FaStar className="text-xl sm:text-2xl" />
@@ -261,19 +270,19 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center py-8 relative" style={{ background: theme.backgroundColor }}>
 
       {/* Header */}
       <div className="w-full max-w-md px-4 mb-4 flex items-center justify-between">
-          <h1 className="text-xl sm:text-2xl font-bold flex-1" style={{ color: theme.textColor }}>
-            {hotelName 
-              ? formatWelcomeMessage(hotelName, currentLanguage)
-              : safeGetTranslation('room.welcome', 'Hoş Geldiniz')
-            }
-          </h1>
-        
+        <h1 className="text-xl sm:text-2xl font-bold flex-1" style={{ color: theme.textColor }}>
+          {hotelName
+            ? formatWelcomeMessage(hotelName, currentLanguage)
+            : safeGetTranslation('room.welcome', 'Hoş Geldiniz')
+          }
+        </h1>
+
         <div className="flex items-center gap-2">
           {/* Dil Seçici */}
           <div className="relative language-selector">
@@ -288,7 +297,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
               </span>
               <ChevronDown className="w-4 h-4" style={{ color: theme.textColor }} />
             </button>
-            
+
             {/* Dil Seçenekleri Dropdown */}
             {showLanguageSelector && (
               <div className="absolute right-0 top-full mt-1 w-48 rounded-lg shadow-lg z-50" style={{ background: theme.cardBackground, border: `1px solid ${theme.borderColor}` }}>
@@ -298,11 +307,13 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
                     onClick={() => {
                       setLanguage(lang.code);
                       setShowLanguageSelector(false);
+                      // URL'i güncelle
+                      const roomNumber = roomId.replace('room-', '');
+                      router.push(`/${lang.code}/guest/${roomNumber}`);
                     }}
-                    className={`w-full px-4 py-3 text-left transition-colors flex items-center space-x-3 ${
-                      currentLanguage === lang.code ? 'opacity-80' : ''
-                    }`}
-                    style={{ 
+                    className={`w-full px-4 py-3 text-left transition-colors flex items-center space-x-3 ${currentLanguage === lang.code ? 'opacity-80' : ''
+                      }`}
+                    style={{
                       background: currentLanguage === lang.code ? `${theme.primaryColor}20` : 'transparent',
                       color: theme.textColor
                     }}
@@ -324,9 +335,10 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
       <div className="w-full max-w-md mb-4 px-4">
         <AnnouncementBanner roomId={roomId} />
       </div>
+
       <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md mb-4 px-4">
         {/* Oda Servisi */}
-              <button
+        <button
           className="flex flex-col items-center justify-center rounded-xl p-4 sm:p-6 shadow hover:scale-105 transition"
           style={{ background: `${theme.primaryColor}20` }}
           onClick={() => {
@@ -338,18 +350,18 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
         >
           <FaConciergeBell className="text-2xl sm:text-3xl mb-2" style={{ color: theme.primaryColor }} />
           <span className="font-medium text-sm sm:text-base" style={{ color: theme.textColor }}>{safeGetTranslation('room.room_service', 'Oda Servisi')}</span>
-              </button>
+        </button>
         {/* Bilgi & Wifi */}
-              <button
+        <button
           className="flex flex-col items-center justify-center rounded-xl p-4 sm:p-6 shadow hover:scale-105 transition"
           style={{ background: `${theme.accentColor}20` }}
           onClick={() => router.push('/bilgi')}
         >
           <FaWifi className="text-2xl sm:text-3xl mb-2" style={{ color: theme.accentColor }} />
           <span className="font-medium text-sm sm:text-base" style={{ color: theme.textColor }}>{safeGetTranslation('room.wifi', 'Bilgi & Wifi')}</span>
-              </button>
+        </button>
         {/* Oda Temizliği */}
-                <button
+        <button
           className="flex flex-col items-center justify-center rounded-xl p-4 sm:p-6 shadow hover:scale-105 transition"
           style={{ background: `${theme.secondaryColor}20` }}
           onClick={async () => {
@@ -369,9 +381,9 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
         >
           <FaBroom className="text-2xl sm:text-3xl mb-2" style={{ color: theme.secondaryColor }} />
           <span className="font-medium text-sm sm:text-base" style={{ color: theme.textColor }}>{safeGetTranslation('room.housekeeping', 'Oda Temizliği')}</span>
-                </button>
+        </button>
         {/* Teknik Arıza */}
-                    <button
+        <button
           className="flex flex-col items-center justify-center rounded-xl p-4 sm:p-6 shadow hover:scale-105 transition"
           style={{ background: `${theme.primaryColor}20` }}
           onClick={async () => {
@@ -391,7 +403,7 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
         >
           <FaTools className="text-2xl sm:text-3xl mb-2" style={{ color: theme.primaryColor }} />
           <span className="font-medium text-sm sm:text-base" style={{ color: theme.textColor }}>{safeGetTranslation('room.maintenance', 'Teknik Arıza')}</span>
-                    </button>
+        </button>
       </div>
 
       {/* Bizi Puanla Butonu */}
@@ -405,11 +417,11 @@ export default function GuestInterfaceClient({ roomId }: GuestInterfaceClientPro
           <span className="text-base sm:text-lg font-semibold">{safeGetTranslation('room.survey', 'Bizi Puanla')}</span>
         </div>
       </button>
-      
+
       {/* Diğer İstekler Alanı */}
       <DigerIstekler onRequestSent={(message) => addNotification('info', safeGetTranslation('notifications.general_request_title', 'Genel Talep'), message, true, true, 5000)} roomId={roomId} />
 
-                </div>
+    </div>
   );
 }
 
@@ -456,17 +468,17 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!istek.trim()) return;
-    
+
     console.log('Gönderilen istek:', istek);
     console.log('Miktar:', miktar);
     console.log('Seçili öğe:', selectedItem);
     console.log('RoomId format:', roomId);
-    
+
     try {
       // İstek içeriğine göre priority belirle
       let priority: 'urgent' | 'high' | 'medium' | 'low' = 'medium';
       let type: 'housekeeping' | 'maintenance' | 'concierge' | 'general' | 'food_order' = 'general';
-      
+
       if (istek.toLowerCase().includes('acil') || istek.toLowerCase().includes('urgent') || istek.toLowerCase().includes('arıza')) {
         priority = 'urgent';
         type = 'maintenance';
@@ -474,9 +486,9 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
         priority = 'medium';
         type = 'housekeeping';
       }
-      
+
       console.log('İstek priority ve type:', { priority, type, istek });
-      
+
       // API'ye talep gönder
       await ApiService.createGuestRequest({
         roomId: roomId, // roomId zaten 'room-102' formatında
@@ -485,14 +497,14 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
         status: 'pending',
         description: istek,
       });
-      
+
       onRequestSent(`"${istek}" talebiniz resepsiyona iletildi. En kısa sürede yanıtlanacaktır.`);
-      
+
     } catch (error) {
       console.error('Error creating request:', error);
       onRequestSent(`"${istek}" talebiniz resepsiyona iletildi. En kısa sürede yanıtlanacaktır.`);
     }
-    
+
     setIstek("");
     setSelectedItem("");
     setMiktar(1);
@@ -508,9 +520,8 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
             <button
               key={item.name}
               onClick={() => handleQuickSelect(item.name)}
-              className={`p-2 rounded-lg text-xs sm:text-sm transition-all duration-200 ${
-                selectedItem === item.name ? 'shadow-md' : ''
-              }`}
+              className={`p-2 rounded-lg text-xs sm:text-sm transition-all duration-200 ${selectedItem === item.name ? 'shadow-md' : ''
+                }`}
               style={{
                 background: selectedItem === item.name ? theme.primaryColor : theme.borderColor,
                 color: selectedItem === item.name ? 'white' : theme.textColor
@@ -522,24 +533,24 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
               <div className="font-medium">{safeGetTranslation(item.nameKey, item.name)}</div>
             </button>
           ))}
-                    </div>
-                  </div>
-                  
+        </div>
+      </div>
+
       {/* Miktar Seçimi */}
       {selectedItem && (
         <div className="mb-3 rounded-lg p-3" style={{ background: `${theme.secondaryColor}20` }}>
-                  <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <span className="text-sm font-medium" style={{ color: theme.textColor }}>
               {selectedItem} miktarı:
             </span>
             <div className="flex items-center gap-2">
-                    <button
+              <button
                 onClick={() => setMiktar(Math.max(1, miktar - 1))}
                 className="w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
                 style={{ background: theme.borderColor, color: theme.textColor }}
-                    >
+              >
                 -
-                    </button>
+              </button>
               <span className="w-8 text-center font-semibold" style={{ color: theme.textColor }}>{miktar}</span>
               <button
                 onClick={() => setMiktar(Math.min(10, miktar + 1))}
@@ -547,14 +558,14 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
                 style={{ background: theme.borderColor, color: theme.textColor }}
               >
                 +
-                    </button>
-                  </div>
-                </div>
+              </button>
+            </div>
+          </div>
           <p className="text-xs mt-1" style={{ color: theme.textColor }}>
             Seçili: {miktar} adet {selectedItem}
           </p>
-          </div>
-        )}
+        </div>
+      )}
 
       {/* İstek Formu */}
       <form
@@ -565,7 +576,7 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
         <input
           type="text"
           className="flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-lg focus:outline-none focus:ring-2 text-sm sm:text-base"
-          style={{ 
+          style={{
             background: theme.backgroundColor,
             color: theme.textColor,
             border: `1px solid ${theme.borderColor}`,
@@ -576,7 +587,7 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
           onChange={(e) => {
             const value = e.target.value;
             setIstek(value);
-            
+
             if (value === "") {
               setSelectedItem("");
               setMiktar(1);
@@ -605,7 +616,7 @@ function DigerIstekler({ onRequestSent, roomId }: { onRequestSent: (message: str
           <span className="sm:hidden">{safeGetTranslation('room.send_request', 'Çağrı')}</span>
         </button>
       </form>
-                    </div>
+    </div>
   );
 }
 
@@ -621,11 +632,11 @@ function SurveyModal({ roomId, onClose, onSurveySent }: { roomId: string; onClos
 
   // Sosyal medya linklerini store'dan al
   const { getLink } = useSocialMediaStore();
-  
+
   // Dil store'u ve güvenli çeviri fonksiyonu
   const { getTranslation } = useLanguageStore();
   const theme = useThemeStore();
-  
+
   const safeGetTranslation = (key: string, fallback: string = '') => {
     try {
       return getTranslation ? getTranslation(key) : fallback;
@@ -651,16 +662,16 @@ function SurveyModal({ roomId, onClose, onSurveySent }: { roomId: string; onClos
   };
 
   if (isSubmitted) {
-  return (
+    return (
       <div className="min-h-screen flex flex-col items-center justify-center py-8" style={{ background: theme.backgroundColor }}>
         <div className="text-center">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: `${theme.accentColor}20` }}>
             <FaStar className="w-10 h-10" style={{ color: theme.accentColor }} />
-                    </div>
+          </div>
           <h2 className="text-2xl font-bold mb-2" style={{ color: theme.textColor }}>{safeGetTranslation('survey.thank_you', 'Teşekkürler!')}</h2>
           <p style={{ color: theme.textColor }}>{safeGetTranslation('survey.submitted', 'Değerlendirmeniz başarıyla gönderildi.')}</p>
-                    </div>
-                  </div>
+        </div>
+      </div>
     );
   }
 
@@ -669,89 +680,89 @@ function SurveyModal({ roomId, onClose, onSurveySent }: { roomId: string; onClos
       <div className="w-full max-w-md rounded-2xl shadow-xl p-6" style={{ background: theme.cardBackground }}>
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold" style={{ color: theme.textColor }}>{safeGetTranslation('survey.title', 'Bizi Değerlendirin')}</h1>
-              <button
+          <button
             onClick={onClose}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
             style={{ background: theme.borderColor }}
           >
             ×
-              </button>
-                </div>
+          </button>
+        </div>
 
-          <div className="space-y-6">
+        <div className="space-y-6">
           {/* Temizlik */}
-                <div>
+          <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">{safeGetTranslation('survey.cleanliness', 'Temizlik')}</h3>
             <div className="flex space-x-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                  <button
+                <button
                   key={star}
                   onClick={() => handleRating('cleanliness', star)}
                   className="text-3xl transition-colors"
-                  >
-                  <FaStar className={star <= ratings.cleanliness ? 'text-yellow-400' : 'text-gray-300'} />
-                  </button>
-                ))}
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                Puan: {ratings.cleanliness > 0 ? ratings.cleanliness : 'Seçilmedi'}
-              </div>
-              <div className="mt-2">
-                <select
-                  value={ratings.cleanliness || ''}
-                  onChange={(e) => handleRating('cleanliness', parseFloat(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="">Puan seçin</option>
-                  <option value="1.0">1.0 ⭐ (Temel)</option>
-                  <option value="1.5">1.5 ⭐ (Temel+)</option>
-                  <option value="2.0">2.0 ⭐⭐ (Orta)</option>
-                  <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
-                  <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
-                  <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
-                  <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
-                  <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
-                  <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
-                </select>
-              </div>
+                  <FaStar className={star <= ratings.cleanliness ? 'text-yellow-400' : 'text-gray-300'} />
+                </button>
+              ))}
             </div>
+            <div className="mt-2 text-sm text-gray-600">
+              Puan: {ratings.cleanliness > 0 ? ratings.cleanliness : 'Seçilmedi'}
+            </div>
+            <div className="mt-2">
+              <select
+                value={ratings.cleanliness || ''}
+                onChange={(e) => handleRating('cleanliness', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Puan seçin</option>
+                <option value="1.0">1.0 ⭐ (Temel)</option>
+                <option value="1.5">1.5 ⭐ (Temel+)</option>
+                <option value="2.0">2.0 ⭐⭐ (Orta)</option>
+                <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
+                <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
+                <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
+                <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
+                <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
+                <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
+              </select>
+            </div>
+          </div>
 
           {/* Oda Servisi */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">{safeGetTranslation('survey.service', 'Oda Servisi')}</h3>
             <div className="flex space-x-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                  <button
+                <button
                   key={star}
                   onClick={() => handleRating('service', star)}
                   className="text-3xl transition-colors"
-                  >
-                  <FaStar className={star <= ratings.service ? 'text-yellow-400' : 'text-gray-300'} />
-                  </button>
-                ))}
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                Puan: {ratings.service > 0 ? ratings.service : 'Seçilmedi'}
-              </div>
-              <div className="mt-2">
-                <select
-                  value={ratings.service || ''}
-                  onChange={(e) => handleRating('service', parseFloat(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="">Puan seçin</option>
-                  <option value="1.0">1.0 ⭐ (Temel)</option>
-                  <option value="1.5">1.5 ⭐ (Temel+)</option>
-                  <option value="2.0">2.0 ⭐⭐ (Orta)</option>
-                  <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
-                  <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
-                  <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
-                  <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
-                  <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
-                  <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
-                </select>
-              </div>
-      </div>
+                  <FaStar className={star <= ratings.service ? 'text-yellow-400' : 'text-gray-300'} />
+                </button>
+              ))}
+            </div>
+            <div className="mt-2 text-sm text-gray-600">
+              Puan: {ratings.service > 0 ? ratings.service : 'Seçilmedi'}
+            </div>
+            <div className="mt-2">
+              <select
+                value={ratings.service || ''}
+                onChange={(e) => handleRating('service', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Puan seçin</option>
+                <option value="1.0">1.0 ⭐ (Temel)</option>
+                <option value="1.5">1.5 ⭐ (Temel+)</option>
+                <option value="2.0">2.0 ⭐⭐ (Orta)</option>
+                <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
+                <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
+                <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
+                <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
+                <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
+                <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
+              </select>
+            </div>
+          </div>
 
           {/* Personel */}
           <div>
@@ -766,109 +777,130 @@ function SurveyModal({ roomId, onClose, onSurveySent }: { roomId: string; onClos
                   <FaStar className={star <= ratings.staff ? 'text-yellow-400' : 'text-gray-300'} />
                 </button>
               ))}
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                Puan: {ratings.staff > 0 ? ratings.staff : 'Seçilmedi'}
-              </div>
-              <div className="mt-2">
-                <select
-                  value={ratings.staff || ''}
-                  onChange={(e) => handleRating('staff', parseFloat(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Puan seçin</option>
-                  <option value="1.0">1.0 ⭐ (Temel)</option>
-                  <option value="1.5">1.5 ⭐ (Temel+)</option>
-                  <option value="2.0">2.0 ⭐⭐ (Orta)</option>
-                  <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
-                  <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
-                  <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
-                  <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
-                  <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
-                  <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
-                </select>
-              </div>
             </div>
-            
+            <div className="mt-2 text-sm text-gray-600">
+              Puan: {ratings.staff > 0 ? ratings.staff : 'Seçilmedi'}
+            </div>
+            <div className="mt-2">
+              <select
+                value={ratings.staff || ''}
+                onChange={(e) => handleRating('staff', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Puan seçin</option>
+                <option value="1.0">1.0 ⭐ (Temel)</option>
+                <option value="1.5">1.5 ⭐ (Temel+)</option>
+                <option value="2.0">2.0 ⭐⭐ (Orta)</option>
+                <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
+                <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
+                <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
+                <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
+                <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
+                <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
+              </select>
+            </div>
+          </div>
+
           {/* Genel Memnuniyet */}
-                <div>
+          <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">{safeGetTranslation('survey.overall', 'Genel Memnuniyet')}</h3>
             <div className="flex space-x-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                        <button
+                <button
                   key={star}
                   onClick={() => handleRating('overall', star)}
                   className="text-3xl transition-colors"
-                  >
+                >
                   <FaStar className={star <= ratings.overall ? 'text-yellow-400' : 'text-gray-300'} />
-                        </button>
-                  ))}
-                    </div>
-                    <div className="mt-2 text-sm text-gray-600">
-                      Puan: {ratings.overall > 0 ? ratings.overall : 'Seçilmedi'}
-                    </div>
-                    <div className="mt-2">
-                      <select
-                        value={ratings.overall || ''}
-                        onChange={(e) => handleRating('overall', parseFloat(e.target.value))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        <option value="">Puan seçin</option>
-                        <option value="1.0">1.0 ⭐ (Temel)</option>
-                        <option value="1.5">1.5 ⭐ (Temel+)</option>
-                        <option value="2.0">2.0 ⭐⭐ (Orta)</option>
-                        <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
-                        <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
-                        <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
-                        <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
-                        <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
-                        <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
-                      </select>
-                    </div>
-                  </div>
-                  
+                </button>
+              ))}
+            </div>
+            <div className="mt-2 text-sm text-gray-600">
+              Puan: {ratings.overall > 0 ? ratings.overall : 'Seçilmedi'}
+            </div>
+            <div className="mt-2">
+              <select
+                value={ratings.overall || ''}
+                onChange={(e) => handleRating('overall', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Puan seçin</option>
+                <option value="1.0">1.0 ⭐ (Temel)</option>
+                <option value="1.5">1.5 ⭐ (Temel+)</option>
+                <option value="2.0">2.0 ⭐⭐ (Orta)</option>
+                <option value="2.5">2.5 ⭐⭐ (Orta+)</option>
+                <option value="3.0">3.0 ⭐⭐⭐ (İyi)</option>
+                <option value="3.5">3.5 ⭐⭐⭐ (İyi+)</option>
+                <option value="4.0">4.0 ⭐⭐⭐⭐ (Çok İyi)</option>
+                <option value="4.5">4.5 ⭐⭐⭐⭐ (Çok İyi+)</option>
+                <option value="5.0">5.0 ⭐⭐⭐⭐⭐ (Mükemmel)</option>
+              </select>
+            </div>
+          </div>
+
           {/* Yorum */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">{safeGetTranslation('survey.comment', 'Yorum (İsteğe Bağlı)')}</h3>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {safeGetTranslation('survey.comment', 'Eklemek istedikleriniz (İsteğe bağlı)')}
+            </label>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder={safeGetTranslation('survey.comment_placeholder', 'Deneyiminizi bizimle paylaşın...')}
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder={safeGetTranslation('survey.comment_placeholder', 'Görüşlerinizi buraya yazabilirsiniz...')}
             />
-            </div>
-            
-          {/* Değerlendirme Seçenekleri */}
-          <div className="space-y-3">
-            {/* İşletmeye Gönderin */}
-            <button
-              onClick={handleSubmit}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-{safeGetTranslation('survey.submit', 'İşletmeye Gönderin')}
-            </button>
-            
-            {/* Google'da Değerlendirin */}
-            <button
-              onClick={() => window.open(getLink('googleMaps'), '_blank')}
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-            >
-              <FaGoogle className="text-lg" />
-{safeGetTranslation('survey.google_review', 'Google\'da Değerlendirin')}
-            </button>
-            
-            {/* Sosyal Medyadan Takip Edin */}
-            <button
-              onClick={() => window.open(getLink('instagram'), '_blank')}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-            >
-              <FaInstagram className="text-lg" />
-{safeGetTranslation('room.follow_us', 'Bizi Takip Edin')}
-            </button>
           </div>
+
+          <button
+            onClick={handleSubmit}
+            disabled={!ratings.overall}
+            className={`w-full py-3 rounded-xl font-semibold text-white transition-all ${ratings.overall ? 'hover:shadow-lg hover:scale-[1.02]' : 'opacity-50 cursor-not-allowed'
+              }`}
+            style={{ background: theme.primaryColor }}
+          >
+            {safeGetTranslation('survey.submit', 'Değerlendirmeyi Gönder')}
+          </button>
+
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <p className="text-center text-sm text-gray-600 mb-4">
+              {safeGetTranslation('survey.social_media', 'Bizi sosyal medyada takip edin')}
+            </p>
+            <div className="flex justify-center space-x-4">
+              {getLink('instagram') && (
+                <a
+                  href={getLink('instagram')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition-colors"
+                >
+                  <FaInstagram className="text-xl" />
+                </a>
+              )}
+              {getLink('google') && (
+                <a
+                  href={getLink('google')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
+                >
+                  <FaGoogle className="text-xl" />
+                </a>
+              )}
+              {getLink('facebook') && (
+                <a
+                  href={getLink('facebook')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
+                >
+                  <FaFacebook className="text-xl" />
+                </a>
+              )}
             </div>
           </div>
+        </div>
+      </div>
     </div>
   );
-} 
+}

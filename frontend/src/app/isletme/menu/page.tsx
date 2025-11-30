@@ -1080,8 +1080,8 @@ export default function MenuManagement() {
           <button
             onClick={() => setActiveTab('menu')}
             className={`py-4 px-6 border-b-2 font-semibold text-base transition-colors ${activeTab === 'menu'
-                ? 'border-hotel-gold text-hotel-gold bg-hotel-cream'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+              ? 'border-hotel-gold text-hotel-gold bg-hotel-cream'
+              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
               }`}
           >
             <div className="flex items-center space-x-2">
@@ -1092,8 +1092,8 @@ export default function MenuManagement() {
           <button
             onClick={() => setActiveTab('categories')}
             className={`py-4 px-6 border-b-2 font-semibold text-base transition-colors ${activeTab === 'categories'
-                ? 'border-hotel-gold text-hotel-gold bg-hotel-cream'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+              ? 'border-hotel-gold text-hotel-gold bg-hotel-cream'
+              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
               }`}
           >
             <div className="flex items-center space-x-2">
@@ -1169,15 +1169,19 @@ export default function MenuManagement() {
                   )}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
-                      <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {item.translations?.[currentLanguage]?.name || item.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm mt-1">
+                        {item.translations?.[currentLanguage]?.description || item.description}
+                      </p>
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => toggleAvailability(item.id)}
                         className={`p-1 rounded ${item.isAvailable
-                            ? 'text-green-600 hover:bg-green-50'
-                            : 'text-red-600 hover:bg-red-50'
+                          ? 'text-green-600 hover:bg-green-50'
+                          : 'text-red-600 hover:bg-red-50'
                           }`}
                       >
                         {item.isAvailable ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
@@ -1215,8 +1219,8 @@ export default function MenuManagement() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">Durum:</span>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isAvailable
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
                         }`}>
                         {item.isAvailable ? 'Mevcut' : 'Mevcut Değil'}
                       </span>
@@ -2024,8 +2028,8 @@ export default function MenuManagement() {
       {toast.show && (
         <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50">
           <div className={`px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-lg flex items-center space-x-2 sm:space-x-3 transform transition-all duration-300 ${toast.type === 'success'
-              ? 'bg-green-500 text-white'
-              : 'bg-red-500 text-white'
+            ? 'bg-green-500 text-white'
+            : 'bg-red-500 text-white'
             }`}>
             <div className="flex-shrink-0">
               {toast.type === 'success' ? (
