@@ -51,6 +51,12 @@ interface Category {
   id: string;
   name: string;
   description?: string;
+  translations?: {
+    [lang: string]: {
+      name: string;
+      description?: string;
+    };
+  };
 }
 
 export default function MenuManagement() {
@@ -1142,7 +1148,9 @@ export default function MenuManagement() {
                   <option value="all">Tüm Kategoriler</option>
                   {categories.map(category => (
                     <option key={category.id} value={category.name}>
-                      {category.name}
+                      {mounted && category.translations?.[currentLanguage]?.name
+                        ? category.translations[currentLanguage].name
+                        : category.name}
                     </option>
                   ))}
                 </select>
@@ -1305,7 +1313,11 @@ export default function MenuManagement() {
               <div key={category.id} className="hotel-card p-6 dark:bg-gray-800 dark:border-gray-700">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{category.name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                      {mounted && category.translations?.[currentLanguage]?.name
+                        ? category.translations[currentLanguage].name
+                        : category.name}
+                    </h3>
                     {Object.keys(translations).length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
                         {Object.entries(translations).map(([lang, translation]) => (
@@ -1447,7 +1459,9 @@ export default function MenuManagement() {
                       <option value="">Kategori seçin</option>
                       {categories.map(category => (
                         <option key={category.id} value={category.name}>
-                          {category.name}
+                          {mounted && category.translations?.[currentLanguage]?.name
+                            ? category.translations[currentLanguage].name
+                            : category.name}
                         </option>
                       ))}
                       <option value="" disabled className="text-gray-400">──────────</option>
