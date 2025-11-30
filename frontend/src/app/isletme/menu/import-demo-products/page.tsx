@@ -261,6 +261,12 @@ export default function ImportDemoProductsPage() {
         'Authorization': `Bearer ${token}`
       };
 
+      // Önce mevcut ürünleri sil
+      await fetch('/api/menu/delete-all', {
+        method: 'DELETE',
+        headers
+      });
+
       // Ürünleri backend'e gönder
       const response = await fetch('/api/menu/save', {
         method: 'POST',
