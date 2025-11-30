@@ -224,6 +224,14 @@ export const translations: Record<string, Translations> = {
     'page.menu.no_categories': 'Henüz kategori yok',
     'page.menu.no_categories_desc': 'İlk kategorinizi eklemek için yukarıdaki "Kategori Ekle" butonuna tıklayın.',
     'page.menu.items_count': 'ürün',
+    'page.menu.category_label': 'Kategori:',
+    'page.menu.price_label': 'Fiyat:',
+    'page.menu.calories_label': 'Kalori:',
+    'page.menu.status_label': 'Durum:',
+    'page.menu.allergens_label': 'Alerjenler:',
+    'page.menu.status_available': 'Mevcut',
+    'page.menu.status_unavailable': 'Mevcut Değil',
+    'page.menu.kcal': 'kcal',
 
     // QR Kod Page
     'qr.select_room': 'Oda Seçimi',
@@ -549,6 +557,14 @@ export const translations: Record<string, Translations> = {
     'page.menu.no_categories': 'No categories yet',
     'page.menu.no_categories_desc': 'Click the "Add Category" button above to add your first category.',
     'page.menu.items_count': 'items',
+    'page.menu.category_label': 'Category:',
+    'page.menu.price_label': 'Price:',
+    'page.menu.calories_label': 'Calories:',
+    'page.menu.status_label': 'Status:',
+    'page.menu.allergens_label': 'Allergens:',
+    'page.menu.status_available': 'Available',
+    'page.menu.status_unavailable': 'Unavailable',
+    'page.menu.kcal': 'kcal',
 
     // QR Kod Page
     'qr.select_room': 'Select Room',
@@ -898,6 +914,14 @@ export const translations: Record<string, Translations> = {
     'page.menu.no_categories': 'Noch keine Kategorien',
     'page.menu.no_categories_desc': 'Klicken Sie oben auf "Kategorie hinzufügen", um Ihre erste Kategorie hinzuzufügen.',
     'page.menu.items_count': 'Artikel',
+    'page.menu.category_label': 'Kategorie:',
+    'page.menu.price_label': 'Preis:',
+    'page.menu.calories_label': 'Kalorien:',
+    'page.menu.status_label': 'Status:',
+    'page.menu.allergens_label': 'Allergene:',
+    'page.menu.status_available': 'Verfügbar',
+    'page.menu.status_unavailable': 'Nicht verfügbar',
+    'page.menu.kcal': 'kcal',
 
     // QR Kod Page
     'qr.select_room': 'Zimmer auswählen',
