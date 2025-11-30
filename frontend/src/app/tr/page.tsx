@@ -50,9 +50,9 @@ export default function HomePage() {
     {
       id: '6aylik',
       name: '6 Aylık Paket',
-      price: 430,
-      originalPrice: 470,
-      period: 'oda/ay',
+      price: 'Fiyat Sorunuz',
+      originalPrice: 0,
+      period: '',
       description: 'En popüler seçenek! Orta vadeli taahhüt ile ideal fiyat/performans.',
       features: [
         { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
@@ -69,14 +69,14 @@ export default function HomePage() {
       tag: 'En Popüler',
       color: 'border-amber-300 bg-amber-50',
       popular: false,
-      savings: '8% İndirim'
+      savings: ''
     },
     {
       id: 'yillik',
       name: '1 Yıllık Paket',
-      price: 390,
-      originalPrice: 470,
-      period: 'oda/ay',
+      price: 'Fiyat Sorunuz',
+      originalPrice: 0,
+      period: '',
       description: 'Uzun vadeli taahhüt ile maksimum tasarruf! En avantajlı seçenek.',
       features: [
         { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
@@ -93,14 +93,14 @@ export default function HomePage() {
       tag: 'En Avantajlı',
       color: 'border-blue-300 bg-blue-50',
       popular: true,
-      savings: '17% İndirim'
+      savings: ''
     },
     {
       id: 'sube',
       name: 'Çoklu Şube Paketi',
-      price: 350,
-      originalPrice: 470,
-      period: 'oda/ay',
+      price: 'Fiyat Sorunuz',
+      originalPrice: 0,
+      period: '',
       description: 'Otel zincirleri için özel! Merkezi yönetim ve kurumsal entegrasyon.',
       features: [
         { name: 'Merkezi Şube Yönetimi', desc: 'Tüm şubelerinizi tek panelden yönetin ve kontrol edin.' },
@@ -117,7 +117,7 @@ export default function HomePage() {
       tag: 'Kurumsal',
       color: 'border-purple-300 bg-purple-50',
       popular: false,
-      savings: '25% İndirim'
+      savings: ''
     }
   ];
 
@@ -521,21 +521,8 @@ export default function HomePage() {
                   <div className="absolute -inset-2 md:-inset-4 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-500/5 to-transparent blur-lg"></div>
                   <div className="relative bg-gradient-to-r from-slate-800/80 to-slate-900/80 p-4 md:p-6 rounded-xl border border-white/10">
                     <div className="flex items-center justify-center space-x-2 md:space-x-3 mb-2">
-                      <span className="text-4xl md:text-6xl font-black bg-gradient-to-br from-white via-amber-100 to-amber-300 bg-clip-text text-transparent">{pkg.price}</span>
-                      <div className="text-left">
-                        <div className="text-amber-300 font-medium">TL</div>
-                        <div className="text-slate-400 text-sm">/{pkg.period}</div>
-                      </div>
+                      <span className="text-2xl md:text-4xl font-black bg-gradient-to-br from-white via-amber-100 to-amber-300 bg-clip-text text-transparent">{pkg.price}</span>
                     </div>
-
-                    {pkg.price !== pkg.originalPrice && (
-                      <div className="flex flex-col items-center">
-                        <div className="text-lg text-slate-500 line-through mb-2">{pkg.originalPrice} TL</div>
-                        <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/30 to-emerald-500/10 text-emerald-300 text-sm font-bold">
-                          {pkg.savings}
-                        </div>
-                      </div>
-                    )}
 
                     <div className="mt-3 text-center text-xs text-slate-400">
                       {pkg.id === 'yillik' ? '1 yıllık peşin ödeme' : pkg.id === '6aylik' ? '6 aylık peşin ödeme' : 'Çoklu şube özel fiyat'}
@@ -604,8 +591,8 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold text-white">Kurulum Ücreti</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-black text-blue-300 mb-2">15.000 TL</div>
-                  <p className="text-slate-300 text-sm">Tek seferlik ödeme</p>
+                  <div className="text-2xl font-black text-blue-300 mb-2">Tek Seferlik Ödeme</div>
+                  <p className="text-slate-300 text-sm">Fiyat için iletişime geçiniz</p>
                   <p className="text-slate-400 text-xs mt-2">Sistem kurulumu, QR kodların hazırlanması dahil</p>
                 </div>
               </div>
@@ -618,8 +605,8 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold text-white">Eğitim Ücreti</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-black text-green-300 mb-2">7.500 TL</div>
-                  <p className="text-slate-300 text-sm">Tek seferlik ödeme</p>
+                  <div className="text-2xl font-black text-green-300 mb-2">Tek Seferlik Ödeme</div>
+                  <p className="text-slate-300 text-sm">Fiyat için iletişime geçiniz</p>
                   <p className="text-slate-400 text-xs mt-2">Tüm personel için kapsamlı eğitim</p>
                 </div>
               </div>
@@ -632,7 +619,7 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold text-white">Minimum Ücret</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-black text-purple-300 mb-2">15.000 TL</div>
+                  <div className="text-2xl font-black text-purple-300 mb-2">İletişime Geçiniz</div>
                   <p className="text-slate-300 text-sm">Aylık minimum ödeme</p>
                 </div>
               </div>

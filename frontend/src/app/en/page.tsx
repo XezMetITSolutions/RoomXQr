@@ -51,9 +51,9 @@ export default function HomePage() {
     {
       id: '6aylik',
       name: '6 Month Package',
-      price: 430,
-      originalPrice: 470,
-      period: 'room/month',
+      price: 'Contact for Price',
+      originalPrice: 0,
+      period: '',
       description: 'Most popular option! Ideal price/performance with medium-term commitment.',
       features: [
         { name: 'Unlimited QR Code Generation', desc: 'Special QR menu system for each room. Create unlimited codes.' },
@@ -70,14 +70,14 @@ export default function HomePage() {
       tag: t.packages.popular,
       color: 'border-amber-300 bg-amber-50',
       popular: false,
-      savings: '8% Discount'
+      savings: ''
     },
     {
       id: 'yillik',
       name: '1 Year Package',
-      price: 390,
-      originalPrice: 470,
-      period: 'room/month',
+      price: 'Contact for Price',
+      originalPrice: 0,
+      period: '',
       description: 'Maximum savings with long-term commitment! The most advantageous option.',
       features: [
         { name: 'Unlimited QR Code Generation', desc: 'Special QR menu system for each room. Create unlimited codes.' },
@@ -94,14 +94,14 @@ export default function HomePage() {
       tag: t.packages.advantageous,
       color: 'border-blue-300 bg-blue-50',
       popular: true,
-      savings: '17% Discount'
+      savings: ''
     },
     {
       id: 'sube',
       name: 'Multi-Branch Package',
-      price: 350,
-      originalPrice: 470,
-      period: 'room/month',
+      price: 'Contact for Price',
+      originalPrice: 0,
+      period: '',
       description: 'Special for hotel chains! Central management and corporate integration.',
       features: [
         { name: 'Central Branch Management', desc: 'Manage and control all your branches from a single panel.' },
@@ -118,7 +118,7 @@ export default function HomePage() {
       tag: t.packages.corporate,
       color: 'border-purple-300 bg-purple-50',
       popular: false,
-      savings: '25% Discount'
+      savings: ''
     }
   ];
 
@@ -514,21 +514,8 @@ export default function HomePage() {
                   <div className="absolute -inset-2 md:-inset-4 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-500/5 to-transparent blur-lg"></div>
                   <div className="relative bg-gradient-to-r from-slate-800/80 to-slate-900/80 p-4 md:p-6 rounded-xl border border-white/10">
                     <div className="flex items-center justify-center space-x-2 md:space-x-3 mb-2">
-                      <span className="text-4xl md:text-6xl font-black bg-gradient-to-br from-white via-amber-100 to-amber-300 bg-clip-text text-transparent">{pkg.price}</span>
-                      <div className="text-left">
-                        <div className="text-amber-300 font-medium">TL</div>
-                        <div className="text-slate-400 text-sm">/{pkg.period}</div>
-                      </div>
+                      <span className="text-2xl md:text-4xl font-black bg-gradient-to-br from-white via-amber-100 to-amber-300 bg-clip-text text-transparent">{pkg.price}</span>
                     </div>
-
-                    {pkg.price !== pkg.originalPrice && (
-                      <div className="flex flex-col items-center">
-                        <div className="text-lg text-slate-500 line-through mb-2">{pkg.originalPrice} TL</div>
-                        <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/30 to-emerald-500/10 text-emerald-300 text-sm font-bold">
-                          {pkg.savings}
-                        </div>
-                      </div>
-                    )}
 
                     <div className="mt-3 text-center text-xs text-slate-400">
                       {pkg.id === 'yillik' ? '1 year upfront payment' : pkg.id === '6aylik' ? '6 months upfront payment' : 'Special price for multiple branches'}
@@ -597,8 +584,8 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold text-white">{t.payment.setup}</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-black text-blue-300 mb-2">15.000 TL</div>
-                  <p className="text-slate-300 text-sm">{t.payment.oneTime}</p>
+                  <div className="text-2xl font-black text-blue-300 mb-2">One-time Payment</div>
+                  <p className="text-slate-300 text-sm">Contact for Price</p>
                   <p className="text-slate-400 text-xs mt-2">{t.payment.setupDesc}</p>
                 </div>
               </div>
@@ -611,8 +598,8 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold text-white">{t.payment.training}</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-black text-green-300 mb-2">7.500 TL</div>
-                  <p className="text-slate-300 text-sm">{t.payment.oneTime}</p>
+                  <div className="text-2xl font-black text-green-300 mb-2">One-time Payment</div>
+                  <p className="text-slate-300 text-sm">Contact for Price</p>
                   <p className="text-slate-400 text-xs mt-2">{t.payment.trainingDesc}</p>
                 </div>
               </div>
@@ -625,7 +612,7 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold text-white">{t.payment.minimum}</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-black text-purple-300 mb-2">15.000 TL</div>
+                  <div className="text-2xl font-black text-purple-300 mb-2">Contact Us</div>
                   <p className="text-slate-300 text-sm">{t.payment.monthly}</p>
                 </div>
               </div>
