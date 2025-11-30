@@ -1098,6 +1098,25 @@ export const translations: Record<string, Translations> = {
     'notifications.general_request_title': 'Allgemeine Anfrage',
   },
 
+  fr: {
+    // Menu management labels
+    'page.menu.category_label': 'Catégorie:',
+    'page.menu.price_label': 'Prix:',
+    'page.menu.calories_label': 'Calories:',
+    'page.menu.status_label': 'Statut:',
+    'page.menu.allergens_label': 'Allergènes:',
+    'page.menu.status_available': 'Disponible',
+    'page.menu.status_unavailable': 'Indisponible',
+    'page.menu.kcal': 'kcal',
+
+    // Product info
+    'product.minutes': 'min',
+    'product.rating': 'Note',
+
+    // Room
+    'room.number': 'Chambre',
+  },
+
   ru: {
     // Заголовки меню
     'menu.title': 'Меню Обслуживания',
