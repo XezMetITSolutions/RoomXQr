@@ -1222,33 +1222,33 @@ export default function MenuManagement() {
 
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">{getTranslation('page.menu.category_label')}</span>
+                      <span className="text-sm text-gray-500">{mounted ? getTranslation('page.menu.category_label') : 'Kategori:'}</span>
                       <span className="text-sm font-medium text-gray-900">{item.category}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">{getTranslation('page.menu.price_label')}</span>
+                      <span className="text-sm text-gray-500">{mounted ? getTranslation('page.menu.price_label') : 'Fiyat:'}</span>
                       <span className="text-lg font-bold text-hotel-gold">₺{item.price}</span>
                     </div>
                     {item.calories && (
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">{getTranslation('page.menu.calories_label')}</span>
-                        <span className="text-sm text-gray-900">{item.calories} {getTranslation('page.menu.kcal')}</span>
+                        <span className="text-sm text-gray-500">{mounted ? getTranslation('page.menu.calories_label') : 'Kalori:'}</span>
+                        <span className="text-sm text-gray-900">{item.calories} {mounted ? getTranslation('page.menu.kcal') : 'kcal'}</span>
                       </div>
                     )}
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">{getTranslation('page.menu.status_label')}</span>
+                      <span className="text-sm text-gray-500">{mounted ? getTranslation('page.menu.status_label') : 'Durum:'}</span>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isAvailable
                         ? 'bg-green-100 text-green-800'
                         : 'bg-red-100 text-red-800'
                         }`}>
-                        {item.isAvailable ? getTranslation('page.menu.status_available') : getTranslation('page.menu.status_unavailable')}
+                        {mounted ? (item.isAvailable ? getTranslation('page.menu.status_available') : getTranslation('page.menu.status_unavailable')) : (item.isAvailable ? 'Mevcut' : 'Mevcut Değil')}
                       </span>
                     </div>
                   </div>
 
                   {item.allergens.length > 0 && (
                     <div className="mt-4 pt-4 border-t border-gray-200">
-                      <span className="text-sm text-gray-500">{getTranslation('page.menu.allergens_label')}</span>
+                      <span className="text-sm text-gray-500">{mounted ? getTranslation('page.menu.allergens_label') : 'Alerjenler:'}</span>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {item.allergens.map((allergen, index) => (
                           <span
