@@ -1003,10 +1003,10 @@ export default function MenuPage() {
       setShowBulkUploadModal(false);
       setBulkUploadData({ file: null, parsedData: [], errors: [], isValid: false });
 
-      showSuccessToast(`${bulkUploadData.parsedData.length} ürün başarıyla yüklendi!`);
+      showSuccessToast(`${bulkUploadData.parsedData.length} ${mounted ? getTranslation('page.menu.success_upload') : 'ürün başarıyla yüklendi!'}`);
     } catch (error) {
       console.error('Toplu yükleme hatası:', error);
-      showErrorToast('Ürünler yüklenirken hata oluştu. Lütfen tekrar deneyin.');
+      showErrorToast(mounted ? getTranslation('page.menu.error_upload') : 'Ürünler yüklenirken hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }
@@ -1037,8 +1037,8 @@ export default function MenuPage() {
       <div className="border-b border-gray-200 pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Menü Yönetimi</h1>
-            <p className="text-gray-600">Menü ürünlerini ve kategorileri düzenleyin</p>
+            <h1 className="text-2xl font-bold text-gray-900">{mounted ? getTranslation('page.menu.title') : 'Menü Yönetimi'}</h1>
+            <p className="text-gray-600">{mounted ? getTranslation('page.menu.subtitle') : 'Menü ürünlerini ve kategorileri düzenleyin'}</p>
           </div>
           {activeTab === 'menu' && (
             <div className="flex space-x-3">
@@ -1047,28 +1047,28 @@ export default function MenuPage() {
                 className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2"
               >
                 <Plus className="w-5 h-5" />
-                <span>Ürün Ekle</span>
+                <span>{mounted ? getTranslation('page.menu.add_item') : 'Ürün Ekle'}</span>
               </button>
               <Link
                 href="/isletme/menu/import-demo-products"
                 className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors flex items-center space-x-2"
               >
                 <Upload className="w-5 h-5" />
-                <span>Demo Ürünleri Import Et</span>
+                <span>{mounted ? getTranslation('page.menu.import_demo') : 'Demo Ürünleri Import Et'}</span>
               </Link>
               <button
                 onClick={() => setShowBulkUploadModal(true)}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
               >
                 <FileSpreadsheet className="w-5 h-5" />
-                <span>Toplu Yükle</span>
+                <span>{mounted ? getTranslation('page.menu.bulk_upload') : 'Toplu Yükle'}</span>
               </button>
               <button
                 onClick={() => setShowTranslationModal(true)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
               >
                 <Languages className="w-5 h-5" />
-                <span>Çeviri</span>
+                <span>{mounted ? getTranslation('page.menu.translation') : 'Çeviri'}</span>
               </button>
               <Link
                 href="/isletme/menu/debug-add"
@@ -1085,7 +1085,7 @@ export default function MenuPage() {
               className="bg-hotel-gold text-white px-4 py-2 rounded-lg hover:bg-hotel-navy transition-colors flex items-center space-x-2"
             >
               <Plus className="w-5 h-5" />
-              <span>Kategori Ekle</span>
+              <span>{mounted ? getTranslation('page.menu.add_category') : 'Kategori Ekle'}</span>
             </button>
           )}
         </div>
@@ -1103,7 +1103,7 @@ export default function MenuPage() {
           >
             <div className="flex items-center space-x-2">
               <MenuIcon className="w-5 h-5" />
-              <span>Menü</span>
+              <span>{mounted ? getTranslation('page.menu.tab_menu') : 'Menü'}</span>
             </div>
           </button>
           <button
@@ -1115,7 +1115,7 @@ export default function MenuPage() {
           >
             <div className="flex items-center space-x-2">
               <Tag className="w-5 h-5" />
-              <span>Kategoriler</span>
+              <span>{mounted ? getTranslation('page.menu.tab_categories') : 'Kategoriler'}</span>
             </div>
           </button>
         </nav>
@@ -1132,7 +1132,7 @@ export default function MenuPage() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="text"
-                    placeholder="Ürün ara..."
+                    placeholder={mounted ? getTranslation('page.menu.search_placeholder') : "Ürün ara..."}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
@@ -1145,7 +1145,7 @@ export default function MenuPage() {
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
                 >
-                  <option value="all">Tüm Kategoriler</option>
+                  <option value="all">{mounted ? getTranslation('page.menu.all_categories') : 'Tüm Kategoriler'}</option>
                   {categories.map(category => (
                     <option key={category.id} value={category.name}>
                       {mounted && category.translations?.[currentLanguage]?.name
@@ -1269,9 +1269,9 @@ export default function MenuPage() {
           {filteredItems.length === 0 && !loading && (
             <div className="text-center py-12">
               <MenuIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">Ürün bulunamadı</h3>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">{mounted ? getTranslation('page.menu.no_items') : 'Ürün bulunamadı'}</h3>
               <p className="mt-1 text-sm text-gray-500">
-                Arama kriterlerinizi değiştirerek tekrar deneyin.
+                {mounted ? getTranslation('page.menu.no_items_desc') : 'Arama kriterlerinizi değiştirerek tekrar deneyin.'}
               </p>
             </div>
           )}
@@ -1357,9 +1357,9 @@ export default function MenuPage() {
           {categories.length === 0 && (
             <div className="col-span-full text-center py-12">
               <FolderOpen className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">Henüz kategori yok</h3>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">{mounted ? getTranslation('page.menu.no_categories') : 'Henüz kategori yok'}</h3>
               <p className="mt-1 text-sm text-gray-500">
-                İlk kategorinizi eklemek için yukarıdaki "Kategori Ekle" butonuna tıklayın.
+                {mounted ? getTranslation('page.menu.no_categories_desc') : 'İlk kategorinizi eklemek için yukarıdaki "Kategori Ekle" butonuna tıklayın.'}
               </p>
             </div>
           )}
@@ -1371,14 +1371,14 @@ export default function MenuPage() {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              {showAddModal ? 'Yeni Ürün Ekle' : 'Ürün Düzenle'}
+              {showAddModal ? (mounted ? getTranslation('page.menu.new_item') : 'Yeni Ürün Ekle') : (mounted ? getTranslation('page.menu.edit_item') : 'Ürün Düzenle')}
             </h3>
 
             <form onSubmit={handleFormSubmit} className="space-y-4">
               {/* Image Upload */}
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Ürün Resmi *
+                  {mounted ? getTranslation('page.menu.image_label') : 'Ürün Resmi *'}
                 </label>
                 <div className="mt-1 flex items-center space-x-4">
                   {imagePreview && (
@@ -1413,11 +1413,11 @@ export default function MenuPage() {
                       className="inline-flex items-center px-6 py-3 border-2 border-hotel-gold rounded-lg hover:bg-hotel-gold hover:text-white transition-colors cursor-pointer font-medium"
                     >
                       <ImageIcon className="w-5 h-5 mr-2" />
-                      {imagePreview ? 'Resmi Değiştir' : 'Resim Yükle (JPG, PNG, max 5MB)'}
+                      {imagePreview ? (mounted ? getTranslation('page.menu.change_image') : 'Resmi Değiştir') : (mounted ? getTranslation('page.menu.upload_image') : 'Resim Yükle (JPG, PNG, max 5MB)')}
                     </label>
                     {!imagePreview && (
                       <p className="text-xs text-gray-500 mt-2">
-                        Ürün için bir resim yükleyin. Bu resim menüde görüntülenecektir.
+                        {mounted ? getTranslation('page.menu.image_help') : 'Ürün için bir resim yükleyin. Bu resim menüde görüntülenecektir.'}
                       </p>
                     )}
                   </div>
@@ -1427,7 +1427,7 @@ export default function MenuPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Ürün Adı *
+                    {mounted ? getTranslation('page.menu.name_label') : 'Ürün Adı *'}
                   </label>
                   <input
                     type="text"
@@ -1435,13 +1435,13 @@ export default function MenuPage() {
                     defaultValue={selectedItem?.name || ''}
                     required
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
-                    placeholder="Ürün adı"
+                    placeholder={mounted ? getTranslation('page.menu.name_placeholder') : "Ürün adı"}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Kategori *
+                    {mounted ? getTranslation('page.menu.category_select_label') : 'Kategori *'}
                   </label>
                   <div className="relative">
                     <select
@@ -1456,7 +1456,7 @@ export default function MenuPage() {
                       }}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
                     >
-                      <option value="">Kategori seçin</option>
+                      <option value="">{mounted ? getTranslation('page.menu.select_category') : 'Kategori seçin'}</option>
                       {categories.map(category => (
                         <option key={category.id} value={category.name}>
                           {mounted && category.translations?.[currentLanguage]?.name
@@ -1466,12 +1466,12 @@ export default function MenuPage() {
                       ))}
                       <option value="" disabled className="text-gray-400">──────────</option>
                       <option value="__add_new__" className="text-hotel-gold font-bold bg-hotel-cream">
-                        ➕ Yeni Kategori Ekle
+                        {mounted ? getTranslation('page.menu.add_new_category_option') : '➕ Yeni Kategori Ekle'}
                       </option>
                     </select>
                     {categories.length === 0 && (
                       <p className="text-xs text-gray-500 mt-1">
-                        Henüz kategori yok. Lütfen önce bir kategori ekleyin.
+                        {mounted ? getTranslation('page.menu.no_category_error') : 'Henüz kategori yok. Lütfen önce bir kategori ekleyin.'}
                       </p>
                     )}
                   </div>
@@ -1480,21 +1480,21 @@ export default function MenuPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Açıklama
+                  {mounted ? getTranslation('page.menu.description_label') : 'Açıklama'}
                 </label>
                 <textarea
                   name="description"
                   defaultValue={selectedItem?.description || ''}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
-                  placeholder="Ürün açıklaması"
+                  placeholder={mounted ? getTranslation('page.menu.description_placeholder') : "Ürün açıklaması"}
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Fiyat (₺) *
+                    {mounted ? getTranslation('page.menu.price_input_label') : 'Fiyat (₺) *'}
                   </label>
                   <input
                     type="number"
@@ -1510,7 +1510,7 @@ export default function MenuPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Hazırlık Süresi (dk)
+                    {mounted ? getTranslation('page.menu.prep_time_label') : 'Hazırlık Süresi (dk)'}
                   </label>
                   <input
                     type="number"
@@ -1525,7 +1525,7 @@ export default function MenuPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Kalori
+                    {mounted ? getTranslation('page.menu.calories_input_label') : 'Kalori'}
                   </label>
                   <input
                     type="number"
@@ -1533,13 +1533,13 @@ export default function MenuPage() {
                     defaultValue={selectedItem?.calories || ''}
                     min="0"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
-                    placeholder="Kalori"
+                    placeholder={mounted ? getTranslation('page.menu.calories_input_label') : "Kalori"}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Kalite Puanı (1-5) *
+                    {mounted ? getTranslation('page.menu.rating_label') : 'Kalite Puanı (1-5) *'}
                   </label>
                   <select
                     name="rating"
@@ -1561,14 +1561,14 @@ export default function MenuPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Alerjenler
+                    {mounted ? getTranslation('page.menu.allergens_input_label') : 'Alerjenler'}
                   </label>
                   <input
                     type="text"
                     name="allergens"
                     defaultValue={selectedItem?.allergens?.join(', ') || ''}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
-                    placeholder="Gluten, Süt, Yumurta"
+                    placeholder={mounted ? getTranslation('page.menu.allergens_placeholder') : "Gluten, Süt, Yumurta"}
                   />
                 </div>
               </div>
@@ -1581,7 +1581,7 @@ export default function MenuPage() {
                   className="rounded border-gray-300 text-hotel-gold focus:ring-hotel-gold"
                 />
                 <label className="ml-2 text-sm text-gray-700">
-                  Ürün mevcut
+                  {mounted ? getTranslation('page.menu.is_available_label') : 'Ürün mevcut'}
                 </label>
               </div>
 
@@ -1597,13 +1597,13 @@ export default function MenuPage() {
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
-                  İptal
+                  {mounted ? getTranslation('page.menu.cancel') : 'İptal'}
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-hotel-gold text-white rounded-lg hover:bg-hotel-navy"
                 >
-                  {showAddModal ? 'Ürün Ekle' : 'Güncelle'}
+                  {showAddModal ? (mounted ? getTranslation('page.menu.add_btn') : 'Ürün Ekle') : (mounted ? getTranslation('page.menu.update_btn') : 'Güncelle')}
                 </button>
               </div>
             </form>
@@ -1616,27 +1616,27 @@ export default function MenuPage() {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-75 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-              {selectedCategoryForEdit ? 'Kategori Düzenle' : 'Yeni Kategori Ekle'}
+              {selectedCategoryForEdit ? (mounted ? getTranslation('page.menu.edit_category') : 'Kategori Düzenle') : (mounted ? getTranslation('page.menu.new_category') : 'Yeni Kategori Ekle')}
             </h3>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Kategori Adı (Türkçe) *
+                  {mounted ? getTranslation('page.menu.category_name_label') : 'Kategori Adı (Türkçe) *'}
                 </label>
                 <input
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600"
-                  placeholder="Kategori adı"
+                  placeholder={mounted ? getTranslation('page.menu.category_name_placeholder') : "Kategori adı"}
                 />
               </div>
 
               {/* Çeviriler */}
               {selectedCategoryForEdit && Object.keys(categoryTranslations).length > 0 && (
                 <div className="border-t dark:border-gray-700 pt-4">
-                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Çeviriler</h4>
+                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{mounted ? getTranslation('page.menu.translations_title') : 'Çeviriler'}</h4>
                   <div className="space-y-2">
                     {Object.entries(categoryTranslations).map(([lang, translation]) => {
                       const langNames: { [key: string]: string } = {
@@ -1683,13 +1683,13 @@ export default function MenuPage() {
                   }}
                   className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800"
                 >
-                  İptal
+                  {mounted ? getTranslation('page.menu.cancel') : 'İptal'}
                 </button>
                 <button
                   onClick={saveCategory}
                   className="px-4 py-2 bg-hotel-gold text-white rounded-lg hover:bg-hotel-navy"
                 >
-                  {selectedCategoryForEdit ? 'Güncelle' : 'Ekle'}
+                  {selectedCategoryForEdit ? (mounted ? getTranslation('page.menu.update_btn') : 'Güncelle') : (mounted ? getTranslation('common.add') : 'Ekle')}
                 </button>
               </div>
             </div>
@@ -1702,20 +1702,20 @@ export default function MenuPage() {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Yeni Kategori Ekle
+              {mounted ? getTranslation('page.menu.new_category') : 'Yeni Kategori Ekle'}
             </h3>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Kategori Adı *
+                  {mounted ? getTranslation('page.menu.category_name_label') : 'Kategori Adı *'}
                 </label>
                 <input
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent text-gray-900 bg-white"
-                  placeholder="Kategori adı"
+                  placeholder={mounted ? getTranslation('page.menu.category_name_placeholder') : "Kategori adı"}
                   autoFocus
                 />
               </div>
@@ -1729,7 +1729,7 @@ export default function MenuPage() {
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
-                  İptal
+                  {mounted ? getTranslation('page.menu.cancel') : 'İptal'}
                 </button>
                 <button
                   onClick={() => {
@@ -1751,7 +1751,7 @@ export default function MenuPage() {
                   }}
                   className="px-4 py-2 bg-hotel-gold text-white rounded-lg hover:bg-hotel-navy"
                 >
-                  Ekle ve Seç
+                  {mounted ? getTranslation('page.menu.add_and_select') : 'Ekle ve Seç'}
                 </button>
               </div>
             </div>
@@ -1770,23 +1770,23 @@ export default function MenuPage() {
                 </svg>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 text-center mb-2">
-                {confirmModal.type === 'item' ? 'Ürünü Sil' : 'Kategoriyi Sil'}
+                {confirmModal.type === 'item' ? (mounted ? getTranslation('page.menu.delete_item_title') : 'Ürünü Sil') : (mounted ? getTranslation('page.menu.delete_category_title') : 'Kategoriyi Sil')}
               </h3>
               <p className="text-sm sm:text-base text-gray-600 text-center mb-6">
-                <span className="font-semibold text-gray-900">{confirmModal.itemName}</span> {confirmModal.type === 'item' ? 'ürününü' : 'kategorisini'} silmek istediğinizden emin misiniz?
+                <span className="font-semibold text-gray-900">{confirmModal.itemName}</span> {confirmModal.type === 'item' ? (mounted ? getTranslation('page.menu.delete_confirm_item') : 'ürününü silmek istediğinizden emin misiniz?') : (mounted ? getTranslation('page.menu.delete_confirm_category') : 'kategorisini silmek istediğinizden emin misiniz?')}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={cancelDelete}
                   className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
                 >
-                  İptal
+                  {mounted ? getTranslation('page.menu.cancel') : 'İptal'}
                 </button>
                 <button
                   onClick={confirmDelete}
                   className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-colors"
                 >
-                  Evet, Sil
+                  {mounted ? getTranslation('page.menu.yes_delete') : 'Evet, Sil'}
                 </button>
               </div>
             </div>
@@ -1802,7 +1802,7 @@ export default function MenuPage() {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
                   <Languages className="w-6 h-6 text-blue-600" />
-                  <span>Menü Çevirisi</span>
+                  <span>{mounted ? getTranslation('page.menu.translation_title') : 'Menü Çevirisi'}</span>
                 </h2>
                 <button
                   onClick={() => setShowTranslationModal(false)}
@@ -1886,8 +1886,8 @@ export default function MenuPage() {
                 {menuItems.length === 0 && (
                   <div className="text-center py-12">
                     <Languages className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Henüz menü öğesi yok</h3>
-                    <p className="text-gray-600">Önce menü öğeleri ekleyin, sonra çeviri yapabilirsiniz.</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">{mounted ? getTranslation('page.menu.no_items_translation') : 'Henüz menü öğesi yok'}</h3>
+                    <p className="text-gray-600">{mounted ? getTranslation('page.menu.no_items_translation_desc') : 'Önce menü öğeleri ekleyin, sonra çeviri yapabilirsiniz.'}</p>
                   </div>
                 )}
               </div>
@@ -1904,7 +1904,7 @@ export default function MenuPage() {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
                   <FileSpreadsheet className="w-6 h-6 text-green-600" />
-                  <span>Toplu Ürün Yükleme</span>
+                  <span>{mounted ? getTranslation('page.menu.bulk_upload_title') : 'Toplu Ürün Yükleme'}</span>
                 </h2>
                 <button
                   onClick={() => {
@@ -1921,23 +1921,23 @@ export default function MenuPage() {
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-blue-900">Şablon İndir</h3>
-                      <p className="text-blue-700 text-sm">Önce şablonu indirin ve doldurun, sonra yükleyin.</p>
+                      <h3 className="text-lg font-semibold text-blue-900">{mounted ? getTranslation('page.menu.download_template') : 'Şablon İndir'}</h3>
+                      <p className="text-blue-700 text-sm">{mounted ? getTranslation('page.menu.download_template_desc') : 'Önce şablonu indirin ve doldurun, sonra yükleyin.'}</p>
                     </div>
                     <button
                       onClick={downloadTemplate}
                       className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Şablon İndir
+                      {mounted ? getTranslation('page.menu.download_template') : 'Şablon İndir'}
                     </button>
                   </div>
                 </div>
 
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                   <FileSpreadsheet className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Dosya Seçin</h3>
-                  <p className="text-gray-600 mb-4">CSV veya Excel dosyası yükleyin</p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">{mounted ? getTranslation('page.menu.select_file_title') : 'Dosya Seçin'}</h3>
+                  <p className="text-gray-600 mb-4">{mounted ? getTranslation('page.menu.select_file_desc') : 'CSV veya Excel dosyası yükleyin'}</p>
                   <input
                     type="file"
                     accept=".csv,.xlsx,.xls"
@@ -1950,7 +1950,7 @@ export default function MenuPage() {
                     className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
                   >
                     <Upload className="w-4 h-4 mr-2" />
-                    Dosya Seç
+                    {mounted ? getTranslation('page.menu.select_file_btn') : 'Dosya Seç'}
                   </label>
                 </div>
 
@@ -1972,7 +1972,7 @@ export default function MenuPage() {
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <div className="flex items-center mb-2">
                       <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
-                      <h3 className="text-lg font-semibold text-red-900">Hatalar</h3>
+                      <h3 className="text-lg font-semibold text-red-900">{mounted ? getTranslation('page.menu.errors_title') : 'Hatalar'}</h3>
                     </div>
                     <ul className="space-y-1">
                       {bulkUploadData.errors.map((error, index) => (
@@ -1987,17 +1987,17 @@ export default function MenuPage() {
                     <div className="flex items-center mb-4">
                       <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
                       <h3 className="text-lg font-semibold text-green-900">
-                        Önizleme ({bulkUploadData.parsedData.length} ürün)
+                        {mounted ? getTranslation('page.menu.preview_title') : 'Önizleme'} ({bulkUploadData.parsedData.length} {mounted ? getTranslation('page.menu.items_count') : 'ürün'})
                       </h3>
                     </div>
                     <div className="overflow-x-auto">
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ürün Adı</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fiyat</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Durum</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{mounted ? getTranslation('page.menu.name_label') : 'Ürün Adı'}</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{mounted ? getTranslation('page.menu.category_label') : 'Kategori'}</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{mounted ? getTranslation('page.menu.price_label') : 'Fiyat'}</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{mounted ? getTranslation('page.menu.status_label') : 'Durum'}</th>
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -2009,7 +2009,7 @@ export default function MenuPage() {
                               <td className="px-3 py-2 text-sm text-gray-900">
                                 <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${item.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                   }`}>
-                                  {item.isAvailable ? 'Aktif' : 'Pasif'}
+                                  {item.isAvailable ? (mounted ? getTranslation('page.menu.status_available') : 'Aktif') : (mounted ? getTranslation('page.menu.status_unavailable') : 'Pasif')}
                                 </span>
                               </td>
                             </tr>
@@ -2033,14 +2033,14 @@ export default function MenuPage() {
                     }}
                     className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                   >
-                    İptal
+                    {mounted ? getTranslation('page.menu.cancel') : 'İptal'}
                   </button>
                   <button
                     onClick={handleBulkSave}
                     disabled={!bulkUploadData.isValid || bulkUploadData.parsedData.length === 0}
                     className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {bulkUploadData.parsedData.length} Ürünü Yükle
+                    {bulkUploadData.parsedData.length} {mounted ? getTranslation('page.menu.upload_btn') : 'Ürünü Yükle'}
                   </button>
                 </div>
               </div>
