@@ -45,7 +45,7 @@ export default function QRKodPage() {
     const newRooms = generateRooms(floorCount, roomsPerFloor);
     setGeneratedRooms(newRooms);
     setUseGeneratedRooms(true);
-    
+
     // localStorage'a kaydet
     if (typeof window !== 'undefined') {
       localStorage.setItem('qrKod_generatedRooms', JSON.stringify(newRooms));
@@ -53,7 +53,7 @@ export default function QRKodPage() {
       localStorage.setItem('qrKod_floorCount', floorCount.toString());
       localStorage.setItem('qrKod_roomsPerFloor', roomsPerFloor.toString());
     }
-    
+
     // İlk odayı seç
     if (newRooms.length > 0) {
       setSelectedRoom(newRooms[0].number);
@@ -70,7 +70,7 @@ export default function QRKodPage() {
   useEffect(() => {
     // Client-side'da baseURL'i ayarla
     setBaseURL(window.location.origin);
-    
+
     // localStorage'dan kaydedilmiş odaları yükle
     if (typeof window !== 'undefined') {
       const savedGeneratedRooms = localStorage.getItem('qrKod_generatedRooms');
@@ -78,13 +78,13 @@ export default function QRKodPage() {
       const savedFloorCount = localStorage.getItem('qrKod_floorCount');
       const savedRoomsPerFloor = localStorage.getItem('qrKod_roomsPerFloor');
       const savedCustomRooms = localStorage.getItem('qrKod_customRooms');
-      
+
       if (savedGeneratedRooms && savedUseGeneratedRooms === 'true') {
         try {
           const parsedRooms = JSON.parse(savedGeneratedRooms);
           setGeneratedRooms(parsedRooms);
           setUseGeneratedRooms(true);
-          
+
           // İlk odayı seç
           if (parsedRooms.length > 0) {
             setSelectedRoom(parsedRooms[0].number);
@@ -94,15 +94,15 @@ export default function QRKodPage() {
           console.error('Kaydedilmiş odalar yüklenirken hata:', error);
         }
       }
-      
+
       if (savedFloorCount) {
         setFloorCount(parseInt(savedFloorCount) || 4);
       }
-      
+
       if (savedRoomsPerFloor) {
         setRoomsPerFloor(parseInt(savedRoomsPerFloor) || 5);
       }
-      
+
       if (savedCustomRooms) {
         try {
           const parsedCustomRooms = JSON.parse(savedCustomRooms);
@@ -118,11 +118,11 @@ export default function QRKodPage() {
   useEffect(() => {
     const loadRooms = async () => {
       if (!token || !user) return;
-      
+
       try {
         setIsLoading(true);
         const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://roomxqr-backend.onrender.com';
-        
+
         // URL'den tenant slug'ını al
         let tenantSlug = 'demo';
         if (typeof window !== 'undefined') {
@@ -143,7 +143,7 @@ export default function QRKodPage() {
         if (response.ok) {
           const data = await response.json();
           const roomsData = data.rooms || [];
-          
+
           // Oda numaralarına göre sırala ve formatla
           const formattedRooms = roomsData.map((room: any) => ({
             number: room.number || room.id,
@@ -154,9 +154,9 @@ export default function QRKodPage() {
             const numB = parseInt(b.number) || 0;
             return numA - numB;
           });
-          
+
           setRooms(formattedRooms);
-          
+
           // İlk odayı seç
           if (formattedRooms.length > 0) {
             setSelectedRoom(formattedRooms[0].number);
@@ -193,7 +193,7 @@ export default function QRKodPage() {
       setSelectedCustomRoom(customRoom.trim());
       setQRCodeURL(`${baseURL}/guest/${customRoom.trim()}`);
       setCustomRoom('');
-      
+
       // localStorage'a kaydet
       if (typeof window !== 'undefined') {
         localStorage.setItem('qrKod_customRooms', JSON.stringify(updatedCustomRooms));
@@ -208,7 +208,7 @@ export default function QRKodPage() {
       setSelectedCustomRoom('');
       setQRCodeURL('');
     }
-    
+
     // localStorage'a kaydet
     if (typeof window !== 'undefined') {
       localStorage.setItem('qrKod_customRooms', JSON.stringify(updatedCustomRooms));
@@ -218,7 +218,7 @@ export default function QRKodPage() {
   const handlePrint = async () => {
     const currentRoom = showCustomInput ? selectedCustomRoom : selectedRoom;
     const url = qrCodeURL || `${baseURL}/guest/${currentRoom}`;
-    
+
     try {
       // QR kod PNG olarak oluştur
       const qrDataURL = await QRCodeGenerator.toDataURL(url, {
@@ -229,16 +229,16 @@ export default function QRKodPage() {
           light: '#FFFFFF'
         }
       });
-      
+
       console.log('QR kod oluşturuldu:', qrDataURL.substring(0, 50) + '...');
-      
+
       const printWindow = window.open('', '_blank');
       if (printWindow) {
         printWindow.document.write(`
           <!DOCTYPE html>
           <html>
           <head>
-            <title>QR Kod - Oda ${currentRoom}</title>
+            <title>${getTranslation('sidebar.qr_generator')} - ${getTranslation('qr.room')} ${currentRoom}</title>
             <style>
               @page {
                 size: A4;
@@ -323,20 +323,20 @@ export default function QRKodPage() {
           </head>
           <body>
             <div class="container">
-              <h1>Oda ${currentRoom}</h1>
+              <h1>${getTranslation('qr.room')} ${currentRoom}</h1>
               <div class="qr-container">
-                <img src="${qrDataURL}" alt="QR Kod - Oda ${currentRoom}" class="qr-image" onload="console.log('QR kod yüklendi')" onerror="console.error('QR kod yüklenemedi')" />
+                <img src="${qrDataURL}" alt="${getTranslation('sidebar.qr_generator')} - ${getTranslation('qr.room')} ${currentRoom}" class="qr-image" onload="console.log('QR kod yüklendi')" onerror="console.error('QR kod yüklenemedi')" />
               </div>
               <div class="url-text">
-                <strong>URL:</strong> ${url}
+                <strong>${getTranslation('qr.url')}:</strong> ${url}
               </div>
               <div class="instructions">
-                <h3>Kullanım Talimatları:</h3>
+                <h3>${getTranslation('qr.instructions_title')}:</h3>
                 <ol>
-                  <li>Bu QR kodu oda içinde görünür bir yere yerleştirin</li>
-                  <li>Misafirler QR kodu tarayarak menüye erişebilir</li>
-                  <li>QR kod her zaman güncel menüyü gösterir</li>
-                  <li>İnternet bağlantısı gereklidir</li>
+                  <li>${getTranslation('qr.instruction_1')}</li>
+                  <li>${getTranslation('qr.instruction_2')}</li>
+                  <li>${getTranslation('qr.instruction_3')}</li>
+                  <li>${getTranslation('qr.instruction_4')}</li>
                 </ol>
               </div>
             </div>
@@ -344,7 +344,7 @@ export default function QRKodPage() {
           </html>
         `);
         printWindow.document.close();
-        
+
         // Yazdırma işlemini biraz geciktir
         setTimeout(() => {
           printWindow.print();
@@ -359,7 +359,7 @@ export default function QRKodPage() {
   const handleDownload = async () => {
     const currentRoom = showCustomInput ? selectedCustomRoom : selectedRoom;
     const url = qrCodeURL || `${baseURL}/guest/${currentRoom}`;
-    
+
     try {
       // QR kod PNG olarak oluştur
       const qrDataURL = await QRCodeGenerator.toDataURL(url, {
@@ -370,7 +370,7 @@ export default function QRKodPage() {
           light: '#FFFFFF'
         }
       });
-      
+
       // PNG dosyası olarak indir
       const link = document.createElement('a');
       link.href = qrDataURL;
@@ -386,12 +386,12 @@ export default function QRKodPage() {
 
   const handleDownloadAll = async () => {
     const roomsToDownload = showCustomInput ? customRooms : (useGeneratedRooms ? generatedRooms : rooms);
-    
+
     if (roomsToDownload.length === 0) {
       alert('İndirilecek oda bulunamadı!');
       return;
     }
-    
+
     try {
       // Tüm odalar için QR kodları oluştur
       const qrPromises = roomsToDownload.map(async (room) => {
@@ -411,15 +411,15 @@ export default function QRKodPage() {
           qrDataURL: qrDataURL
         };
       });
-      
+
       const qrData = await Promise.all(qrPromises);
-      
+
       // HTML dosyası oluştur
       const htmlContent = `
         <!DOCTYPE html>
         <html>
         <head>
-          <title>QR Kodlar - Tüm Odalar</title>
+          <title>${getTranslation('qr.download_all_title')}</title>
           <style>
             body { 
               font-family: Arial, sans-serif; 
@@ -486,34 +486,34 @@ export default function QRKodPage() {
         </head>
         <body>
           <div class="header">
-            <h1>QR Kodlar - ${roomsToDownload.length} Oda</h1>
-            <p>Oluşturulma Tarihi: ${new Date().toLocaleString('tr-TR')}</p>
+            <h1>${getTranslation('qr.download_all_title')} - ${roomsToDownload.length} ${getTranslation('qr.room')}</h1>
+            <p>${getTranslation('qr.created_date')}: ${new Date().toLocaleString(currentLanguage === 'tr' ? 'tr-TR' : currentLanguage === 'de' ? 'de-DE' : 'en-US')}</p>
           </div>
           
           <div class="rooms-grid">
             ${qrData.map(room => `
               <div class="room">
-                <h3>Oda ${room.room} - Kat ${room.floor}</h3>
+                <h3>${getTranslation('qr.room')} ${room.room} - ${getTranslation('qr.floor')} ${room.floor}</h3>
                 <div class="qr-code">
-                  <img src="${room.qrDataURL}" alt="QR Kod - Oda ${room.room}" class="qr-image" />
+                  <img src="${room.qrDataURL}" alt="${getTranslation('sidebar.qr_generator')} - ${getTranslation('qr.room')} ${room.room}" class="qr-image" />
                 </div>
-                <div class="url">URL: ${room.url}</div>
+                <div class="url">${getTranslation('qr.url')}: ${room.url}</div>
               </div>
             `).join('')}
           </div>
           
           <div class="footer">
-            <p>Bu QR kodlar otomatik olarak oluşturulmuştur.</p>
-            <p>Her QR kod ilgili oda için özeldir.</p>
+            <p>${getTranslation('qr.auto_generated_note')}</p>
+            <p>${getTranslation('qr.unique_note')}</p>
           </div>
         </body>
         </html>
       `;
-      
+
       // HTML dosyası olarak indir
       const dataBlob = new Blob([htmlContent], { type: 'text/html' });
       const url_download = URL.createObjectURL(dataBlob);
-      
+
       const link = document.createElement('a');
       link.href = url_download;
       link.download = `qr-kodlar-tum-odalar-${roomsToDownload.length}.html`;
@@ -611,7 +611,7 @@ export default function QRKodPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {getTranslation('qr.select_room')}
               </label>
-              
+
               {/* Toggle Buttons */}
               <div className="flex space-x-2 mb-4">
                 <button
@@ -619,21 +619,19 @@ export default function QRKodPage() {
                     setShowCustomInput(false);
                     setCustomRoom('');
                   }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    !showCustomInput
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${!showCustomInput
                       ? 'bg-hotel-gold text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                    }`}
                 >
                   {useGeneratedRooms ? getTranslation('qr.generated_rooms') : getTranslation('qr.database_rooms')} ({isLoading ? '...' : (useGeneratedRooms ? generatedRooms.length : rooms.length)})
                 </button>
                 <button
                   onClick={() => setShowCustomInput(true)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    showCustomInput
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${showCustomInput
                       ? 'bg-hotel-gold text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                    }`}
                 >
                   {getTranslation('qr.custom_rooms')} ({customRooms.length})
                 </button>
@@ -693,7 +691,7 @@ export default function QRKodPage() {
                       </button>
                     </div>
                     <p className="text-xs text-green-600 mt-2">
-                      Enter tuşuna basarak da kaydedebilirsiniz
+                      {getTranslation('qr.enter_to_save')}
                     </p>
                   </div>
 
@@ -701,17 +699,16 @@ export default function QRKodPage() {
                   {customRooms.length > 0 && (
                     <div>
                       <h4 className="text-sm font-medium text-gray-700 mb-3">
-                        Kaydedilen Özel Odalar ({customRooms.length})
+                        {getTranslation('qr.saved_custom_rooms')} ({customRooms.length})
                       </h4>
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {customRooms.map((room) => (
                           <div
                             key={room.number}
-                            className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
-                              selectedCustomRoom === room.number
+                            className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${selectedCustomRoom === room.number
                                 ? 'border-hotel-gold bg-hotel-gold text-white'
                                 : 'border-gray-200 hover:border-hotel-gold hover:bg-gray-50'
-                            }`}
+                              }`}
                             onClick={() => {
                               setSelectedCustomRoom(room.number);
                               setQRCodeURL(`${baseURL}/guest/${room.number}`);
@@ -776,7 +773,7 @@ export default function QRKodPage() {
                 <Printer className="w-4 h-4 mr-2" />
                 {getTranslation('qr.print')}
               </button>
-              
+
               <button
                 onClick={handleDownload}
                 className="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -791,7 +788,7 @@ export default function QRKodPage() {
                   className="flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Tümünü İndir ({customRooms.length})
+                  {getTranslation('qr.download_all_btn')} ({customRooms.length})
                 </button>
               )}
               {!showCustomInput && (
@@ -800,7 +797,7 @@ export default function QRKodPage() {
                   className="flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Tümünü İndir ({(useGeneratedRooms ? generatedRooms : rooms).length})
+                  {getTranslation('qr.download_all_btn')} ({(useGeneratedRooms ? generatedRooms : rooms).length})
                 </button>
               )}
             </div>
@@ -824,7 +821,7 @@ export default function QRKodPage() {
                 )}
               </div>
             </div>
-            
+
             <div className="text-center">
               <h3 className="text-lg font-bold text-gray-900 mb-2">
                 Oda {showCustomInput ? customRoom : selectedRoom}
@@ -890,11 +887,11 @@ export default function QRKodPage() {
               {(useGeneratedRooms ? generatedRooms : rooms).length} oda
             </div>
           </div>
-          
+
           {/* Kat bazında gruplandırma */}
           {Array.from(new Set((useGeneratedRooms ? generatedRooms : rooms).map((r: any) => r.floor))).sort((a: any, b: any) => a - b).map((floorNumber: any) => {
             const floorRooms = (useGeneratedRooms ? generatedRooms : rooms).filter((room: any) => room.floor === floorNumber);
-            
+
             return (
               <div key={floorNumber} className="mb-6">
                 <h4 className="text-sm font-medium text-gray-700 mb-2">
@@ -908,11 +905,10 @@ export default function QRKodPage() {
                         setSelectedRoom(room.number);
                         setQRCodeURL(`${baseURL}/guest/${room.number}`);
                       }}
-                      className={`p-2 rounded-lg border-2 transition-all text-xs ${
-                        selectedRoom === room.number
+                      className={`p-2 rounded-lg border-2 transition-all text-xs ${selectedRoom === room.number
                           ? 'border-hotel-gold bg-hotel-gold text-white'
                           : 'border-gray-200 hover:border-hotel-gold hover:bg-gray-50'
-                      }`}
+                        }`}
                     >
                       <div className="font-bold">{room.number}</div>
                     </button>
