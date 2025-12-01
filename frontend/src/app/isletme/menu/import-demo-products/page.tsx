@@ -224,6 +224,16 @@ export default function ImportDemoProductsPage() {
     }
   ];
 
+  // Kategori çevirileri
+  const categoryTranslations: Record<string, { tr: string; de: string; fr: string }> = {
+    "Main Courses": { tr: "Ana Yemekler", de: "Hauptgerichte", fr: "Plats Principaux" },
+    "Salads": { tr: "Salatalar", de: "Salate", fr: "Salades" },
+    "Snacks": { tr: "Atıştırmalıklar", de: "Snacks", fr: "Collations" },
+    "Sides": { tr: "Yan Lezzetler", de: "Beilagen", fr: "Accompagnements" },
+    "Desserts": { tr: "Tatlılar", de: "Desserts", fr: "Desserts" },
+    "Drinks": { tr: "İçecekler", de: "Getränke", fr: "Boissons" }
+  };
+
   const handleImport = async () => {
     setLoading(true);
     setImporting(true);
@@ -288,12 +298,33 @@ export default function ImportDemoProductsPage() {
       const responseData = await response.json();
 
       if (response.ok) {
+        // Kategorileri localStorage'a kaydet
+        const uniqueCategories = Array.from(new Set(demoProducts.map(p => p.category)));
+        const categoriesToSave = uniqueCategories.map(catName => {
+          const translations = categoryTranslations[catName];
+          return {
+            id: `cat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: catName,
+            translations: translations ? {
+              tr: { name: translations.tr },
+              de: { name: translations.de },
+              fr: { name: translations.fr },
+              en: { name: catName } // İngilizce varsayılan olarak kategori adı
+            } : {}
+          };
+        });
+
+        const storageKey = `menuCategories_${tenantSlug}`;
+        localStorage.setItem(storageKey, JSON.stringify(categoriesToSave));
+        console.log('✅ Kategoriler localStorage\'a kaydedildi:', categoriesToSave);
+
         setResult({
           success: true,
-          message: `Başarıyla ${demoProducts.length} ürün import edildi!`,
+          message: `Başarıyla ${demoProducts.length} ürün ve ${categoriesToSave.length} kategori import edildi!`,
           details: {
             imported: responseData.items?.length || demoProducts.length,
-            total: demoProducts.length
+            total: demoProducts.length,
+            categories: categoriesToSave.length
           }
         });
 
