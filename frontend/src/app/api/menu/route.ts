@@ -96,11 +96,8 @@ export async function GET(request: Request) {
           return NextResponse.json({ menu, source: 'backend' }, { status: 200 });
         }
 
-        console.warn('Backend menüsü boş geldi, fallback menü yükleniyor.');
-        const fallbackMenu = await loadFallbackMenu();
-        if (fallbackMenu.length > 0) {
-          return NextResponse.json({ menu: fallbackMenu, source: 'local_fallback_empty_backend' }, { status: 200 });
-        }
+        // Backend boş döndüyse boş döndür (demo verisine düşme)
+        return NextResponse.json({ menu: [], source: 'backend_empty' }, { status: 200 });
       }
     } catch (backendError) {
       console.warn('Backend menu yükleme hatası, client-side dosyaya geçiliyor:', backendError);
