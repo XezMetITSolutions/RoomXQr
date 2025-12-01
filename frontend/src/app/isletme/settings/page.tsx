@@ -6,12 +6,12 @@ import { useThemeStore } from '@/store/themeStore';
 import { useLanguageStore } from '@/store/languageStore';
 import Image from 'next/image';
 import { useSocialMediaStore } from '@/store/socialMediaStore';
-import { 
-  Save, 
-  Upload, 
-  Globe, 
-  Palette, 
-  Bell, 
+import {
+  Save,
+  Upload,
+  Globe,
+  Palette,
+  Bell,
   Shield,
   Hotel,
   Mail,
@@ -92,7 +92,7 @@ export default function SettingsPage() {
       try {
         const settingsData = JSON.parse(savedSettings);
         console.log('Settings yükleniyor - settingsData:', settingsData);
-        
+
         if (settingsData.hotel) setHotelSettings(settingsData.hotel);
         if (settingsData.theme) setThemeSettings(settingsData.theme);
         if (settingsData.language) {
@@ -260,7 +260,7 @@ export default function SettingsPage() {
       const r = parseInt(hex.slice(1, 3), 16) / 255;
       const g = parseInt(hex.slice(3, 5), 16) / 255;
       const b = parseInt(hex.slice(5, 7), 16) / 255;
-      
+
       const max = Math.max(r, g, b);
       const min = Math.min(r, g, b);
       let h, s, l = (max + min) / 2;
@@ -329,10 +329,10 @@ export default function SettingsPage() {
   useEffect(() => {
     const loadSettings = async () => {
       if (!token || !user) return;
-      
+
       try {
         setIsLoadingSettings(true);
-        
+
         // localStorage'dan ayarları yükle (zaten yukarıda yükleniyor)
         // Burada sadece hotel settings'i güncellemek için kontrol ediyoruz
         const savedSettings = localStorage.getItem('hotel-settings');
@@ -398,9 +398,9 @@ export default function SettingsPage() {
 
   const handleSave = async () => {
     if (!token || !user) return;
-    
+
     setIsSaving(true);
-    
+
     // Önce localStorage'a kaydet (her zaman)
     const settingsData = {
       hotel: hotelSettings,
@@ -409,12 +409,12 @@ export default function SettingsPage() {
       socialMedia: links,
       lastUpdated: new Date().toISOString()
     };
-    
+
     console.log('Settings kaydediliyor - languageSettings:', languageSettings);
     console.log('Settings kaydediliyor - settingsData:', settingsData);
-    
+
     localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
-    
+
     // Kaydedilen veriyi doğrula
     const savedData = localStorage.getItem('hotel-settings');
     if (savedData) {
@@ -425,16 +425,16 @@ export default function SettingsPage() {
         count: parsed.language?.supportedLanguages?.length
       });
     }
-    
+
     // MenuTranslator'ı güncellemek için custom event gönder
     window.dispatchEvent(new Event('settings-updated'));
-    
+
     // Ayarlar başarıyla localStorage'a kaydedildi
-    alert('Ayarlar başarıyla kaydedildi!');
-    
+    alert(getTranslation('settings.save_success'));
+
     // Not: Backend'e kaydetme işlemi admin endpoint gerektirdiği için kaldırıldı
     // Normal kullanıcılar için localStorage yeterli
-    
+
     setIsSaving(false);
   };
 
@@ -445,7 +445,7 @@ export default function SettingsPage() {
   const handleSocialMediaChange = (platform: keyof HotelSettings['socialMedia'], value: string) => {
     // Store'u güncelle
     setLinks({ [platform]: value });
-    
+
     // Local state'i de güncelle
     setHotelSettings(prev => ({
       ...prev,
@@ -515,11 +515,10 @@ export default function SettingsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                    activeTab === tab.id
+                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === tab.id
                       ? 'bg-hotel-gold text-white'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
+                    }`}
                 >
                   <Icon className="mr-3 h-5 w-5" />
                   {tab.label}
@@ -536,12 +535,12 @@ export default function SettingsPage() {
             {activeTab === 'hotel' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Otel Bilgileri</h3>
-                  
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">{getTranslation('settings.hotel_info')}</h3>
+
                   {/* Logo Upload */}
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Logo
+                      {getTranslation('settings.logo')}
                     </label>
                     <div className="flex items-center space-x-4">
                       <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -564,10 +563,10 @@ export default function SettingsPage() {
                           className="bg-white border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center space-x-2"
                         >
                           <Upload className="w-4 h-4" />
-                          <span>Logo Yükle</span>
+                          <span>{getTranslation('settings.upload_logo')}</span>
                         </label>
                         <p className="text-xs text-gray-500 mt-1">
-                          PNG, JPG formatında, maksimum 2MB
+                          {getTranslation('settings.logo_help')}
                         </p>
                       </div>
                     </div>
@@ -576,7 +575,7 @@ export default function SettingsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Otel Adı
+                        {getTranslation('settings.hotel_name')}
                       </label>
                       <input
                         type="text"
@@ -588,7 +587,7 @@ export default function SettingsPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Telefon
+                        {getTranslation('settings.phone')}
                       </label>
                       <input
                         type="tel"
@@ -601,7 +600,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      E-posta
+                      {getTranslation('settings.email')}
                     </label>
                     <input
                       type="email"
@@ -613,7 +612,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Website
+                      {getTranslation('settings.website')}
                     </label>
                     <input
                       type="url"
@@ -625,7 +624,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Adres
+                      {getTranslation('settings.address')}
                     </label>
                     <textarea
                       value={hotelSettings.address}
@@ -637,7 +636,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Açıklama
+                      {getTranslation('settings.description')}
                     </label>
                     <textarea
                       value={hotelSettings.description}
@@ -654,11 +653,11 @@ export default function SettingsPage() {
             {activeTab === 'social' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Sosyal Medya Linkleri</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">{getTranslation('settings.social_media_links')}</h3>
                   <p className="text-sm text-gray-600 mb-6">
-                    Bu linkler QR menüdeki sosyal medya butonlarında kullanılacaktır.
+                    {getTranslation('settings.social_media_desc')}
                   </p>
-                  
+
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -711,24 +710,24 @@ export default function SettingsPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
                       />
                       <p className="text-xs text-gray-500 mt-1">
-                        Google yorumları için kullanılacak link
+                        {getTranslation('settings.google_maps_desc')}
                       </p>
                     </div>
                   </div>
 
                   <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                    <h4 className="text-sm font-medium text-blue-900 mb-2">Önizleme</h4>
+                    <h4 className="text-sm font-medium text-blue-900 mb-2">{getTranslation('settings.preview')}</h4>
                     <p className="text-xs text-blue-700 mb-3">
-                      Bu linkler QR menüde şu şekilde görünecek:
+                      {getTranslation('settings.preview_desc')}
                     </p>
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
                         <div className="w-3 h-3 bg-pink-500 rounded"></div>
-                        <span className="text-xs">Sosyal Medyadan Takip Edin</span>
+                        <span className="text-xs">{getTranslation('settings.follow_us')}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <div className="w-3 h-3 bg-blue-500 rounded"></div>
-                        <span className="text-xs">Google'da Değerlendirin</span>
+                        <span className="text-xs">{getTranslation('settings.rate_us')}</span>
                       </div>
                     </div>
                   </div>
@@ -740,8 +739,8 @@ export default function SettingsPage() {
             {activeTab === 'theme' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-6">Tema & Görünüm</h3>
-                  
+                  <h3 className="text-lg font-medium text-gray-900 mb-6">{getTranslation('settings.theme_appearance')}</h3>
+
                   {/* Responsive Layout: Sol seçenekler, Sağ önizleme */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Sol Taraf - Seçenekler */}
@@ -751,9 +750,9 @@ export default function SettingsPage() {
                       <div className="space-y-4">
                         <h4 className="font-medium text-gray-900 flex items-center space-x-2">
                           <Palette className="w-4 h-4" />
-                          <span>Marka Renkleri</span>
+                          <span>{getTranslation('settings.brand_colors')}</span>
                         </h4>
-                        
+
                         <div className="space-y-4">
                           {/* Hazır Kombinasyonlar */}
                           <div>
@@ -762,17 +761,17 @@ export default function SettingsPage() {
                               className="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                             >
                               <Palette className="w-5 h-5" />
-                              <span>🎨 Hazır Renk Kombinasyonları</span>
+                              <span>🎨 {getTranslation('settings.color_palettes')}</span>
                               <Sparkles className="w-4 h-4" />
                             </button>
                             <p className="text-xs text-gray-500 mt-2 text-center">
-                              20+ profesyonel renk paleti arasından seçin
+                              {getTranslation('settings.color_palettes_desc')}
                             </p>
                           </div>
 
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Ana Renk
+                              {getTranslation('settings.primary_color')}
                             </label>
                             <div className="flex items-center space-x-3">
                               <input
@@ -780,11 +779,11 @@ export default function SettingsPage() {
                                 value={themeSettings.primaryColor}
                                 onChange={(e) => {
                                   console.log('Ana renk değiştirildi:', e.target.value);
-                              const newPrimaryColor = e.target.value;
-                              const newGradientColors = generateGradientColors(newPrimaryColor, themeSettings.secondaryColor);
-                              const next = { ...themeSettings, primaryColor: newPrimaryColor, gradientColors: newGradientColors };
-                              setThemeSettings(next);
-                              themeStore.setTheme({ primaryColor: newPrimaryColor, gradientColors: newGradientColors });
+                                  const newPrimaryColor = e.target.value;
+                                  const newGradientColors = generateGradientColors(newPrimaryColor, themeSettings.secondaryColor);
+                                  const next = { ...themeSettings, primaryColor: newPrimaryColor, gradientColors: newGradientColors };
+                                  setThemeSettings(next);
+                                  themeStore.setTheme({ primaryColor: newPrimaryColor, gradientColors: newGradientColors });
                                 }}
                                 className="w-12 h-10 border border-gray-300 rounded-lg cursor-pointer hover:scale-105 transition-transform"
                               />
@@ -806,7 +805,7 @@ export default function SettingsPage() {
 
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                              İkincil Renk
+                              {getTranslation('settings.secondary_color')}
                             </label>
                             <div className="flex items-center space-x-3">
                               <input
@@ -844,18 +843,18 @@ export default function SettingsPage() {
                       <div className="space-y-4">
                         <h4 className="font-medium text-gray-900 flex items-center space-x-2">
                           <Type className="w-4 h-4" />
-                          <span>Yazı Tipi</span>
+                          <span>{getTranslation('settings.font')}</span>
                         </h4>
-                        
+
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Font Ailesi
+                            {getTranslation('settings.font_family')}
                           </label>
                           <select
                             value={themeSettings.fontFamily}
                             onChange={(e) => {
                               console.log('Font değiştirildi:', e.target.value);
-                              setThemeSettings({...themeSettings, fontFamily: e.target.value});
+                              setThemeSettings({ ...themeSettings, fontFamily: e.target.value });
                               themeStore.setTheme({ fontFamily: e.target.value });
                             }}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition-colors"
@@ -875,13 +874,13 @@ export default function SettingsPage() {
                       <div className="space-y-4">
                         <h4 className="font-medium text-gray-900 flex items-center space-x-2">
                           <Monitor className="w-4 h-4" />
-                          <span>Tema Modu</span>
+                          <span>{getTranslation('settings.theme_mode')}</span>
                         </h4>
-                        
+
                         <div className="grid grid-cols-2 gap-2">
                           {[
-                            { value: 'light', label: 'Açık', icon: Sun, bg: 'bg-yellow-100', text: 'text-yellow-800' },
-                            { value: 'dark', label: 'Koyu', icon: Moon, bg: 'bg-gray-800', text: 'text-white' }
+                            { value: 'light', label: getTranslation('settings.light'), icon: Sun, bg: 'bg-yellow-100', text: 'text-yellow-800' },
+                            { value: 'dark', label: getTranslation('settings.dark'), icon: Moon, bg: 'bg-gray-800', text: 'text-white' }
                           ].map((mode) => {
                             const Icon = mode.icon;
                             return (
@@ -889,7 +888,7 @@ export default function SettingsPage() {
                                 key={mode.value}
                                 onClick={() => {
                                   console.log('Tema modu değiştirildi:', mode.value);
-                                  
+
                                   // Sadece tema modunu değiştir, renkleri mevcut değerlerle koru
                                   const next = {
                                     ...themeSettings,
@@ -908,11 +907,10 @@ export default function SettingsPage() {
                                     borderColor: next.borderColor,
                                   });
                                 }}
-                                className={`p-3 rounded-lg border-2 transition-all duration-200 ${
-                                  themeSettings.theme === mode.value 
-                                    ? 'border-blue-500 bg-blue-50' 
+                                className={`p-3 rounded-lg border-2 transition-all duration-200 ${themeSettings.theme === mode.value
+                                    ? 'border-blue-500 bg-blue-50'
                                     : 'border-gray-200 hover:border-gray-300'
-                                }`}
+                                  }`}
                               >
                                 <div className="flex flex-col items-center space-y-2">
                                   <div className={`p-2 rounded-full ${mode.bg}`}>
@@ -931,13 +929,13 @@ export default function SettingsPage() {
                     <div className="space-y-4">
                       <h4 className="font-medium text-gray-900 flex items-center space-x-2">
                         <Smartphone className="w-4 h-4" />
-                        <span>Canlı Önizleme</span>
+                        <span>{getTranslation('settings.live_preview')}</span>
                       </h4>
-                      
+
                       {/* QR Menü Önizlemesi */}
                       <div className="flex justify-center">
                         <div className="relative mx-auto w-72 sm:w-80 h-[540px] sm:h-[600px] bg-black rounded-[2.5rem] p-2 shadow-2xl">
-                          <div 
+                          <div
                             className="w-full h-full rounded-[2rem] overflow-hidden relative"
                             style={{ backgroundColor: themeSettings.backgroundColor }}
                           >
@@ -951,12 +949,12 @@ export default function SettingsPage() {
                             </div>
 
                             {/* Header */}
-                            <div 
+                            <div
                               className="px-4 py-3 flex items-center justify-between"
-                              style={{ 
-                                background: themeSettings.gradientColors && themeSettings.gradientColors.length > 0 
+                              style={{
+                                background: themeSettings.gradientColors && themeSettings.gradientColors.length > 0
                                   ? `linear-gradient(135deg, ${themeSettings.gradientColors[0]} 0%, ${themeSettings.gradientColors[themeSettings.gradientColors.length - 1]} 100%)`
-                                  : themeSettings.primaryColor 
+                                  : themeSettings.primaryColor
                               }}
                             >
                               <div className="flex items-center space-x-2">
@@ -972,16 +970,16 @@ export default function SettingsPage() {
 
                             {/* Menu Categories */}
                             <div className="px-4 py-4 space-y-3">
-                              <div 
+                              <div
                                 className="px-3 py-2 rounded-lg flex items-center space-x-3"
                                 style={{ backgroundColor: themeSettings.cardBackground, borderColor: themeSettings.borderColor, borderWidth: '1px' }}
                               >
-                                <div 
+                                <div
                                   className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold"
-                                  style={{ 
-                                    background: themeSettings.gradientColors && themeSettings.gradientColors.length > 2 
+                                  style={{
+                                    background: themeSettings.gradientColors && themeSettings.gradientColors.length > 2
                                       ? `linear-gradient(135deg, ${themeSettings.gradientColors[1]} 0%, ${themeSettings.gradientColors[2]} 100%)`
-                                      : themeSettings.secondaryColor 
+                                      : themeSettings.secondaryColor
                                   }}
                                 >
                                   🍔
@@ -994,7 +992,7 @@ export default function SettingsPage() {
                                     Sulu dana köftesi, cheddar peyniri
                                   </p>
                                 </div>
-                                <span 
+                                <span
                                   className="font-bold text-sm"
                                   style={{ color: themeSettings.primaryColor }}
                                 >
@@ -1002,16 +1000,16 @@ export default function SettingsPage() {
                                 </span>
                               </div>
 
-                              <div 
+                              <div
                                 className="px-3 py-2 rounded-lg flex items-center space-x-3"
                                 style={{ backgroundColor: themeSettings.cardBackground, borderColor: themeSettings.borderColor, borderWidth: '1px' }}
                               >
-                                <div 
+                                <div
                                   className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold"
-                                  style={{ 
-                                    background: themeSettings.gradientColors && themeSettings.gradientColors.length > 3 
+                                  style={{
+                                    background: themeSettings.gradientColors && themeSettings.gradientColors.length > 3
                                       ? `linear-gradient(135deg, ${themeSettings.gradientColors[2]} 0%, ${themeSettings.gradientColors[3]} 100%)`
-                                      : themeSettings.accentColor 
+                                      : themeSettings.accentColor
                                   }}
                                 >
                                   🍕
@@ -1024,7 +1022,7 @@ export default function SettingsPage() {
                                     Mozzarella, domates sosu
                                   </p>
                                 </div>
-                                <span 
+                                <span
                                   className="font-bold text-sm"
                                   style={{ color: themeSettings.primaryColor }}
                                 >
@@ -1034,17 +1032,17 @@ export default function SettingsPage() {
                             </div>
 
                             {/* Bottom Navigation */}
-                            <div 
+                            <div
                               className="absolute bottom-0 left-0 right-0 px-4 py-3 flex items-center justify-around"
                               style={{ backgroundColor: themeSettings.cardBackground, borderTopColor: themeSettings.borderColor, borderTopWidth: '1px' }}
                             >
                               <div className="flex flex-col items-center space-y-1">
-                                <div 
+                                <div
                                   className="w-6 h-6 rounded-full flex items-center justify-center"
-                                  style={{ 
-                                    background: themeSettings.gradientColors && themeSettings.gradientColors.length > 0 
+                                  style={{
+                                    background: themeSettings.gradientColors && themeSettings.gradientColors.length > 0
                                       ? `linear-gradient(135deg, ${themeSettings.gradientColors[0]} 0%, ${themeSettings.gradientColors[1]} 100%)`
-                                      : themeSettings.primaryColor 
+                                      : themeSettings.primaryColor
                                   }}
                                 >
                                   <div className="w-3 h-3 bg-white rounded-full"></div>
@@ -1082,7 +1080,7 @@ export default function SettingsPage() {
 
             {/* Renk Kombinasyonları Modal */}
             {showPaletteModal && (
-              <div 
+              <div
                 className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
                 onClick={(e) => {
                   if (e.target === e.currentTarget) {
@@ -1092,12 +1090,12 @@ export default function SettingsPage() {
               >
                 <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-2xl w-full max-h-[80vh] overflow-hidden">
                   <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                    <h4 className="text-lg font-semibold text-gray-800">Hazır Renk Kartları</h4>
-                    <button 
-                      onClick={() => setShowPaletteModal(false)} 
+                    <h4 className="text-lg font-semibold text-gray-800">{getTranslation('settings.color_cards')}</h4>
+                    <button
+                      onClick={() => setShowPaletteModal(false)}
                       className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm transition-colors"
                     >
-                      ✕ Kapat
+                      ✕ {getTranslation('settings.close')}
                     </button>
                   </div>
                   <div className="p-4 overflow-y-auto max-h-[60vh]">
@@ -1158,15 +1156,15 @@ export default function SettingsPage() {
             {activeTab === 'language' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Dil Ayarları</h3>
-                  
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">{getTranslation('settings.language_settings')}</h3>
+
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Varsayılan Dil
+                      {getTranslation('settings.default_language')}
                     </label>
                     <select
                       value={languageSettings.defaultLanguage}
-                      onChange={(e) => setLanguageSettings({...languageSettings, defaultLanguage: e.target.value})}
+                      onChange={(e) => setLanguageSettings({ ...languageSettings, defaultLanguage: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hotel-gold focus:border-transparent"
                     >
                       {languages
@@ -1181,7 +1179,7 @@ export default function SettingsPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Desteklenen Diller
+                      {getTranslation('settings.supported_languages')}
                     </label>
                     <div className="space-y-2">
                       {languages.map((lang) => (
@@ -1192,23 +1190,23 @@ export default function SettingsPage() {
                             onChange={(e) => {
                               const newLanguageSettings = e.target.checked
                                 ? {
-                                    ...languageSettings,
-                                    supportedLanguages: [...languageSettings.supportedLanguages, lang.code]
-                                  }
+                                  ...languageSettings,
+                                  supportedLanguages: [...languageSettings.supportedLanguages, lang.code]
+                                }
                                 : {
-                                    ...languageSettings,
-                                    supportedLanguages: languageSettings.supportedLanguages.filter(l => l !== lang.code)
-                                  };
-                              
+                                  ...languageSettings,
+                                  supportedLanguages: languageSettings.supportedLanguages.filter(l => l !== lang.code)
+                                };
+
                               setLanguageSettings(newLanguageSettings);
-                              
+
                               // Otomatik olarak localStorage'a kaydet (geçici olarak)
                               try {
                                 const currentSettings = localStorage.getItem('hotel-settings');
                                 const settingsData = currentSettings ? JSON.parse(currentSettings) : {};
                                 settingsData.language = newLanguageSettings;
                                 localStorage.setItem('hotel-settings', JSON.stringify(settingsData));
-                                
+
                                 // MenuTranslator'ı güncelle
                                 window.dispatchEvent(new Event('settings-updated'));
                               } catch (error) {
