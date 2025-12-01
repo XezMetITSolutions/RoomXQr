@@ -62,6 +62,7 @@ interface Category {
 export default function MenuPage() {
   const { currentLanguage, getTranslation } = useLanguageStore();
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('menu');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
