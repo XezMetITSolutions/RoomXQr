@@ -52,8 +52,11 @@ interface Category {
   name: string;
   description?: string;
   translations?: {
+    [lang: string]: {
+      name: string;
+      description?: string;
+    };
   };
-};
 }
 
 export default function MenuPage() {
