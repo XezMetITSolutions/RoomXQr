@@ -1049,13 +1049,7 @@ export default function MenuPage() {
                 <Plus className="w-5 h-5" />
                 <span>{mounted ? getTranslation('page.menu.add_item') : 'Ürün Ekle'}</span>
               </button>
-              <Link
-                href="/isletme/menu/import-demo-products"
-                className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors flex items-center space-x-2"
-              >
-                <Upload className="w-5 h-5" />
-                <span>{mounted ? getTranslation('page.menu.import_demo') : 'Demo Ürünleri Import Et'}</span>
-              </Link>
+
               <button
                 onClick={() => setShowBulkUploadModal(true)}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
@@ -1063,20 +1057,8 @@ export default function MenuPage() {
                 <FileSpreadsheet className="w-5 h-5" />
                 <span>{mounted ? getTranslation('page.menu.bulk_upload') : 'Toplu Yükle'}</span>
               </button>
-              <button
-                onClick={() => setShowTranslationModal(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-              >
-                <Languages className="w-5 h-5" />
-                <span>{mounted ? getTranslation('page.menu.translation') : 'Çeviri'}</span>
-              </button>
-              <Link
-                href="/isletme/menu/debug-add"
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
-                target="_blank"
-              >
-                <span>🧪 Debug</span>
-              </Link>
+
+
             </div>
           )}
           {activeTab === 'categories' && (
