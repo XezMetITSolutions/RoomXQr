@@ -547,7 +547,29 @@ export default function QRMenuPage() {
       .filter(cat => cat !== 'all')
       .map(catName => ({
         id: catName,
-        name: catName,
+        name: (() => {
+          // Kategori ismini çevirmeyi dene
+          const keyMap: { [key: string]: string } = {
+            'Main Dishes': 'category.main',
+            'Ana Yemekler': 'category.main',
+            'Hauptgerichte': 'category.main',
+            'Appetizers': 'category.appetizer',
+            'Mezeler': 'category.appetizer',
+            'Vorspeisen': 'category.appetizer',
+            'Desserts': 'category.dessert',
+            'Tatlılar': 'category.dessert',
+            'Beverages': 'category.beverage',
+            'İçecekler': 'category.beverage',
+            'Getränke': 'category.beverage',
+            'Breakfast': 'category.breakfast',
+            'Kahvaltı': 'category.breakfast',
+            'Frühstück': 'category.breakfast',
+            'Snacks': 'category.snack',
+            'Atıştırmalıklar': 'category.snack'
+          };
+          const key = keyMap[catName];
+          return key ? getTranslation(key) : catName;
+        })(),
         originalName: catName,
         nameKey: undefined
       }));
@@ -679,7 +701,7 @@ export default function QRMenuPage() {
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-medium">Geri Dön</span>
+              <span className="font-medium">{getTranslation('menu.back')}</span>
             </button>
           </div>
 
@@ -769,7 +791,7 @@ export default function QRMenuPage() {
             className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors group"
           >
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span className="font-medium">Geri Dön</span>
+            <span className="font-medium">{getTranslation('menu.back')}</span>
           </button>
         </div>
 
@@ -1120,7 +1142,7 @@ function MenuCard({ name, description, price, preparationTime, rating, image, al
 
         {allergens && allergens.length > 0 && (
           <div className="text-xs mb-4 px-3 py-2 rounded-lg" style={{ color: '#b91c1c', background: '#fee2e2' }}>
-            {getTranslation('product.allergens')}: {showDetails ? allergens.join(', ') : (isLongAllergens ? allergens.slice(0, 2).join(', ') + '...' : allergens.join(', '))}
+            {getTranslation('product.allergens')}: {showDetails ? allergens.map(a => getTranslation(`allergen.${a.toLowerCase()}`) || a).join(', ') : (isLongAllergens ? allergens.slice(0, 2).map(a => getTranslation(`allergen.${a.toLowerCase()}`) || a).join(', ') + '...' : allergens.map(a => getTranslation(`allergen.${a.toLowerCase()}`) || a).join(', '))}
             {isLongAllergens && (
               <button
                 onClick={() => setShowDetails(!showDetails)}

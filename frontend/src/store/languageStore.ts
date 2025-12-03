@@ -64,6 +64,22 @@ export const translations: Record<string, Translations> = {
     'product.show_details': 'Detay',
     'product.show_less': 'Daha az göster',
 
+    // Alerjenler
+    'allergen.gluten': 'Gluten',
+    'allergen.milk': 'Süt',
+    'allergen.egg': 'Yumurta',
+    'allergen.nuts': 'Kuruyemiş',
+    'allergen.soy': 'Soya',
+    'allergen.fish': 'Balık',
+    'allergen.shellfish': 'Kabuklu Deniz Ürünleri',
+    'allergen.peanuts': 'Yer Fıstığı',
+    'allergen.wheat': 'Buğday',
+    'allergen.sesame': 'Susam',
+    'allergen.celery': 'Kereviz',
+    'allergen.mustard': 'Hardal',
+    'allergen.lupin': 'Acı Bakla',
+    'allergen.molluscs': 'Yumuşakçalar',
+
     // Oda
     'room.number': 'numaralı oda',
 
@@ -522,6 +538,22 @@ export const translations: Record<string, Translations> = {
     'product.show_details': 'Details',
     'product.show_less': 'Show Less',
 
+    // Allergens
+    'allergen.gluten': 'Gluten',
+    'allergen.milk': 'Milk',
+    'allergen.egg': 'Egg',
+    'allergen.nuts': 'Nuts',
+    'allergen.soy': 'Soy',
+    'allergen.fish': 'Fish',
+    'allergen.shellfish': 'Shellfish',
+    'allergen.peanuts': 'Peanuts',
+    'allergen.wheat': 'Wheat',
+    'allergen.sesame': 'Sesame',
+    'allergen.celery': 'Celery',
+    'allergen.mustard': 'Mustard',
+    'allergen.lupin': 'Lupin',
+    'allergen.molluscs': 'Molluscs',
+
     // Room
     'room.number': 'Room',
 
@@ -979,6 +1011,22 @@ export const translations: Record<string, Translations> = {
     'product.total': 'Gesamt',
     'product.show_details': 'Details',
     'product.show_less': 'Weniger anzeigen',
+
+    // Allergene
+    'allergen.gluten': 'Gluten',
+    'allergen.milk': 'Milch',
+    'allergen.egg': 'Ei',
+    'allergen.nuts': 'Nüsse',
+    'allergen.soy': 'Soja',
+    'allergen.fish': 'Fisch',
+    'allergen.shellfish': 'Schalentiere',
+    'allergen.peanuts': 'Erdnüsse',
+    'allergen.wheat': 'Weizen',
+    'allergen.sesame': 'Sesam',
+    'allergen.celery': 'Sellerie',
+    'allergen.mustard': 'Senf',
+    'allergen.lupin': 'Lupine',
+    'allergen.molluscs': 'Weichtiere',
 
     // Zimmer
     'room.number': 'Zimmer',
