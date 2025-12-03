@@ -330,7 +330,7 @@ export default function HomePage() {
                     <div className="bg-gray-100 rounded-2xl md:rounded-3xl p-2 md:p-0 shadow-xl overflow-hidden">
                       <div className="relative w-full h-[200px] md:h-[280px] lg:h-[320px]">
                         <img
-                          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=600&fit=crop&q=80"
+                          src="/images/before.jpg"
                           alt={t.ai.amateur}
                           className="w-full h-full object-cover rounded-xl md:rounded-2xl"
                         />
@@ -346,7 +346,7 @@ export default function HomePage() {
                     <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl md:rounded-3xl p-2 md:p-0 shadow-xl overflow-hidden">
                       <div className="relative w-full h-[200px] md:h-[280px] lg:h-[320px]">
                         <img
-                          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=600&fit=crop&q=80"
+                          src="/images/after.jpg"
                           alt={t.ai.professional}
                           className="w-full h-full object-cover rounded-xl md:rounded-2xl"
                         />
