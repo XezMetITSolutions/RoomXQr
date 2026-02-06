@@ -20,15 +20,21 @@ export const translations = {
             badge: 'Güçlü Özellikler',
             title: 'Neden RoomXQR?',
             subtitle: 'Modern otel yönetimi için ihtiyacınız olan tüm özellikler tek platformda',
-            qr: { title: 'QR Kod Sistemi', desc: 'Her oda için özel QR kod ile misafirler anında menüye erişir' },
-            lang: { title: 'Çoklu Dil Desteği', desc: 'AI destekli çeviri ile uluslararası misafirler için mükemmel deneyim' },
-            ai: { title: 'AI Görsel İyileştirme', desc: 'Telefon çekimlerini profesyonel menü fotoğraflarına dönüştürün' },
-            realtime: { title: 'Gerçek Zamanlı', desc: 'Anlık bildirimler ve güncellemeler ile hızlı hizmet' },
-            payment: { title: 'Entegre Ödeme', desc: 'Güvenli ödeme sistemi ile oda servisi kolayca' },
-            mobile: { title: 'Mobil Uyumlu', desc: 'Tüm cihazlarda mükemmel çalışan responsive tasarım' },
-            announcements: { title: 'Duyuru Sistemi', desc: 'Misafirlere özel kampanyalar ve duyurular gönderin' },
-            analytics: { title: 'Detaylı Analitik', desc: 'Satış raporları ve müşteri davranış analizleri' },
-            security: { title: 'Güvenli Sistem', desc: 'Endüstri standardında güvenlik ve veri koruması' }
+            qr: { title: 'Kişiselleştirilmiş QR', desc: 'Her oda için özel QR kod ile misafirler isme özel bir deneyimle karşılanır.' },
+            lang: { title: '9 Dil Desteği', desc: 'Sadece 3 değil, 9 dilde anlık çeviri ile küresel misafirlerinizle bağ kurun.' },
+            concierge: { title: 'Dijital Concierge', desc: 'Turistlerin ihtiyacı olan şehir bilgileri, etkinlikler ve turlar tek tıkla elinin altında.' },
+            ordering: { title: 'RestX Entegre Menü', desc: 'Oda servisi siparişleri doğrudan mutfağa düşer, personel trafiği %60 azalır.' },
+            ads: { title: 'Duyuru & Reklam', desc: 'Otel içi etkinlikleri veya dış reklamları paylaşarak ek gelir kapısı oluşturun.' },
+            efficiency: { title: 'Personel Verimliliği', desc: 'Talepler ilgili birime doğrudan gider; resepsiyon yükü azalır, performans ölçülür.' },
+            analytics: { title: 'Satış & Analitik', desc: 'Hangi hizmetin popüler olduğunu görün, operasyonunuzu veriye dayalı yönetin.' },
+            feedback: { title: 'Anlık Geri Dönüş', desc: 'Kötü yorumları Google\'a gitmeden yakalayın, misafir memnuniyetini anında kurtarın.' },
+            security: { title: 'Endüstriyel Güvenlik', desc: 'KVKK uyumlu ve endüstri standardında veri koruması.' }
+        },
+        benefits: {
+            title: 'Oteliniz İçin Somut Faydalar',
+            increase: { title: 'Gelir Artışı', desc: 'Upsell ve reklam fırsatlarıyla otel içi harcamaları artırın.' },
+            efficiency: { title: 'Düşük Maliyet', desc: 'Daha az personelle daha hızlı ve hatasız hizmet sunun.' },
+            satisfaction: { title: 'Mutlu Misafir', desc: '7/24 kesintisiz ve kendi dilinde hizmet alan misafir bağlılığı.' }
         },
         howItWorks: {
             badge: 'Basit Süreç',
@@ -125,16 +131,22 @@ export const translations = {
         features: {
             badge: 'Powerful Features',
             title: 'Why RoomXQR?',
-            subtitle: 'All the features you need for modern hotel management on one platform',
-            qr: { title: 'QR Code System', desc: 'Guests instantly access the menu with a unique QR code for each room' },
-            lang: { title: 'Multi-Language Support', desc: 'Perfect experience for international guests with AI-powered translation' },
-            ai: { title: 'AI Image Enhancement', desc: 'Transform phone shots into professional menu photos' },
-            realtime: { title: 'Real-Time', desc: 'Fast service with instant notifications and updates' },
-            payment: { title: 'Integrated Payment', desc: 'Easy room service with secure payment system' },
-            mobile: { title: 'Mobile Compatible', desc: 'Responsive design that works perfectly on all devices' },
-            announcements: { title: 'Announcement System', desc: 'Send special campaigns and announcements to guests' },
-            analytics: { title: 'Detailed Analytics', desc: 'Sales reports and customer behavior analysis' },
-            security: { title: 'Secure System', desc: 'Industry-standard security and data protection' }
+            subtitle: 'Everything you need to digitize your guest experience in one place',
+            qr: { title: 'Personalized QR', desc: 'Each room has a unique QR that greets guests by name/room number.' },
+            lang: { title: '9 Language Support', desc: 'Connect with global guests in 9 languages, not just basics.' },
+            concierge: { title: 'Digital Concierge', desc: 'City guides, events, and tour bookings just a tap away.' },
+            ordering: { title: 'Integrated Ordering', desc: 'Room service orders go straight to the kitchen; reduced staff traffic.' },
+            ads: { title: 'Announcements & Ads', desc: 'Promote hotel events or local ads to generate extra revenue.' },
+            efficiency: { title: 'Staff Efficiency', desc: 'Direct routing to units; reduced reception workload, tracked performance.' },
+            analytics: { title: 'Sales Analytics', desc: 'Know what is popular and manage your operation with data.' },
+            feedback: { title: 'Instant Feedback', desc: 'Capture concerns before they hit social media; immediate recovery.' },
+            security: { title: 'Industrial Security', desc: 'GDPR compliant, high-level data protection.' }
+        },
+        benefits: {
+            title: 'Tangible Benefits for Your Hotel',
+            increase: { title: 'Revenue Growth', desc: 'Increase in-house spending via upselling and ad placements.' },
+            efficiency: { title: 'Cost Reduction', desc: 'Provide faster, error-free service with optimized staffing.' },
+            satisfaction: { title: 'Guest Loyalty', desc: 'Seamless 24/7 service in the guest\'s native language.' }
         },
         howItWorks: {
             badge: 'Simple Process',

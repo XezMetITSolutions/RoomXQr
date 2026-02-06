@@ -5,7 +5,7 @@ services:
     plan: free
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    startCommand: npm run db:deploy && npm start
     healthCheckPath: /health
     autoDeploy: true
     envVars:
@@ -17,27 +17,18 @@ services:
         fromDatabase:
           name: roomapp-db
           property: connectionString
+      - key: DIRECT_URL
+        fromDatabase:
+          name: roomapp-db
+          property: connectionString
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: https://roomapp-frontend.onrender.com
+        value: https://your-app-name.netlify.app
       - key: MAX_FILE_SIZE
         value: "10485760"
       - key: UPLOAD_PATH
         value: "./uploads"
-
-  - type: web
-    name: roomapp-frontend
-    env: node
-    plan: free
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
-    envVars:
-      - key: NEXT_PUBLIC_API_URL
-        value: https://roomapp-backend.onrender.com
-      - key: NEXT_PUBLIC_BASE_DOMAIN
-        value: roomapp.com
 
 databases:
   - name: roomapp-db

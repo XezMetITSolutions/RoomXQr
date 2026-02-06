@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Hotel, QrCode, Settings, CheckCircle, Star, Play, Shield, Globe, Smartphone, CreditCard, Zap, ChevronDown, ChevronUp, Camera, Image, Users, TrendingUp, Clock, DollarSign, Heart, MessageCircle, BarChart3, Award, Target, Sparkles, ArrowRight, CheckCircle2, XCircle, Lightbulb, Megaphone, ThumbsUp, Share2, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Hotel, QrCode, Settings, CheckCircle, Star, Play, Shield, Globe, Smartphone, CreditCard, Zap, ChevronDown, ChevronUp, Camera, Image, Users, TrendingUp, Clock, DollarSign, Heart, MessageCircle, BarChart3, Award, Target, Sparkles, ArrowRight, CheckCircle2, XCircle, Lightbulb, Megaphone, ThumbsUp, Share2, Instagram, Facebook, Twitter, Map, Utensils, MessageSquare } from 'lucide-react';
 import { Language } from '@/types';
 import { translate } from '@/lib/translations';
 import HeroBlue from '../hero-blue';
@@ -35,15 +35,15 @@ export default function HomePage() {
   }, []);
 
   const features = [
-    { icon: QrCode, title: 'QR Kod Sistemi', description: 'Her oda için özel QR kod ile misafirler anında menüye erişir', color: 'text-blue-600' },
-    { icon: Globe, title: 'Çoklu Dil Desteği', description: 'AI destekli çeviri ile uluslararası misafirler için mükemmel deneyim', color: 'text-green-600' },
-    { icon: Camera, title: 'AI Görsel İyileştirme', description: 'Telefon çekimlerini profesyonel menü fotoğraflarına dönüştürün', color: 'text-purple-600' },
-    { icon: Zap, title: 'Gerçek Zamanlı', description: 'Anlık bildirimler ve güncellemeler ile hızlı hizmet', color: 'text-yellow-600' },
-    { icon: CreditCard, title: 'Entegre Ödeme', description: 'Güvenli ödeme sistemi ile oda servisi kolayca', color: 'text-indigo-600' },
-    { icon: Smartphone, title: 'Mobil Uyumlu', description: 'Tüm cihazlarda mükemmel çalışan responsive tasarım', color: 'text-pink-600' },
-    { icon: Megaphone, title: 'Duyuru Sistemi', description: 'Misafirlere özel kampanyalar ve duyurular gönderin', color: 'text-orange-600' },
-    { icon: BarChart3, title: 'Detaylı Analitik', description: 'Satış raporları ve müşteri davranış analizleri', color: 'text-cyan-600' },
-    { icon: Shield, title: 'Güvenli Sistem', description: 'Endüstri standardında güvenlik ve veri koruması', color: 'text-red-600' }
+    { icon: QrCode, title: translate('features.qr.title', currentLanguage), description: translate('features.qr.desc', currentLanguage), color: 'text-blue-600' },
+    { icon: Globe, title: translate('features.lang.title', currentLanguage), description: translate('features.lang.desc', currentLanguage), color: 'text-green-600' },
+    { icon: Map, title: translate('features.concierge.title', currentLanguage), description: translate('features.concierge.desc', currentLanguage), color: 'text-purple-600' },
+    { icon: Utensils, title: translate('features.ordering.title', currentLanguage), description: translate('features.ordering.desc', currentLanguage), color: 'text-orange-600' },
+    { icon: Megaphone, title: translate('features.ads.title', currentLanguage), description: translate('features.ads.desc', currentLanguage), color: 'text-yellow-600' },
+    { icon: Users, title: translate('features.efficiency.title', currentLanguage), description: translate('features.efficiency.desc', currentLanguage), color: 'text-indigo-600' },
+    { icon: BarChart3, title: translate('features.analytics.title', currentLanguage), description: translate('features.analytics.desc', currentLanguage), color: 'text-cyan-600' },
+    { icon: MessageSquare, title: translate('features.feedback.title', currentLanguage), description: translate('features.feedback.desc', currentLanguage), color: 'text-pink-600' },
+    { icon: Shield, title: translate('features.security.title', currentLanguage), description: translate('features.security.desc', currentLanguage), color: 'text-red-600' }
   ];
 
   const packages = [
@@ -176,8 +176,8 @@ export default function HomePage() {
               <Zap className="w-3 h-3 md:w-4 md:h-4 mr-2" />
               Güçlü Özellikler
             </div>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight text-slate-900 mb-3 md:mb-6">Neden RoomXQR?</h2>
-            <p className="text-base md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">Modern otel yönetimi için ihtiyacınız olan tüm özellikler tek platformda</p>
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight text-slate-900 mb-3 md:mb-6">{translate('features.title', currentLanguage)}</h2>
+            <p className="text-base md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">{translate('features.subtitle', currentLanguage)}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {features.map((feature, index) => {
@@ -213,8 +213,8 @@ export default function HomePage() {
               <Settings className="w-3 h-3 md:w-4 md:h-4 mr-2" />
               Basit Süreç
             </div>
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-3 md:mb-6 tracking-tight">Nasıl Çalışır?</h2>
-            <p className="text-base md:text-xl text-slate-600">3 basit adımda otelinizi dijitalleştirin</p>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-3 md:mb-6 tracking-tight">{translate('howItWorks.title', currentLanguage)}</h2>
+            <p className="text-base md:text-xl text-slate-600">{translate('howItWorks.subtitle', currentLanguage)}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
             {[
@@ -371,6 +371,30 @@ export default function HomePage() {
       </div>
 
       {/* Benefits Section */}
+      <div className="py-12 md:py-24 bg-white border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">{translate('benefits.title', currentLanguage)}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-3xl bg-blue-50 border border-blue-100">
+              <TrendingUp className="w-12 h-12 text-blue-600 mb-6" />
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">{translate('benefits.increase.title', currentLanguage)}</h3>
+              <p className="text-slate-600 leading-relaxed">{translate('benefits.increase.desc', currentLanguage)}</p>
+            </div>
+            <div className="p-8 rounded-3xl bg-emerald-50 border border-emerald-100">
+              <Users className="w-12 h-12 text-emerald-600 mb-6" />
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">{translate('benefits.efficiency.title', currentLanguage)}</h3>
+              <p className="text-slate-600 leading-relaxed">{translate('benefits.efficiency.desc', currentLanguage)}</p>
+            </div>
+            <div className="p-8 rounded-3xl bg-purple-50 border border-purple-100">
+              <Heart className="w-12 h-12 text-purple-600 mb-6" />
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">{translate('benefits.satisfaction.title', currentLanguage)}</h3>
+              <p className="text-slate-600 leading-relaxed">{translate('benefits.satisfaction.desc', currentLanguage)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Social Media Integration Section */}
       <div className="py-12 md:py-24 bg-gradient-to-br from-orange-50 to-red-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
