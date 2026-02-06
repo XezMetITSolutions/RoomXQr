@@ -243,16 +243,22 @@ export const translations = {
         features: {
             badge: 'Leistungsstarke Funktionen',
             title: 'Warum RoomXQR?',
-            subtitle: 'Alle Funktionen, die Sie für modernes Hotelmanagement benötigen, auf einer Plattform',
-            qr: { title: 'QR-Code-System', desc: 'Gäste greifen sofort mit einem einzigartigen QR-Code für jedes Zimmer auf das Menü zu' },
-            lang: { title: 'Mehrsprachige Unterstützung', desc: 'Perfektes Erlebnis für internationale Gäste mit KI-gestützter Übersetzung' },
-            ai: { title: 'KI-Bildverbesserung', desc: 'Verwandeln Sie Handyfotos in professionelle Menüfotos' },
-            realtime: { title: 'Echtzeit', desc: 'Schneller Service mit sofortigen Benachrichtigungen und Updates' },
-            payment: { title: 'Integrierte Zahlung', desc: 'Einfacher Zimmerservice mit sicherem Zahlungssystem' },
-            mobile: { title: 'Mobilkompatibel', desc: 'Responsives Design, das auf allen Geräten perfekt funktioniert' },
-            announcements: { title: 'Ankündigungssystem', desc: 'Senden Sie spezielle Kampagnen und Ankündigungen an Gäste' },
-            analytics: { title: 'Detaillierte Analysen', desc: 'Verkaufsberichte und Kundenverhalten-Analyse' },
-            security: { title: 'Sicheres System', desc: 'Branchenstandard-Sicherheit und Datenschutz' }
+            subtitle: 'Alles, was Sie zur Digitalisierung Ihres Gästeerlebnisses an einem Ort benötigen',
+            qr: { title: 'Personalisiertes QR', desc: 'Jedes Zimmer hat ein einzigartiges QR, das Gäste mit Namen/Zimmernummer begrüßt.' },
+            lang: { title: '9 Sprachen Unterstützung', desc: 'Kommunizieren Sie mit globalen Gästen in 9 Sprachen, nicht nur in den Basics.' },
+            concierge: { title: 'Digitaler Concierge', desc: 'Stadtführer, Veranstaltungen und Tourbuchungen nur einen Fingertipp entfernt.' },
+            ordering: { title: 'Integrierte Bestellung', desc: 'Zimmerservice-Bestellungen gehen direkt in die Küche; reduzierter Personalverkehr.' },
+            ads: { title: 'Ankündigungen & Werbung', desc: 'Bewerben Sie Hotelveranstaltungen oder lokale Anzeigen, um zusätzliche Einnahmen zu generieren.' },
+            efficiency: { title: 'Personaleffizienz', desc: 'Direkte Weiterleitung an Einheiten; reduzierte Arbeitsbelastung an der Rezeption.' },
+            analytics: { title: 'Verkaufsanalysen', desc: 'Wissen Sie, was beliebt ist, und steuern Sie Ihren Betrieb mit Daten.' },
+            feedback: { title: 'Sofortiges Feedback', desc: 'Erfassen Sie Bedenken, bevor sie in den sozialen Medien landen.' },
+            security: { title: 'Industrielle Sicherheit', desc: 'DSGVO-konform, hoher Datenschutz.' }
+        },
+        benefits: {
+            title: 'Greifbare Vorteile für Ihr Hotel',
+            increase: { title: 'Umsatzwachstum', desc: 'Steigern Sie die internen Ausgaben durch Upselling und Anzeigenplatzierungen.' },
+            efficiency: { title: 'Kostensenkung', desc: 'Bieten Sie schnelleren, fehlerfreien Service mit optimiertem Personal.' },
+            satisfaction: { title: 'Gästebindung', desc: 'Nahtloser 24/7-Service in der Muttersprache des Gastes.' }
         },
         howItWorks: {
             badge: 'Einfacher Prozess',

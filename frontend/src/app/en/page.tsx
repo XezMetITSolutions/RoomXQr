@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Hotel, QrCode, Settings, CheckCircle, Star, Play, Shield, Globe, Smartphone, CreditCard, Zap, ChevronDown, ChevronUp, Camera, Image, Users, TrendingUp, Clock, DollarSign, Heart, MessageCircle, BarChart3, Award, Target, Sparkles, ArrowRight, CheckCircle2, XCircle, Lightbulb, Megaphone, ThumbsUp, Share2, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Hotel, QrCode, Settings, CheckCircle, Star, Play, Shield, Globe, Smartphone, CreditCard, Zap, ChevronDown, ChevronUp, Camera, Image, Users, TrendingUp, Clock, DollarSign, Heart, MessageCircle, BarChart3, Award, Target, Sparkles, ArrowRight, CheckCircle2, XCircle, Lightbulb, Megaphone, ThumbsUp, Share2, Instagram, Facebook, Twitter, Map, Utensils, MessageSquare } from 'lucide-react';
 import { Language, translations } from '@/lib/homeTranslations';
 import HeroBlue from '../hero-blue';
 
@@ -38,12 +38,12 @@ export default function HomePage() {
   const features = [
     { icon: QrCode, title: t.features.qr.title, description: t.features.qr.desc, color: 'text-blue-600' },
     { icon: Globe, title: t.features.lang.title, description: t.features.lang.desc, color: 'text-green-600' },
-    { icon: Camera, title: t.features.ai.title, description: t.features.ai.desc, color: 'text-purple-600' },
-    { icon: Zap, title: t.features.realtime.title, description: t.features.realtime.desc, color: 'text-yellow-600' },
-    { icon: CreditCard, title: t.features.payment.title, description: t.features.payment.desc, color: 'text-indigo-600' },
-    { icon: Smartphone, title: t.features.mobile.title, description: t.features.mobile.desc, color: 'text-pink-600' },
-    { icon: Megaphone, title: t.features.announcements.title, description: t.features.announcements.desc, color: 'text-orange-600' },
+    { icon: Map, title: t.features.concierge.title, description: t.features.concierge.desc, color: 'text-purple-600' },
+    { icon: Utensils, title: t.features.ordering.title, description: t.features.ordering.desc, color: 'text-orange-600' },
+    { icon: Megaphone, title: t.features.ads.title, description: t.features.ads.desc, color: 'text-yellow-600' },
+    { icon: Users, title: t.features.efficiency.title, description: t.features.efficiency.desc, color: 'text-indigo-600' },
     { icon: BarChart3, title: t.features.analytics.title, description: t.features.analytics.desc, color: 'text-cyan-600' },
+    { icon: MessageSquare, title: t.features.feedback.title, description: t.features.feedback.desc, color: 'text-pink-600' },
     { icon: Shield, title: t.features.security.title, description: t.features.security.desc, color: 'text-red-600' }
   ];
 
@@ -367,7 +367,31 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Social Media Integration Section */}
+      {/* Benefits Section */}
+      <div className="py-12 md:py-24 bg-white border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">{t.benefits.title}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-3xl bg-blue-50 border border-blue-100">
+              <TrendingUp className="w-12 h-12 text-blue-600 mb-6" />
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.increase.title}</h3>
+              <p className="text-slate-600 leading-relaxed">{t.benefits.increase.desc}</p>
+            </div>
+            <div className="p-8 rounded-3xl bg-emerald-50 border border-emerald-100">
+              <Users className="w-12 h-12 text-emerald-600 mb-6" />
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.efficiency.title}</h3>
+              <p className="text-slate-600 leading-relaxed">{t.benefits.efficiency.desc}</p>
+            </div>
+            <div className="p-8 rounded-3xl bg-purple-50 border border-purple-100">
+              <Heart className="w-12 h-12 text-purple-600 mb-6" />
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.satisfaction.title}</h3>
+              <p className="text-slate-600 leading-relaxed">{t.benefits.satisfaction.desc}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="py-12 md:py-24 bg-gradient-to-br from-orange-50 to-red-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
