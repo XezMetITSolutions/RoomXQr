@@ -141,21 +141,43 @@ export default function HomePage() {
         <HeroBlue lang="tr" />
       </div>
 
-      {/* Stats Section */}
-      <div className="bg-gradient-to-b from-slate-50 to-white py-12 md:py-20">
+      {/* Comparison Section */}
+      <div className="py-12 md:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                id={`stat-${index}`}
-                data-scroll
-                className="text-center group"
-              >
-                <div className="text-3xl md:text-5xl font-black bg-gradient-to-r from-slate-800 via-blue-800 to-slate-900 bg-clip-text text-transparent mb-2 md:mb-3 group-hover:scale-110 transition-transform">{stat.number}</div>
-                <div className="text-xs md:text-base text-slate-600 font-medium">{stat.label}</div>
-              </div>
-            ))}
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">{t.comparison.title}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-2 h-full bg-slate-300"></div>
+              <h3 className="text-2xl font-bold text-slate-700 mb-6 flex items-center">
+                <XCircle className="w-8 h-8 text-slate-400 mr-3" />
+                {t.comparison.traditional.title}
+              </h3>
+              <ul className="space-y-4">
+                {t.comparison.traditional.items.map((item: string, idx: number) => (
+                  <li key={idx} className="flex items-start text-slate-500">
+                    <XCircle className="w-5 h-5 text-slate-300 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white p-8 rounded-3xl border-2 border-blue-500 shadow-xl relative overflow-hidden transform md:-translate-y-4">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -mr-16 -mt-16"></div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                <CheckCircle2 className="w-8 h-8 text-blue-600 mr-3" />
+                {t.comparison.digital.title}
+              </h3>
+              <ul className="space-y-4">
+                {t.comparison.digital.items.map((item: string, idx: number) => (
+                  <li key={idx} className="flex items-start text-slate-800 font-medium">
+                    <CheckCircle2 className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -195,6 +217,60 @@ export default function HomePage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </div>
+
+      {/* Revenue Section */}
+      <div className="py-12 md:py-24 bg-gradient-to-b from-white to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-bold mb-4">
+              <DollarSign className="w-4 h-4 mr-2" />
+              {t.revenue.title}
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">{t.revenue.subtitle}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-blue-200 transition-all">
+              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-blue-600">
+                <Utensils className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.revenue.internal.title}</h3>
+              <p className="text-slate-600">{t.revenue.internal.desc}</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-purple-200 transition-all">
+              <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-600">
+                <Map className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.revenue.external.title}</h3>
+              <p className="text-slate-600">{t.revenue.external.desc}</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-amber-200 transition-all">
+              <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mb-6 text-amber-600">
+                <Megaphone className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.revenue.ads.title}</h3>
+              <p className="text-slate-600">{t.revenue.ads.desc}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ROI Section */}
+      <div className="py-12 md:py-24 bg-slate-900 text-white overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black mb-6 text-white">{t.roi.title}</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            {t.roi.items.map((item: { value: string, label: string }, idx: number) => (
+              <div key={idx} className="text-center">
+                <div className="text-4xl md:text-6xl font-black text-blue-400 mb-2">{item.value}</div>
+                <div className="text-sm md:text-lg text-slate-300 font-medium">{item.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -263,31 +339,6 @@ export default function HomePage() {
       </div>
 
 
-      {/* Benefits Section */}
-      <div className="py-12 md:py-24 bg-white border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">{t.benefits.title}</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-3xl bg-blue-50 border border-blue-100">
-              <TrendingUp className="w-12 h-12 text-blue-600 mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.increase.title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.benefits.increase.desc}</p>
-            </div>
-            <div className="p-8 rounded-3xl bg-emerald-50 border border-emerald-100">
-              <Users className="w-12 h-12 text-emerald-600 mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.efficiency.title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.benefits.efficiency.desc}</p>
-            </div>
-            <div className="p-8 rounded-3xl bg-purple-50 border border-purple-100">
-              <Heart className="w-12 h-12 text-purple-600 mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.satisfaction.title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.benefits.satisfaction.desc}</p>
-            </div>
-          </div>
-        </div>
-      </div>
       {/* Social Media Integration Section */}
       <div className="py-12 md:py-24 bg-gradient-to-br from-orange-50 to-red-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

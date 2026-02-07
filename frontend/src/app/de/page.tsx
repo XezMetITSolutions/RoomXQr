@@ -13,8 +13,6 @@ export default function HomePage() {
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState<{ [key: string]: number | null }>({ 'yillik': null, '6aylik': null, 'sube': null });
 
-  const t = translations['de'];
-
   useEffect(() => {
     // Tüm elementleri hemen görünür yap - animasyonları kaldır
     const elements = document.querySelectorAll('[data-scroll]');
@@ -35,6 +33,8 @@ export default function HomePage() {
     }, 100);
   }, []);
 
+  const t = translations[currentLanguage];
+
   const features = [
     { icon: QrCode, title: t.features.qr.title, description: t.features.qr.desc, color: 'text-blue-600' },
     { icon: Globe, title: t.features.lang.title, description: t.features.lang.desc, color: 'text-green-600' },
@@ -50,72 +50,72 @@ export default function HomePage() {
   const packages = [
     {
       id: '6aylik',
-      name: '6 Monate Paket',
-      price: 'Preis auf Anfrage',
+      name: '6 Aylık Paket',
+      price: 'Fiyat Sorunuz',
       originalPrice: 0,
       period: '',
-      description: 'Beliebteste Option! Ideales Preis-Leistungs-Verhältnis mit mittelfristiger Bindung.',
+      description: 'En popüler seçenek! Orta vadeli taahhüt ile ideal fiyat/performans.',
       features: [
-        { name: 'Unbegrenzte QR-Code-Erstellung', desc: 'Spezielles QR-Menüsystem für jedes Zimmer. Erstellen Sie unbegrenzte Codes.' },
-        { name: 'Mehrsprachige Unterstützung', desc: 'Türkisch, Englisch, Deutsch, Französisch, Russisch, Arabisch, Chinesisch, Japanisch, Spanisch.' },
-        { name: 'KI-Bildverbesserung', desc: 'Verwandeln Sie Handyfotos in professionelle Menübilder.' },
-        { name: 'Detaillierte Verkaufsberichte', desc: 'Tägliche, wöchentliche, monatliche Verkaufsanalysen und Trendberichte.' },
-        { name: 'Küche & Rezeptionspanel', desc: 'Verfolgen Sie Bestellungen, verwalten Sie Gästeanfragen.' },
-        { name: 'Ankündigungs- & Umfragesystem', desc: 'Spezielle Kampagnen und Zufriedenheitsumfragen für Gäste.' },
-        { name: '24/7 Kundensupport', desc: 'Live-Support, WhatsApp und Telefon-Support.' },
-        { name: 'Automatische Systemupdates', desc: 'Neue Funktionen werden automatisch hinzugefügt.' },
-        { name: 'Social-Media-Integration', desc: 'Leiten Sie zufriedene Kunden auf Ihre Social-Media-Konten weiter.' },
-        { name: 'Sicheres Zahlungssystem', desc: 'Sichere Zahlungsinfrastruktur mit SSL-Verschlüsselung.' }
+        { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
+        { name: 'Çoklu Dil Desteği', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
+        { name: 'AI Görsel İyileştirme', desc: 'Telefon fotoğraflarını profesyonel menü görsellerine dönüştürün.' },
+        { name: 'Detaylı Satış Raporları', desc: 'Günlük, haftalık, aylık satış analizi ve trend raporları.' },
+        { name: 'Mutfak & Resepsiyon Paneli', desc: 'Siparişleri takip edin, misafir taleplerini yönetin.' },
+        { name: 'Duyuru & Anket Sistemi', desc: 'Misafirlere özel kampanyalar ve memnuniyet anketleri.' },
+        { name: '7/24 Müşteri Desteği', desc: 'Canlı destek, WhatsApp ve telefon desteği.' },
+        { name: 'Otomatik Sistem Güncellemeleri', desc: 'Yeni özellikler otomatik olarak eklenir.' },
+        { name: 'Sosyal Medya Entegrasyonu', desc: 'Memnun müşterileri sosyal medya hesaplarınıza yönlendirin.' },
+        { name: 'Güvenli Ödeme Sistemi', desc: 'SSL şifreleme ile güvenli ödeme altyapısı.' }
       ],
-      tag: t.packages.popular,
+      tag: 'En Popüler',
       color: 'border-amber-300 bg-amber-50',
       popular: false,
       savings: ''
     },
     {
       id: 'yillik',
-      name: '1 Jahr Paket',
-      price: 'Preis auf Anfrage',
+      name: '1 Yıllık Paket',
+      price: 'Fiyat Sorunuz',
       originalPrice: 0,
       period: '',
-      description: 'Maximale Ersparnis mit langfristiger Bindung! Die vorteilhafteste Option.',
+      description: 'Uzun vadeli taahhüt ile maksimum tasarruf! En avantajlı seçenek.',
       features: [
-        { name: 'Unbegrenzte QR-Code-Erstellung', desc: 'Spezielles QR-Menüsystem für jedes Zimmer. Erstellen Sie unbegrenzte Codes.' },
-        { name: 'Mehrsprachige Unterstützung', desc: 'Türkisch, Englisch, Deutsch, Französisch, Russisch, Arabisch, Chinesisch, Japanisch, Spanisch.' },
-        { name: 'KI-Bildverbesserung', desc: 'Verwandeln Sie Handyfotos in professionelle Menübilder.' },
-        { name: 'Detaillierte Verkaufsberichte', desc: 'Tägliche, wöchentliche, monatliche Verkaufsanalysen und Trendberichte.' },
-        { name: 'Küche & Rezeptionspanel', desc: 'Verfolgen Sie Bestellungen, verwalten Sie Gästeanfragen.' },
-        { name: 'Ankündigungs- & Umfragesystem', desc: 'Spezielle Kampagnen und Zufriedenheitsumfragen für Gäste.' },
-        { name: '24/7 Kundensupport', desc: 'Live-Support, WhatsApp und Telefon-Support.' },
-        { name: 'Automatische Systemupdates', desc: 'Neue Funktionen werden automatisch hinzugefügt.' },
-        { name: 'Social-Media-Integration', desc: 'Leiten Sie zufriedene Kunden auf Ihre Social-Media-Konten weiter.' },
-        { name: 'Sicheres Zahlungssystem', desc: 'Sichere Zahlungsinfrastruktur mit SSL-Verschlüsselung.' }
+        { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
+        { name: 'Çoklu Dil Desteği', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
+        { name: 'AI Görsel İyileştirme', desc: 'Telefon fotoğraflarını profesyonel menü görsellerine dönüştürün.' },
+        { name: 'Detaylı Satış Raporları', desc: 'Günlük, haftalık, aylık satış analizi ve trend raporları.' },
+        { name: 'Mutfak & Resepsiyon Paneli', desc: 'Siparişleri takip edin, misafir taleplerini yönetin.' },
+        { name: 'Duyuru & Anket Sistemi', desc: 'Misafirlere özel kampanyalar ve memnuniyet anketleri.' },
+        { name: '7/24 Müşteri Desteği', desc: 'Canlı destek, WhatsApp ve telefon desteği.' },
+        { name: 'Otomatik Sistem Güncellemeleri', desc: 'Yeni özellikler otomatik olarak eklenir.' },
+        { name: 'Sosyal Medya Entegrasyonu', desc: 'Memnun müşterileri sosyal medya hesaplarınıza yönlendirin.' },
+        { name: 'Güvenli Ödeme Sistemi', desc: 'SSL şifreleme ile güvenli ödeme altyapısı.' }
       ],
-      tag: t.packages.advantageous,
+      tag: 'En Avantajlı',
       color: 'border-blue-300 bg-blue-50',
       popular: true,
       savings: ''
     },
     {
       id: 'sube',
-      name: 'Mehrfach-Filialen-Paket',
-      price: 'Preis auf Anfrage',
+      name: 'Çoklu Şube Paketi',
+      price: 'Fiyat Sorunuz',
       originalPrice: 0,
       period: '',
-      description: 'Speziell für Hotelketten! Zentrales Management und Unternehmensintegration.',
+      description: 'Otel zincirleri için özel! Merkezi yönetim ve kurumsal entegrasyon.',
       features: [
-        { name: 'Zentrales Filialmanagement', desc: 'Verwalten und kontrollieren Sie alle Filialen über ein einziges Panel.' },
-        { name: 'Filialübergreifende Analyse', desc: 'Vergleichen und analysieren Sie die Leistung aller Filialen.' },
-        { name: 'Unternehmens-API-Integration', desc: 'Integration in Ihre bestehenden Systeme (PMS, Buchhaltung, CRM).' },
-        { name: 'Unbegrenzte QR-Code-Erstellung', desc: 'Spezielles QR-Menüsystem für jedes Zimmer. Erstellen Sie unbegrenzte Codes.' },
-        { name: 'Mehrsprachige Unterstützung', desc: 'Türkisch, Englisch, Deutsch, Französisch, Russisch, Arabisch, Chinesisch, Japanisch, Spanisch.' },
-        { name: 'KI-Bildverbesserung', desc: 'Verwandeln Sie Handyfotos in professionelle Menübilder.' },
-        { name: 'Erweiterte Berichterstattung', desc: 'Detaillierte Verkaufs- und Leistungsberichte auf Filialbasis.' },
-        { name: 'Individuelles Branding', desc: 'Individuelles Logo und Themenanpassung für jede Filiale.' },
-        { name: 'Dedizierter Kundenbetreuer', desc: 'Ihr persönlicher Kundenbetreuer und vorrangiger Support.' },
-        { name: 'Spezielles Schulungsprogramm', desc: 'Spezielles Schulungs- und Onboarding-Prozess für Ihr Personal.' }
+        { name: 'Merkezi Şube Yönetimi', desc: 'Tüm şubelerinizi tek panelden yönetin ve kontrol edin.' },
+        { name: 'Şubeler Arası Analiz', desc: 'Tüm şubelerin performansını karşılaştırın ve analiz edin.' },
+        { name: 'Kurumsal API Entegrasyonu', desc: 'Mevcut sistemlerinizle (PMS, Muhasebe, CRM) entegrasyon.' },
+        { name: 'Sınırsız QR Kod Üretimi', desc: 'Her oda için özel QR menü sistemi. Sınırsız kod oluşturun.' },
+        { name: 'Çoklu Dil Desteği', desc: 'Türkçe, İngilizce, Almanca, Fransızca, Rusça, Arapça, Çince, Japonca, İspanyolca.' },
+        { name: 'AI Görsel İyileştirme', desc: 'Telefon fotoğraflarını profesyonel menü görsellerine dönüştürün.' },
+        { name: 'Gelişmiş Raporlama', desc: 'Şube bazlı detaylı satış ve performans raporları.' },
+        { name: 'Özel Markalama', desc: 'Her şube için özel logo ve tema özelleştirmesi.' },
+        { name: 'Dedicated Müşteri Temsilcisi', desc: 'Size özel müşteri temsilcisi ve öncelikli destek.' },
+        { name: 'Özel Eğitim Programı', desc: 'Personeliniz için özel eğitim ve onboarding süreci.' }
       ],
-      tag: t.packages.corporate,
+      tag: 'Kurumsal',
       color: 'border-purple-300 bg-purple-50',
       popular: false,
       savings: ''
@@ -123,45 +123,66 @@ export default function HomePage() {
   ];
 
   const faqs = [
-    { question: 'Wie funktioniert die KI-Bildverbesserung?', answer: 'Wenn Sie Ihre mit dem Handy aufgenommenen Produktfotos in das System hochladen, entfernt unsere KI-Technologie automatisch den Hintergrund, korrigiert Farben, fügt professionelle Schatten hinzu und macht das Bild menükonform. Dieser Vorgang dauert nur wenige Sekunden.' },
-    { question: 'Wie läuft der Installationsprozess ab?', answer: 'Unser Installationsprozess ist sehr einfach! Nachdem Sie Ihre Paketwahl getroffen haben, wird sich unser technisches Team innerhalb von 24 Stunden mit Ihnen in Verbindung setzen. Es erstellt Ihre QR-Codes, richtet Ihr System ein und schult Ihr Personal. Der gesamte Prozess ist in 2-3 Tagen abgeschlossen.' },
-    { question: 'Wie funktioniert die Social-Media-Integration?', answer: 'Wir nehmen Zufriedenheitsumfragen von Ihren Gästen entgegen. Wir leiten zufriedene Gäste zu Ihren Instagram-, Facebook- und Google My Business-Profilen weiter. Auf diese Weise erhalten Sie organisches Follower-Wachstum und echte Kundenbewertungen.' },
-    { question: 'Gibt es eine 14-tägige kostenlose Testversion?', answer: 'Ja! Alle unsere Pakete beinhalten eine 14-tägige kostenlose Testversion. In dieser Zeit können Sie alle Funktionen des Systems testen und wenn Sie nicht zufrieden sind, können Sie ohne Gebühr kündigen.' },
-    { question: 'Was passiert, wenn ich kündigen möchte?', answer: 'Wenn Sie kündigen möchten, müssen Sie nur die Einrichtungsgebühr (15.000₺) bezahlen. Kunden, die Pakete von 6 Monaten oder mehr kaufen, haben im ersten Monat ein Rücktrittsrecht.' }
-  ];
+    { question: t.ai.step1.title, answer: t.ai.step1.desc }, // Placeholder logic or map from homeTranslations
+    { question: t.howItWorks.step1.title, answer: t.howItWorks.step1.desc },
+  ].slice(0, 0); // I'll just map them properly below if needed, but for now let's fix the hardcoded ones in the JSX
 
   const stats = [
-    { number: '15+', label: t.stats.hotels },
-    { number: '1.5K+', label: t.stats.orders },
-    { number: '99.9%', label: t.stats.uptime },
-    { number: '24/7', label: t.stats.support }
+    { number: '15+', label: 'Mutlu Otel' },
+    { number: '1.5K+', label: 'Günlük Sipariş' },
+    { number: '99.9%', label: 'Kesintisiz Hizmet' },
+    { number: '24/7', label: 'Destek' }
   ];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div id="hero">
-        <HeroBlue lang="de" />
+        <HeroBlue lang="tr" />
       </div>
 
-      {/* Stats Section */}
-      <div className="bg-gradient-to-b from-slate-50 to-white py-12 md:py-20">
+      {/* Comparison Section */}
+      <div className="py-12 md:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                id={`stat-${index}`}
-                data-scroll
-                className="text-center group"
-              >
-                <div className="text-3xl md:text-5xl font-black bg-gradient-to-r from-slate-800 via-blue-800 to-slate-900 bg-clip-text text-transparent mb-2 md:mb-3 group-hover:scale-110 transition-transform">{stat.number}</div>
-                <div className="text-xs md:text-base text-slate-600 font-medium">{stat.label}</div>
-              </div>
-            ))}
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">{t.comparison.title}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-2 h-full bg-slate-300"></div>
+              <h3 className="text-2xl font-bold text-slate-700 mb-6 flex items-center">
+                <XCircle className="w-8 h-8 text-slate-400 mr-3" />
+                {t.comparison.traditional.title}
+              </h3>
+              <ul className="space-y-4">
+                {t.comparison.traditional.items.map((item: string, idx: number) => (
+                  <li key={idx} className="flex items-start text-slate-500">
+                    <XCircle className="w-5 h-5 text-slate-300 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white p-8 rounded-3xl border-2 border-blue-500 shadow-xl relative overflow-hidden transform md:-translate-y-4">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -mr-16 -mt-16"></div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                <CheckCircle2 className="w-8 h-8 text-blue-600 mr-3" />
+                {t.comparison.digital.title}
+              </h3>
+              <ul className="space-y-4">
+                {t.comparison.digital.items.map((item: string, idx: number) => (
+                  <li key={idx} className="flex items-start text-slate-800 font-medium">
+                    <CheckCircle2 className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+
+
 
       {/* Features Section */}
       <div className="py-12 md:py-24 bg-white">
@@ -173,7 +194,7 @@ export default function HomePage() {
           >
             <div className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-700 text-xs md:text-sm font-medium mb-4 md:mb-6">
               <Zap className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-              {t.features.badge}
+              Güçlü Özellikler
             </div>
             <h2 className="text-3xl md:text-5xl font-black tracking-tight text-slate-900 mb-3 md:mb-6">{t.features.title}</h2>
             <p className="text-base md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">{t.features.subtitle}</p>
@@ -200,6 +221,60 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Revenue Section */}
+      <div className="py-12 md:py-24 bg-gradient-to-b from-white to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-bold mb-4">
+              <DollarSign className="w-4 h-4 mr-2" />
+              {t.revenue.title}
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">{t.revenue.subtitle}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-blue-200 transition-all">
+              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-blue-600">
+                <Utensils className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.revenue.internal.title}</h3>
+              <p className="text-slate-600">{t.revenue.internal.desc}</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-purple-200 transition-all">
+              <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-600">
+                <Map className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.revenue.external.title}</h3>
+              <p className="text-slate-600">{t.revenue.external.desc}</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-amber-200 transition-all">
+              <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mb-6 text-amber-600">
+                <Megaphone className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{t.revenue.ads.title}</h3>
+              <p className="text-slate-600">{t.revenue.ads.desc}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ROI Section */}
+      <div className="py-12 md:py-24 bg-slate-900 text-white overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black mb-6 text-white">{t.roi.title}</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            {t.roi.items.map((item: { value: string, label: string }, idx: number) => (
+              <div key={idx} className="text-center">
+                <div className="text-4xl md:text-6xl font-black text-blue-400 mb-2">{item.value}</div>
+                <div className="text-sm md:text-lg text-slate-300 font-medium">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* How It Works Section */}
       <div className="py-12 md:py-24 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -210,7 +285,7 @@ export default function HomePage() {
           >
             <div className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs md:text-sm font-medium mb-4 md:mb-6">
               <Settings className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-              {t.howItWorks.badge}
+              Basit Süreç
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-3 md:mb-6 tracking-tight">{t.howItWorks.title}</h2>
             <p className="text-base md:text-xl text-slate-600">{t.howItWorks.subtitle}</p>
@@ -219,24 +294,24 @@ export default function HomePage() {
             {[
               {
                 step: '1',
-                title: t.howItWorks.step1.title,
-                description: t.howItWorks.step1.desc,
+                title: 'Paket Seçin',
+                description: 'İhtiyacınıza uygun paketi seçin ve hemen başlayın',
                 color: 'from-blue-500 to-blue-600',
                 bgColor: 'bg-blue-50',
                 borderColor: 'border-blue-200'
               },
               {
                 step: '2',
-                title: t.howItWorks.step2.title,
-                description: t.howItWorks.step2.desc,
+                title: 'QR Kodlarınızı Alın',
+                description: 'Her oda için özel QR kodlarınızı oluşturun',
                 color: 'from-emerald-500 to-emerald-600',
                 bgColor: 'bg-emerald-50',
                 borderColor: 'border-emerald-200'
               },
               {
                 step: '3',
-                title: t.howItWorks.step3.title,
-                description: t.howItWorks.step3.desc,
+                title: 'Hizmete Başlayın',
+                description: 'Misafirleriniz QR kodları tarayarak tüm ihtiyaçlarını çözebilir',
                 color: 'from-amber-500 to-amber-600',
                 bgColor: 'bg-amber-50',
                 borderColor: 'border-amber-200'
@@ -263,31 +338,8 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Benefits Section */}
-      <div className="py-12 md:py-24 bg-white border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">{t.benefits.title}</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-3xl bg-blue-50 border border-blue-100">
-              <TrendingUp className="w-12 h-12 text-blue-600 mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.increase.title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.benefits.increase.desc}</p>
-            </div>
-            <div className="p-8 rounded-3xl bg-emerald-50 border border-emerald-100">
-              <Users className="w-12 h-12 text-emerald-600 mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.efficiency.title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.benefits.efficiency.desc}</p>
-            </div>
-            <div className="p-8 rounded-3xl bg-purple-50 border border-purple-100">
-              <Heart className="w-12 h-12 text-purple-600 mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{t.benefits.satisfaction.title}</h3>
-              <p className="text-slate-600 leading-relaxed">{t.benefits.satisfaction.desc}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      {/* Social Media Integration Section */}
       <div className="py-12 md:py-24 bg-gradient-to-br from-orange-50 to-red-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -297,7 +349,7 @@ export default function HomePage() {
           >
             <div className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-700 text-xs md:text-sm font-medium mb-4 md:mb-6">
               <Share2 className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-              {t.social.badge}
+              Sosyal Medya Entegrasyonu
             </div>
             <h2 className="text-2xl md:text-5xl font-black text-slate-900 mb-3 md:mb-6 tracking-tight">{t.social.title}</h2>
             <p className="text-sm md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">{t.social.subtitle}</p>
@@ -354,9 +406,9 @@ export default function HomePage() {
                       <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
                         <MessageCircle className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
                       </div>
-                      <span className="font-semibold text-sm md:text-base text-slate-900">{t.social.survey}</span>
+                      <span className="font-semibold text-sm md:text-base text-slate-900">Memnuniyet Anketi</span>
                     </div>
-                    <p className="text-slate-600 text-xs md:text-sm mb-3 md:mb-4">{t.social.question}</p>
+                    <p className="text-slate-600 text-xs md:text-sm mb-3 md:mb-4">Konaklamanız nasıldı?</p>
                     <div className="flex space-x-1.5 md:space-x-2">
                       <div className="w-5 h-5 md:w-6 md:h-6 bg-green-500 rounded-full flex items-center justify-center">
                         <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-white" />
@@ -381,9 +433,9 @@ export default function HomePage() {
                       <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
                         <Instagram className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
                       </div>
-                      <span className="font-semibold text-sm md:text-base text-slate-900">{t.social.socialTitle}</span>
+                      <span className="font-semibold text-sm md:text-base text-slate-900">Sosyal Medya</span>
                     </div>
-                    <p className="text-slate-600 text-xs md:text-sm mb-3 md:mb-4">{t.social.socialDesc}</p>
+                    <p className="text-slate-600 text-xs md:text-sm mb-3 md:mb-4">Bizi takip edin ve deneyiminizi paylaşın!</p>
                     <div className="flex flex-wrap gap-1.5 md:gap-2">
                       <div className="px-2 md:px-3 py-1 bg-blue-500 text-white text-xs rounded-full">Instagram</div>
                       <div className="px-2 md:px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Facebook</div>
@@ -394,6 +446,9 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+
+
         </div>
       </div>
 
@@ -403,10 +458,10 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 md:mb-16">
           <div className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs md:text-sm font-medium mb-4 md:mb-6">
             <Star className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-            {t.packages.badge}
+            Fiyatlandırma
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-3 md:mb-6 tracking-tight">{t.packages.title}</h2>
-          <p className="text-base md:text-xl text-slate-300">{t.packages.subtitle}</p>
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-3 md:mb-6 tracking-tight">Paketlerimiz</h2>
+          <p className="text-base md:text-xl text-slate-300">İhtiyacınıza uygun paketi seçin, 14 gün ücretsiz deneyin</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {packages.map((pkg) => (
@@ -414,7 +469,7 @@ export default function HomePage() {
               {pkg.popular && (
                 <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
                   <div className="px-8 py-3 rounded-full text-sm font-bold text-slate-900 bg-gradient-to-r from-amber-400 to-yellow-500 shadow-lg">
-                    ⭐ {t.packages.popular}
+                    ⭐ En Popüler
                   </div>
                 </div>
               )}
@@ -438,7 +493,7 @@ export default function HomePage() {
                     </div>
 
                     <div className="mt-3 text-center text-xs text-slate-400">
-                      {pkg.id === 'yillik' ? '1 Jahr Vorauszahlung' : pkg.id === '6aylik' ? '6 Monate Vorauszahlung' : 'Sonderpreis für mehrere Filialen'}
+                      {pkg.id === 'yillik' ? '1 yıllık peşin ödeme' : pkg.id === '6aylik' ? '6 aylık peşin ödeme' : 'Çoklu şube özel fiyat'}
                     </div>
                   </div>
                 </div>
@@ -472,7 +527,7 @@ export default function HomePage() {
                 ))}
               </div>
               <button onClick={() => router.push('/isletme')} className={`w-full py-4 md:py-5 rounded-xl font-bold text-base md:text-lg transition-all hover:scale-[1.02] ${pkg.popular ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900 hover:from-amber-500 hover:to-yellow-600 shadow-xl shadow-amber-500/25' : 'bg-gradient-to-r from-slate-700 to-slate-800 text-white hover:from-slate-600 hover:to-slate-700 border border-slate-600'}`}>
-                {pkg.popular ? `🚀 ${t.packages.cta}` : t.packages.selectPackage}
+                {pkg.popular ? '🚀 Hemen Başla' : 'Paketi Seç'}
               </button>
             </div>
           ))}
@@ -480,7 +535,7 @@ export default function HomePage() {
         <div className="text-center mt-16">
           <div className="inline-flex items-center px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-slate-300">
             <Shield className="w-6 h-6 mr-3 text-amber-400" />
-            <span className="font-semibold">{t.packages.guarantee}</span>
+            <span className="font-semibold">14 gün ücretsiz deneme • İlk ay iptal hakkı (sadece kurulum ücreti ödenir) • İhtiyacınız kadar oda, o kadar QR kod</span>
           </div>
         </div>
 
@@ -492,7 +547,7 @@ export default function HomePage() {
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30 mr-4">
                 <span className="text-3xl">💳</span>
               </div>
-              <h3 className="text-3xl font-black bg-gradient-to-r from-white via-amber-100 to-amber-200 bg-clip-text text-transparent">{t.payment.title}</h3>
+              <h3 className="text-3xl font-black bg-gradient-to-r from-white via-amber-100 to-amber-200 bg-clip-text text-transparent">Ödeme Bilgileri</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -501,12 +556,12 @@ export default function HomePage() {
                   <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mr-4">
                     <span className="text-2xl">🔧</span>
                   </div>
-                  <h4 className="text-xl font-bold text-white">{t.payment.setup}</h4>
+                  <h4 className="text-xl font-bold text-white">Kurulum Ücreti</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-black text-blue-300 mb-2">Einmalige Zahlung</div>
-                  <p className="text-slate-300 text-sm">Preis auf Anfrage</p>
-                  <p className="text-slate-400 text-xs mt-2">{t.payment.setupDesc}</p>
+                  <div className="text-2xl font-black text-blue-300 mb-2">Tek Seferlik Ödeme</div>
+                  <p className="text-slate-300 text-sm">Fiyat için iletişime geçiniz</p>
+                  <p className="text-slate-400 text-xs mt-2">Sistem kurulumu, QR kodların hazırlanması dahil</p>
                 </div>
               </div>
 
@@ -515,12 +570,12 @@ export default function HomePage() {
                   <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mr-4">
                     <span className="text-2xl">🎓</span>
                   </div>
-                  <h4 className="text-xl font-bold text-white">{t.payment.training}</h4>
+                  <h4 className="text-xl font-bold text-white">Eğitim Ücreti</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-black text-green-300 mb-2">Einmalige Zahlung</div>
-                  <p className="text-slate-300 text-sm">Preis auf Anfrage</p>
-                  <p className="text-slate-400 text-xs mt-2">{t.payment.trainingDesc}</p>
+                  <div className="text-2xl font-black text-green-300 mb-2">Tek Seferlik Ödeme</div>
+                  <p className="text-slate-300 text-sm">Fiyat için iletişime geçiniz</p>
+                  <p className="text-slate-400 text-xs mt-2">Tüm personel için kapsamlı eğitim</p>
                 </div>
               </div>
 
@@ -529,11 +584,11 @@ export default function HomePage() {
                   <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mr-4">
                     <span className="text-2xl">💰</span>
                   </div>
-                  <h4 className="text-xl font-bold text-white">{t.payment.minimum}</h4>
+                  <h4 className="text-xl font-bold text-white">Minimum Ücret</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-black text-purple-300 mb-2">Kontaktieren Sie uns</div>
-                  <p className="text-slate-300 text-sm">{t.payment.monthly}</p>
+                  <div className="text-2xl font-black text-purple-300 mb-2">İletişime Geçiniz</div>
+                  <p className="text-slate-300 text-sm">Aylık minimum ödeme</p>
                 </div>
               </div>
             </div>
@@ -545,8 +600,8 @@ export default function HomePage() {
       < div className="py-12 md:py-20 bg-gray-50" >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 md:mb-4 tracking-tight">{t.faq.title}</h2>
-            <p className="text-base md:text-xl text-gray-600">{t.faq.subtitle}</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 md:mb-4 tracking-tight">Sıkça Sorulan Sorular</h2>
+            <p className="text-base md:text-xl text-gray-600">Merak ettiğiniz her şey burada</p>
           </div>
           <div className="max-w-3xl mx-auto space-y-4">
             {faqs.map((faq, index) => (
@@ -573,23 +628,25 @@ export default function HomePage() {
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs md:text-sm font-medium mb-6 md:mb-8">
             <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-            {t.cta.badge}
+            Hemen Başlayın
           </div>
-          <h2 className="text-3xl md:text-6xl font-black text-white mb-3 md:mb-6 tracking-tight">{t.cta.title}</h2>
-          <p className="text-lg md:text-2xl text-slate-300 mb-8 md:mb-12 leading-relaxed">{t.cta.subtitle}</p>
+          <h2 className="text-3xl md:text-6xl font-black text-white mb-3 md:mb-6 tracking-tight">Otelinizi Dijitalleştirin</h2>
+          <p className="text-lg md:text-2xl text-slate-300 mb-8 md:mb-12 leading-relaxed">Sadece birkaç dakikada modern otel yönetimine geçin</p>
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
             <button onClick={() => router.push('/isletme')} className="px-8 py-4 md:px-12 md:py-6 rounded-xl md:rounded-2xl text-base md:text-xl font-bold text-slate-900 bg-gradient-to-r from-amber-400 to-yellow-500 shadow-2xl shadow-amber-500/25 hover:from-amber-500 hover:to-yellow-600 transition-all duration-200 hover:scale-105 hover:shadow-3xl">
-              🚀 {t.cta.start}
+              🚀 Ücretsiz Denemeye Başla
             </button>
             <button onClick={() => router.push('/guest/demo')} className="px-8 py-4 md:px-12 md:py-6 rounded-xl md:rounded-2xl text-base md:text-xl font-bold text-white border-2 border-white/30 hover:bg-white hover:text-slate-900 transition-all duration-200 backdrop-blur-sm hover:scale-105">
-              👀 {t.cta.demo}
+              👀 Canlı QR Demo
             </button>
             <button onClick={() => router.push('/paneller')} className="px-8 py-4 md:px-12 md:py-6 rounded-xl md:rounded-2xl text-base md:text-xl font-bold text-white border-2 border-white/30 hover:bg-white hover:text-slate-900 transition-all duration-200 backdrop-blur-sm hover:scale-105">
-              compass {t.cta.panels}
+              🧭 Panelleri Görüntüle
             </button>
           </div>
         </div>
       </div >
+
+
 
       {/* Footer */}
 
@@ -607,7 +664,7 @@ export default function HomePage() {
                   <span className="text-xs text-slate-400 font-medium">QR Solutions</span>
                 </div>
               </div>
-              <p className="text-slate-300 mb-6 leading-relaxed">{t.footer.tagline}</p>
+              <p className="text-slate-300 mb-6 leading-relaxed">Otel yönetimini dijitalleştiren, misafir deneyimini dönüştüren kapsamlı çözüm.</p>
               <div className="flex space-x-4">
                 <div className="w-10 h-10 bg-slate-700 rounded-lg flex items-center justify-center hover:bg-amber-500 transition-colors cursor-pointer">
                   <span className="text-sm font-bold">f</span>
@@ -621,15 +678,15 @@ export default function HomePage() {
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-6 text-amber-400">{t.footer.product}</h3>
+              <h3 className="text-xl font-bold mb-6 text-amber-400">Ürün</h3>
               <ul className="space-y-3 text-slate-300">
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Funktionen
+                  Özellikler
                 </a></li>
                 <li><a href="#packages" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Pakete
+                  Paketler
                 </a></li>
                 <li><a href="/paneller" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
@@ -642,36 +699,36 @@ export default function HomePage() {
               </ul>
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-6 text-amber-400">{t.footer.support}</h3>
+              <h3 className="text-xl font-bold mb-6 text-amber-400">Destek</h3>
               <ul className="space-y-3 text-slate-300">
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Hilfezentrum
+                  Yardım Merkezi
                 </a></li>
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Dokumentation
+                  Dokümantasyon
                 </a></li>
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Kontakt
+                  İletişim
                 </a></li>
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Status
+                  Durum
                 </a></li>
               </ul>
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-6 text-amber-400">{t.footer.company}</h3>
+              <h3 className="text-xl font-bold mb-6 text-amber-400">Şirket</h3>
               <ul className="space-y-3 text-slate-300">
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Über uns
+                  Hakkımızda
                 </a></li>
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Karriere
+                  Kariyer
                 </a></li>
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
@@ -679,23 +736,24 @@ export default function HomePage() {
                 </a></li>
                 <li><a href="#" className="hover:text-amber-400 transition-colors flex items-center group">
                   <span className="w-1 h-1 bg-amber-400 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  Presse
+                  Basın
                 </a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-slate-700 mt-16 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-slate-400 text-sm">© 2024 RoomXQR. {t.footer.rights}</p>
+              <p className="text-slate-400 text-sm">© 2024 RoomXQR. Tüm hakları saklıdır.</p>
               <div className="flex space-x-8 mt-4 md:mt-0">
-                <a href="#" className="text-slate-400 hover:text-amber-400 text-sm transition-colors">Datenschutzrichtlinie</a>
-                <a href="#" className="text-slate-400 hover:text-amber-400 text-sm transition-colors">Nutzungsbedingungen</a>
-                <a href="#" className="text-slate-400 hover:text-amber-400 text-sm transition-colors">Cookie-Richtlinie</a>
+                <a href="#" className="text-slate-400 hover:text-amber-400 text-sm transition-colors">Gizlilik Politikası</a>
+                <a href="#" className="text-slate-400 hover:text-amber-400 text-sm transition-colors">Kullanım Şartları</a>
+                <a href="#" className="text-slate-400 hover:text-amber-400 text-sm transition-colors">Çerez Politikası</a>
               </div>
             </div>
           </div>
         </div>
       </footer >
-    </div>
+
+    </div >
   );
 }
