@@ -2,52 +2,19 @@ export const translations = {
     tr: {
         hero: {
             badge: 'QR Kodlu Otel Deneyimi',
-            title: 'Oteliniz Dijital Geleceğe Hazır mı?',
-            subtitle: 'RoomXQR ile misafir deneyimini dijitalleştirin, operasyonel verimliliği artırın ve gelirinizi maksimize edin.',
-            description: 'Mevcut sisteminizi değiştirmeden, teknoloji sponsoru olmadan ve ağır yatırımlar yapmadan otelinizi dijitalleştirin.',
+            title: 'Otelinizde Dijital Dönüşüm:',
+            subtitle: 'QR ile Anında Hizmet',
+            description: 'Oda QR menü ile hızlı sipariş, anlık deneyim ve',
             revenue: '%40 gelir artışı',
-            tagline: " ile tanışın.",
-            cta: 'Hemen Başlayın',
-            pricing: 'Canlı Demo İste'
+            tagline: ". Türkiye'nin yeni jenerasyon otel çözümü.",
+            cta: 'Canlı QR Demo',
+            pricing: 'fiyatları incele'
         },
-        comparison: {
-            title: 'Geleneksel vs Dijital',
-            traditional: {
-                title: 'Geleneksel Otelcilik',
-                items: [
-                    'Resepsiyonda kuyruklar',
-                    'Telefon trafiği ve yanlış anlaşılmalar',
-                    'Basılı menüler ve broşür maliyeti',
-                    'Ölçülemeyen misafir memnuniyeti',
-                    'Sadece konaklama geliri'
-                ]
-            },
-            digital: {
-                title: 'RoomXQR Deneyimi',
-                items: [
-                    'Sıfır bekleme, anlık işlem',
-                    'Dijital talep yönetimi ve hatasız akış',
-                    'QR ile her zaman güncel içerik',
-                    'Anlık geri bildirim ve analiz',
-                    'Konaklama + Turizm + Reklam geliri'
-                ]
-            }
-        },
-        revenue: {
-            title: 'Yeni Gelir Akışları Oluşturun',
-            subtitle: 'Oteliniz sadece konaklama değil, bir yaşam merkezi olsun',
-            internal: { title: 'Otel İçi Satış', desc: 'SPA, Restoran ve Ekstra Hizmetlerinizi odadaki misafire anlık bildirimlerle satın.' },
-            external: { title: 'Turizm Geliri', desc: 'Yerel turlar, transferler ve etkinliklerden komisyon kazanın.' },
-            ads: { title: 'Reklam Alanları', desc: 'Sponsorlu içerikler ve yerel işletme reklamları ile ek gelir elde edin.' }
-        },
-        roi: {
-            title: 'Yatırımın Geri Dönüşü',
-            items: [
-                { value: '%30', label: 'Personel Verimliliği Artışı' },
-                { value: '%25', label: 'Oda Servisi Satış Artışı' },
-                { value: '%95', label: 'Misafir Memnuniyeti' },
-                { value: '15dk', label: 'Ortalama Servis Süresi Tasarrufu' }
-            ]
+        stats: {
+            hotels: 'Mutlu Otel',
+            orders: 'Günlük Sipariş',
+            uptime: 'Kesintisiz Hizmet',
+            support: 'Destek'
         },
         features: {
             badge: 'Güçlü Özellikler',
@@ -147,52 +114,19 @@ export const translations = {
     en: {
         hero: {
             badge: 'QR-Based Hotel Experience',
-            title: 'Is Your Hotel Ready for the Digital Future?',
-            subtitle: 'Digitize guest experience, boost operational efficiency, and maximize revenue with RoomXQR.',
-            description: 'Digitize your hotel without changing your existing system, without technology sponsorship, and without heavy investments.',
+            title: 'Digital Transformation for Your Hotel:',
+            subtitle: 'Instant Service with QR',
+            description: 'Fast ordering with room QR menu, instant experience and',
             revenue: '40% revenue increase',
-            tagline: " with RoomXQR.",
-            cta: 'Get Started',
-            pricing: 'Request Live Demo'
+            tagline: ". Turkey's next-generation hotel solution.",
+            cta: 'Live QR Demo',
+            pricing: 'view pricing'
         },
-        comparison: {
-            title: 'Traditional vs Digital',
-            traditional: {
-                title: 'Traditional Hotel Management',
-                items: [
-                    'Queues at reception',
-                    'Phone traffic and misunderstandings',
-                    'Printing costs for menus and brochures',
-                    'Unmeasurable guest satisfaction',
-                    'Accommodation revenue only'
-                ]
-            },
-            digital: {
-                title: 'RoomXQR Experience',
-                items: [
-                    'Zero wait, instant processing',
-                    'Digital request management, error-free flow',
-                    'Always up-to-date content via QR',
-                    'Instant feedback and analytics',
-                    'Accommodation + Tourism + Ad revenue'
-                ]
-            }
-        },
-        revenue: {
-            title: 'Create New Revenue Streams',
-            subtitle: 'Let your hotel be a life center, not just accommodation',
-            internal: { title: 'In-Hotel Sales', desc: 'Sell SPA, Restaurant, and Extra Services to guests in rooms with instant notifications.' },
-            external: { title: 'Tourism Revenue', desc: 'Earn commissions from local tours, transfers, and events.' },
-            ads: { title: 'Ad Spaces', desc: 'Generate extra income with sponsored content and local business ads.' }
-        },
-        roi: {
-            title: 'Return on Investment',
-            items: [
-                { value: '30%', label: 'Staff Efficiency Increase' },
-                { value: '25%', label: 'Room Service Sales Increase' },
-                { value: '95%', label: 'Guest Satisfaction' },
-                { value: '15m', label: 'Avg. Service Time Savings' }
-            ]
+        stats: {
+            hotels: 'Happy Hotels',
+            orders: 'Daily Orders',
+            uptime: 'Uptime',
+            support: 'Support'
         },
         features: {
             badge: 'Powerful Features',
@@ -292,52 +226,19 @@ export const translations = {
     de: {
         hero: {
             badge: 'QR-basiertes Hotelerlebnis',
-            title: 'Ist Ihr Hotel bereit für die digitale Zukunft?',
-            subtitle: 'Digitalisieren Sie das Gästeerlebnis, steigern Sie die betriebliche Effizienz und maximieren Sie den Umsatz mit RoomXQR.',
-            description: 'Digitalisieren Sie Ihr Hotel, ohne Ihr bestehendes System zu ändern, ohne Technologiesponsoring und ohne hohe Investitionen.',
+            title: 'Digitale Transformation für Ihr Hotel:',
+            subtitle: 'Sofortiger Service mit QR',
+            description: 'Schnelle Bestellung mit Zimmer-QR-Menü, sofortiges Erlebnis und',
             revenue: '40% Umsatzsteigerung',
-            tagline: " mit RoomXQR.",
-            cta: 'Jetzt starten',
-            pricing: 'Live-Demo anfordern'
+            tagline: '. Die Hotellösung der nächsten Generation der Türkei.',
+            cta: 'Live QR Demo',
+            pricing: 'Preise ansehen'
         },
-        comparison: {
-            title: 'Traditionell vs. Digital',
-            traditional: {
-                title: 'Traditionelles Hotelmanagement',
-                items: [
-                    'Warteschlangen an der Rezeption',
-                    'Telefonverkehr und Missverständnisse',
-                    'Druckkosten für Menüs und Broschüren',
-                    'Nicht messbare Gästezufriedenheit',
-                    'Nur Unterkunftseinnahmen'
-                ]
-            },
-            digital: {
-                title: 'RoomXQR Erlebnis',
-                items: [
-                    'Null Wartezeit, sofortige Bearbeitung',
-                    'Digitales Anfragemanagement, fehlerfreier Ablauf',
-                    'Immer aktuelle Inhalte via QR',
-                    'Sofortiges Feedback und Analysen',
-                    'Unterkunft + Tourismus + Werbeeinnahmen'
-                ]
-            }
-        },
-        revenue: {
-            title: 'Neue Einnahmequellen schaffen',
-            subtitle: 'Lassen Sie Ihr Hotel nicht nur Unterkunft, sondern Lebenszentrum sein',
-            internal: { title: 'Hotelinterne Verkäufe', desc: 'Verkaufen Sie SPA, Restaurant und Zusatzleistungen mit Sofortbenachrichtigungen an Gäste im Zimmer.' },
-            external: { title: 'Tourismuseinnahmen', desc: 'Verdienen Sie Provisionen durch lokale Touren, Transfers und Veranstaltungen.' },
-            ads: { title: 'Werbeflächen', desc: 'Generieren Sie zusätzliche Einnahmen mit gesponserten Inhalten und lokalen Geschäftsanzeigen.' }
-        },
-        roi: {
-            title: 'Kapitalrendite (ROI)',
-            items: [
-                { value: '30%', label: 'Steigerung der Personaleffizienz' },
-                { value: '25%', label: 'Umsatzsteigerung beim Zimmerservice' },
-                { value: '95%', label: 'Gästezufriedenheit' },
-                { value: '15m', label: 'Durchschn. Servicezeit-Einsparung' }
-            ]
+        stats: {
+            hotels: 'Zufriedene Hotels',
+            orders: 'Tägliche Bestellungen',
+            uptime: 'Verfügbarkeit',
+            support: 'Support'
         },
         features: {
             badge: 'Leistungsstarke Funktionen',

@@ -21,11 +21,18 @@ export default function HeroBlue({ lang = 'tr' }: HeroBlueProps) {
         <h1 className="text-2xl md:text-[2.8rem] lg:text-6xl font-black text-slate-900 mb-2 leading-[1.07] tracking-tight">
           {t.title}
         </h1>
-        <div className="text-xl md:text-2xl font-medium text-slate-600 mb-6 max-w-xl">
-          {t.subtitle}
+        {/* Başlık altı kısa sistem avantajı info */}
+        <div className="mb-2 md:mb-3">
+          <span className="inline-block bg-gray-100 text-gray-700 font-medium text-xs md:text-base rounded px-3 md:px-4 py-1.5 md:py-2 mb-2">
+            {lang === 'tr' ? 'Mevcut sisteminizi değiştirmeden hemen kullanmaya başlayın.' : lang === 'en' ? 'Start using immediately without changing your current system.' : 'Sofort einsatzbereit, ohne Ihr bestehendes System zu ändern.'}
+          </span>
         </div>
-        <p className="text-base md:text-lg text-slate-500 mb-8 max-w-xl leading-relaxed">
+        <div className="text-2xl md:text-[2.3rem] lg:text-5xl font-black mb-6 md:mb-8 leading-[1.07] tracking-tight">
+          <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 bg-clip-text text-transparent">{t.subtitle}</span>
+        </div>
+        <p className="text-base md:text-xl text-slate-600 mb-6 md:mb-8 max-w-xl font-medium">
           {t.description}
+          <span className="text-blue-700 font-bold"> {t.revenue}</span>{t.tagline}
         </p>
         <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-5 mb-4">
           <button

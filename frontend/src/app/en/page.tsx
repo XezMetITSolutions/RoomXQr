@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { QrCode, Settings, CheckCircle, Star, Shield, Globe, Users, TrendingUp, DollarSign, MessageCircle, BarChart3, CheckCircle2, XCircle, Megaphone, Share2, Instagram, Map, Utensils, MessageSquare, ChevronDown, ChevronUp, Zap } from 'lucide-react';
+import { Hotel, QrCode, Settings, CheckCircle, Star, Play, Shield, Globe, Smartphone, CreditCard, Zap, ChevronDown, ChevronUp, Camera, Image, Users, TrendingUp, Clock, DollarSign, Heart, MessageCircle, BarChart3, Award, Target, Sparkles, ArrowRight, CheckCircle2, XCircle, Lightbulb, Megaphone, ThumbsUp, Share2, Instagram, Facebook, Twitter, Map, Utensils, MessageSquare } from 'lucide-react';
 import { Language, translations } from '@/lib/homeTranslations';
 import HeroBlue from '../hero-blue';
 
 export default function HomePage() {
   const router = useRouter();
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('tr');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState<{ [key: string]: number | null }>({ 'yillik': null, '6aylik': null, 'sube': null });
@@ -127,6 +127,12 @@ export default function HomePage() {
     { question: t.howItWorks.step1.title, answer: t.howItWorks.step1.desc },
   ].slice(0, 0); // I'll just map them properly below if needed, but for now let's fix the hardcoded ones in the JSX
 
+  const stats = [
+    { number: '15+', label: 'Mutlu Otel' },
+    { number: '1.5K+', label: 'Günlük Sipariş' },
+    { number: '99.9%', label: 'Kesintisiz Hizmet' },
+    { number: '24/7', label: 'Destek' }
+  ];
 
   return (
     <div className="min-h-screen bg-white">
