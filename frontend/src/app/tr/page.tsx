@@ -18,6 +18,7 @@ export default function HomePage() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('tr');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [accordionOpen, setAccordionOpen] = useState<{ [key: string]: number | null }>({ 'yillik': null, '6aylik': null, 'sube': null });
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const elements = document.querySelectorAll('[data-scroll]');
@@ -31,7 +32,6 @@ export default function HomePage() {
     });
   }, []);
 
-  const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
   const t = translations[currentLanguage];
 
   // Problem/Çözüm odaklı özellikler
