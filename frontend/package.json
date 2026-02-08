@@ -21,6 +21,7 @@
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.0",
+    "framer-motion": "^11.0.8",
     "i18next": "^23.10.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.542.0",
